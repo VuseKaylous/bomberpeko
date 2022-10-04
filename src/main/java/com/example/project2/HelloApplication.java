@@ -71,28 +71,28 @@ public class HelloApplication extends Application {
                 for (int x = 0; x < HEIGHT; x++) {
                     Entity object;
                     if (data.charAt(x) == '#') {
-                        object = new Wall(x, y, Sprite.wall.getFxImage());
+                        object = new Wall(x, y, pictures.wall.getFxImage());
                         stillObjects.add(object);
                     } else if (data.charAt(x) == 'p') {
-                        object = new Grass(x, y, Sprite.grass.getFxImage());
+                        object = new Grass(x, y, pictures.grass.getFxImage());
                         stillObjects.add(object);
                         object = new Bomber(x, y, pictures.player[1][0].getFxImage());
                         entities.add(object);
                     } else if (data.charAt(x) == '*') {
-                        object = new Brick(x, y, Sprite.brick.getFxImage());
+                        object = new Brick(x, y, pictures.brick[0].getFxImage());
                         stillObjects.add(object);
                     } else if(data.charAt(x) == '1') {
-                        object = new Balloom(x, y, pictures.balloom.getFxImage());
+                        object = new Balloom(x, y, pictures.balloom[0][0].getFxImage());
                         entities.add(object);
-                        object = new Grass(x, y, Sprite.grass.getFxImage());
+                        object = new Grass(x, y, pictures.grass.getFxImage());
                         stillObjects.add(object);
                     } else if (data.charAt(x) == '2') {
-                        object = new Oneal(x, y, pictures.oneal.getFxImage());
+                        object = new Oneal(x, y, pictures.oneal[0][0].getFxImage());
                         entities.add(object);
-                        object = new Grass(x, y, Sprite.grass.getFxImage());
+                        object = new Grass(x, y, pictures.grass.getFxImage());
                         stillObjects.add(object);
                     } else {
-                        object = new Grass(x, y, Sprite.grass.getFxImage());
+                        object = new Grass(x, y, pictures.grass.getFxImage());
                         stillObjects.add(object);
                     }
                 }

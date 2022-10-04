@@ -19,9 +19,6 @@ public class Sprite {
     | Board sprites
     |--------------------------------------------------------------------------
      */
-    public static Sprite grass = new Sprite(DEFAULT_SIZE, 6, 0, SpriteSheet.tiles, 16, 16);
-    public static Sprite wall = new Sprite(DEFAULT_SIZE, 5, 0, SpriteSheet.tiles, 16, 16);
-    public static Sprite portal = new Sprite(DEFAULT_SIZE, 4, 0, SpriteSheet.tiles, 14, 14);
 
     public Sprite(int size, int x, int y, SpriteSheet sheet, int rw, int rh) {
         SIZE = size;
