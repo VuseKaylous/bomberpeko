@@ -94,12 +94,6 @@ public class HelloApplication extends Application {
                 stillObjects.add(object);
             }
         }
-//        try {
-//            BufferedReader myFile = new BufferedReader(new FileReader("levels/Level1.txt"));
-//        } catch (FileNotFoundException e) {
-//            System.out.println("File level not found :<");
-//            e.printStackTrace();
-//        }
     }
 
     public void update() {
