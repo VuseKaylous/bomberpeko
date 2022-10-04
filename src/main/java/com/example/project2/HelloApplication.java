@@ -81,7 +81,7 @@ public class HelloApplication extends Application {
                     } else if (data.charAt(x) == '*') {
                         object = new Brick(x, y, pictures.brick[0].getFxImage());
                         stillObjects.add(object);
-                    } else if(data.charAt(x) == '1') {
+                    } else if (data.charAt(x) == '1') {
                         object = new Balloom(x, y, pictures.balloom[0][0].getFxImage());
                         entities.add(object);
                         object = new Grass(x, y, pictures.grass.getFxImage());

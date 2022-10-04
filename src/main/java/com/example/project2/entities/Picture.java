@@ -54,10 +54,10 @@ public class Picture {
             mob_dead[i] = new Sprite(Sprite.DEFAULT_SIZE, 15, i, SpriteSheet.tiles, 16, 16);
             bomb[i] = new Sprite(Sprite.DEFAULT_SIZE, i, 3, SpriteSheet.tiles, 13, 15);
         }
-        for (int i=0;i<4;i++) {
+        for (int i = 0; i < 4; i++) {
             brick[i] = new Sprite(Sprite.DEFAULT_SIZE, 7, i, SpriteSheet.tiles, 16, 16);
         }
-        for (int i=0;i<7;i++) {
+        for (int i = 0; i < 7; i++) {
             powerup[i] = new Sprite(Sprite.DEFAULT_SIZE, i, 10, SpriteSheet.tiles, 16, 16);
         }
     }
