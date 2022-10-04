@@ -30,6 +30,7 @@ public class HelloApplication extends Application {
     private List<Entity> stillObjects = new ArrayList<>();
 
     private Picture pictures = new Picture();
+    private Map map = new Map();
 
     public static void main(String[] args) {
         launch();
@@ -68,37 +69,23 @@ public class HelloApplication extends Application {
     }
 
     public void createMap() {
-        File map = new File("inp.txt");
+        File maptxt = new File("inp.txt");
         try {
-            Scanner reader = new Scanner(map);
+            Scanner reader = new Scanner(maptxt);
             for (int y = 0; y < WIDTH; y++) {
                 String data = reader.nextLine();
+                map.updateCol(data, y);
                 for (int x = 0; x < HEIGHT; x++) {
                     Entity object;
-                    if (data.charAt(x) == '#') {
-                        object = new Wall(x, y, pictures.wall.getFxImage());
-                        stillObjects.add(object);
-                    } else if (data.charAt(x) == 'p') {
-                        object = new Grass(x, y, pictures.grass.getFxImage());
-                        stillObjects.add(object);
+                    if (data.charAt(x) == 'p') {
                         object = new Bomber(x, y, pictures.player[1][0].getFxImage());
                         entities.add(object);
-                    } else if (data.charAt(x) == '*') {
-                        object = new Brick(x, y, pictures.brick[0].getFxImage());
-                        stillObjects.add(object);
-                    } else if(data.charAt(x) == '1') {
+                    } else if (data.charAt(x) == '1') {
                         object = new Balloom(x, y, pictures.balloom[0][0].getFxImage());
                         entities.add(object);
-                        object = new Grass(x, y, pictures.grass.getFxImage());
-                        stillObjects.add(object);
                     } else if (data.charAt(x) == '2') {
                         object = new Oneal(x, y, pictures.oneal[0][0].getFxImage());
                         entities.add(object);
-                        object = new Grass(x, y, pictures.grass.getFxImage());
-                        stillObjects.add(object);
-                    } else {
-                        object = new Grass(x, y, pictures.grass.getFxImage());
-                        stillObjects.add(object);
                     }
                 }
             }
@@ -115,7 +102,11 @@ public class HelloApplication extends Application {
 
     public void render() {
         gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
-        stillObjects.forEach(g -> g.render(gc));
+        for (int i = 0; i < HEIGHT; i++) {
+            for (int j = 0; j < WIDTH; j++) {
+                map.sprite[i][j].render(gc);
+            }
+        }
         entities.forEach(g -> g.render(gc));
     }
 }

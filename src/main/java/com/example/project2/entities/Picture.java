@@ -13,8 +13,8 @@ public class Picture {
     public Sprite[][][] explosion = new Sprite[3][3][3]; // (vertical, horizontal, middle) - (small,medium,big), (length)
     public Sprite[] mob_dead = new Sprite[3];
     public Sprite[] bomb = new Sprite[3];
-    public Sprite[] brick = new Sprite[4]; // normal, exploded 1-2-3
-    public Sprite[] powerup = new Sprite[7]; //bomb - flames - speed - wallpass - detonator - bombpass - flamepass
+    public static Sprite[] brick = new Sprite[4]; // normal, exploded 1-2-3
+    public static Sprite[] powerup = new Sprite[7]; //bomb - flames - speed - wallpass - detonator - bombpass - flamepass
     public static Sprite grass = new Sprite(Sprite.DEFAULT_SIZE, 6, 0, SpriteSheet.tiles, 16, 16);
     public static Sprite wall = new Sprite(Sprite.DEFAULT_SIZE, 5, 0, SpriteSheet.tiles, 16, 16);
     public static Sprite portal = new Sprite(Sprite.DEFAULT_SIZE, 4, 0, SpriteSheet.tiles, 14, 14);
@@ -54,10 +54,10 @@ public class Picture {
             mob_dead[i] = new Sprite(Sprite.DEFAULT_SIZE, 15, i, SpriteSheet.tiles, 16, 16);
             bomb[i] = new Sprite(Sprite.DEFAULT_SIZE, i, 3, SpriteSheet.tiles, 13, 15);
         }
-        for (int i=0;i<4;i++) {
+        for (int i = 0; i < 4; i++) {
             brick[i] = new Sprite(Sprite.DEFAULT_SIZE, 7, i, SpriteSheet.tiles, 16, 16);
         }
-        for (int i=0;i<7;i++) {
+        for (int i = 0; i < 7; i++) {
             powerup[i] = new Sprite(Sprite.DEFAULT_SIZE, i, 10, SpriteSheet.tiles, 16, 16);
         }
     }
