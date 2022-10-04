@@ -29,6 +29,7 @@ public class HelloApplication extends Application {
     private List<Entity> stillObjects = new ArrayList<>();
 
     private Picture pictures = new Picture();
+    private Map map = new Map();
 
     public static void main(String[] args) {
         launch();
@@ -63,11 +64,12 @@ public class HelloApplication extends Application {
     }
 
     public void createMap() {
-        File map = new File("inp.txt");
+        File maptxt = new File("inp.txt");
         try {
-            Scanner reader = new Scanner(map);
+            Scanner reader = new Scanner(maptxt);
             for (int y = 0; y < WIDTH; y++) {
                 String data = reader.nextLine();
+                map.updateCol(data, y);
                 for (int x = 0; x < HEIGHT; x++) {
                     Entity object;
                     if (data.charAt(x) == '#') {
@@ -108,7 +110,12 @@ public class HelloApplication extends Application {
 
     public void render() {
         gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
-        stillObjects.forEach(g -> g.render(gc));
+//        stillObjects.forEach(g -> g.render(gc));
+        for (int i=0;i<HEIGHT; i++) {
+            for (int j = 0;j < WIDTH;j++) {
+                map.sprite[i][j].render(gc);
+            }
+        }
         entities.forEach(g -> g.render(gc));
     }
 }
