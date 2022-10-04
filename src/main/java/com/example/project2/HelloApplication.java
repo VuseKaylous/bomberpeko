@@ -79,14 +79,17 @@ public class HelloApplication extends Application {
                     } else if (data.charAt(x) == '*') {
                         object = new Brick(x, y, Sprite.brick.getFxImage());
                         stillObjects.add(object);
-                    }
-                    else if(data.charAt(x) == '2') {
-                        object = new Oneal(x, y, pictures.oneal[0][0].getFxImage());
+                    } else if(data.charAt(x) == '1') {
+                        object = new Balloom(x, y, pictures.balloom.getFxImage());
                         entities.add(object);
                         object = new Grass(x, y, Sprite.grass.getFxImage());
                         stillObjects.add(object);
-                    }
-                    else {
+                    } else if (data.charAt(x) == '2') {
+                        object = new Oneal(x, y, pictures.oneal.getFxImage());
+                        entities.add(object);
+                        object = new Grass(x, y, Sprite.grass.getFxImage());
+                        stillObjects.add(object);
+                    } else {
                         object = new Grass(x, y, Sprite.grass.getFxImage());
                         stillObjects.add(object);
                     }
