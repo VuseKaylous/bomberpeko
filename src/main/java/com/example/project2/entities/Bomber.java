@@ -10,6 +10,8 @@ public class Bomber extends Entity {
 
     @Override
     public void update() {
+        int[] x_move = {-1, 0, 1, 0};
+        int[] y_move = {0, -1, 0, 1};
 
     }
 }
