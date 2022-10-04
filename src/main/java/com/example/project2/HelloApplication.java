@@ -92,14 +92,14 @@ public class HelloApplication extends Application {
                 stillObjects.add(object);
             }
         }
-        try {
-            File myFile = new File("/levels/Level1.txt");
-            Scanner myScanner = new Scanner(myFile);
-
-        } catch (FileNotFoundException e) {
-            System.out.println("File level not found :<");
-            e.printStackTrace();
-        }
+//        try {
+//            File myFile = new File("/levels/Level1.txt");
+//            Scanner myScanner = new Scanner(myFile);
+//
+//        } catch (FileNotFoundException e) {
+//            System.out.println("File level not found :<");
+//            e.printStackTrace();
+//        }
     }
 
     public void update() {
