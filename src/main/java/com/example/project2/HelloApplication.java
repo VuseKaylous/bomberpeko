@@ -17,6 +17,7 @@ import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.concurrent.TimeUnit;
 
 public class HelloApplication extends Application {
     private Canvas canvas;
@@ -54,7 +55,11 @@ public class HelloApplication extends Application {
             @Override
             public void handle(long l) {
                 render();
-                update();
+                try {
+                    update();
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
             }
         };
         timer.start();
@@ -97,12 +102,14 @@ public class HelloApplication extends Application {
                     }
                 }
             }
+
         } catch (FileNotFoundException e) {
             System.out.println("File not found");
         }
     }
 
-    public void update() {
+    public void update() throws InterruptedException {
+        TimeUnit.SECONDS.sleep(1);
         entities.forEach(Entity::update);
     }
 
