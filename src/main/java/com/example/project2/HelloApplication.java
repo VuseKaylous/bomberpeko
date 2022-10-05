@@ -30,7 +30,7 @@ public class HelloApplication extends Application {
     private List<Entity> stillObjects = new ArrayList<>();
 
     private Picture pictures = new Picture();
-    private Map map = new Map();
+    public static Map map = new Map();
 
     public static void main(String[] args) {
         launch();
@@ -96,7 +96,7 @@ public class HelloApplication extends Application {
     }
 
     public void update() throws InterruptedException {
-        TimeUnit.SECONDS.sleep(1);
+        Thread.sleep(1000);
         entities.forEach(Entity::update);
     }
 
