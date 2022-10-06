@@ -21,8 +21,8 @@ public class Balloom extends Entity {
         int change_i[] = {0, 1, 0, -1};
         int change_j[] = {-1, 0, 1, 0};
         int k = (int) (Math.random() * 4);
-        int x1 = super.x / Sprite.SCALED_SIZE + change_i[k];
-        int y1 = super.y / Sprite.SCALED_SIZE + change_j[k];
+        int x1 = x / Sprite.SCALED_SIZE + change_i[k];
+        int y1 = y / Sprite.SCALED_SIZE + change_j[k];
         if (x1 < 0 || x1 >= HelloApplication.HEIGHT || y1 < 0 || y1 >= HelloApplication.WIDTH) {
             return;
         } else if (HelloApplication.map.sprite[x1][y1] instanceof Wall) {
