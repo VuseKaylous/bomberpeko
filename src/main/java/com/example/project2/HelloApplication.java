@@ -4,20 +4,20 @@ import com.example.project2.entities.*;
 import com.example.project2.graphics.Sprite;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
+import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-import java.util.concurrent.TimeUnit;
 
 public class HelloApplication extends Application {
     private Canvas canvas;
@@ -44,10 +44,8 @@ public class HelloApplication extends Application {
         // Tạo root container
         Group root = new Group();
         root.getChildren().add(canvas);
-
         // Tạo scene
         Scene scene = new Scene(root);
-
         // Thêm scene vào stage
         stage.setScene(scene);
         stage.show();
@@ -56,11 +54,16 @@ public class HelloApplication extends Application {
             @Override
             public void handle(long l) {
                 render();
-                try {
-                    update();
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
+                scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
+                    @Override
+                    public void handle(KeyEvent event) {
+                        try {
+                            update(event);
+                        } catch (InterruptedException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+                });
             }
         };
         timer.start();
@@ -95,9 +98,16 @@ public class HelloApplication extends Application {
         }
     }
 
-    public void update() throws InterruptedException {
-        Thread.sleep(1000);
-        entities.forEach(Entity::update);
+    public void update(KeyEvent event) throws InterruptedException {
+        Thread.sleep(300);
+        for(int i = 0; i < entities.size(); i++) {
+            if(entities.get(i) instanceof Bomber) {
+                entities.get(i).update(event);
+            }
+            else {
+                entities.get(i).update();
+            }
+        }
     }
 
     public void render() {
