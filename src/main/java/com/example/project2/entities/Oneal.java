@@ -1,6 +1,9 @@
 package com.example.project2.entities;
 
 import javafx.scene.image.Image;
+import javafx.scene.input.KeyEvent;
+
+import java.security.Key;
 import java.util.random.RandomGenerator;
 
 public class Oneal extends Entity{
@@ -27,6 +30,10 @@ public class Oneal extends Entity{
             speed = (int)generator.nextLong(RANGESPEED) + MINSPEED;
 
         }
+    }
+
+    @Override
+    public void update(KeyEvent e) {
 
     }
 }
