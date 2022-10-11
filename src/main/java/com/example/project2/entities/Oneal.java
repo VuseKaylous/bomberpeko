@@ -3,8 +3,9 @@ package com.example.project2.entities;
 import com.example.project2.HelloApplication;
 import com.example.project2.graphics.Sprite;
 import javafx.scene.image.Image;
+import javafx.scene.input.KeyEvent;
 
-import java.util.ArrayList;
+import java.security.Key;
 import java.util.random.RandomGenerator;
 
 public class Oneal extends Entity{
@@ -86,6 +87,11 @@ public class Oneal extends Entity{
             return false;
         }
         return true;
+    }
+
+    @Override
+    public void update(KeyEvent e) {
+
     }
 
     @Override

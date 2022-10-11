@@ -2,6 +2,7 @@ package com.example.project2.entities;
 
 import com.example.project2.entities.Entity;
 import javafx.scene.image.Image;
+import javafx.scene.input.KeyEvent;
 
 public class Brick extends Entity{
     private boolean destroyed;
@@ -29,5 +30,10 @@ public class Brick extends Entity{
             frame = frame + 1;
             this.img = Picture.brick[frame/32].getFxImage();
         }
+    }
+
+    @Override
+    public void update(KeyEvent e) {
+
     }
 }

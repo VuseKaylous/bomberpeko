@@ -6,6 +6,7 @@ import javafx.scene.SnapshotParameters;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
 
 public abstract class Entity {
@@ -37,5 +38,7 @@ public abstract class Entity {
     }
 
     public abstract void update();
+
+    public abstract void update(KeyEvent e);
 }
 

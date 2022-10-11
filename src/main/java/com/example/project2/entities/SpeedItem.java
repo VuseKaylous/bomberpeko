@@ -1,6 +1,7 @@
 package com.example.project2.entities;
 
 import javafx.scene.image.Image;
+import javafx.scene.input.KeyEvent;
 
 public class SpeedItem extends Entity {
     public SpeedItem(int x, int y, Image img) {
@@ -9,5 +10,10 @@ public class SpeedItem extends Entity {
 
     @Override
     public void update() {
+    }
+
+    @Override
+    public void update(KeyEvent e) {
+
     }
 }

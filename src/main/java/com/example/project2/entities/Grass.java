@@ -2,6 +2,7 @@ package com.example.project2.entities;
 
 import com.example.project2.entities.Entity;
 import javafx.scene.image.Image;
+import javafx.scene.input.KeyEvent;
 
 public class Grass extends Entity {
 
@@ -11,6 +12,11 @@ public class Grass extends Entity {
 
     @Override
     public void update() {
+
+    }
+
+    @Override
+    public void update(KeyEvent e) {
 
     }
 }
