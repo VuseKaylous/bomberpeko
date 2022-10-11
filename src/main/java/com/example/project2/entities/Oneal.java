@@ -6,6 +6,7 @@ import javafx.scene.image.Image;
 import javafx.scene.input.KeyEvent;
 
 import java.security.Key;
+import java.util.Random;
 import java.util.random.RandomGenerator;
 
 public class Oneal extends Entity{
@@ -18,19 +19,14 @@ public class Oneal extends Entity{
             return 3;
         }
     };
-    private final int[] DIRX = new int[]{0, 1, 0, -1};
-    private final int[] DIRY = new int[]{1, 0, -1, 0};
+//    private final int[] DIRX = new int[]{0, 1, 0, -1};
+//    private final int[] DIRY = new int[]{1, 0, -1, 0};
     private int dir;
     private int[] arrDir = new int[4];
     /**
      * speed.
      */
-    private RandomGenerator generator = new RandomGenerator() {
-        @Override
-        public long nextLong() {
-            return RANGESPEED;
-        }
-    };
+    private RandomGenerator generator = new Random(System.currentTimeMillis());
     private final long RANGESPEED = 10;
     private final int MINSPEED = 10;
     private int speed;
@@ -47,8 +43,8 @@ public class Oneal extends Entity{
      */
     public Oneal(int x, int y, Image img) {
         super(x, y, img);
-        destinationX = x;
-        destinationY = y;
+        destinationX = x * Sprite.SCALED_SIZE;
+        destinationY = y * Sprite.SCALED_SIZE;
     }
 
     private boolean validSquare(int fakeX, int fakeY) {
@@ -56,37 +52,13 @@ public class Oneal extends Entity{
             return false;
         }
         if (HelloApplication.map.sprite[fakeX][fakeY] instanceof Grass) return true;
-
-//        if (HelloApplication.map.sprite[fakeX][fakeY] instanceof Wall) {
-//            return false;
-//        }
-//        if (HelloApplication.map.sprite[fakeX][fakeY] instanceof Brick) {
-//            Brick fuck = (Brick) HelloApplication.map.sprite[fakeX][fakeY];
-//            if (!fuck.isDestroyed()) {
-//                return false;
-//            }
-//        }
-        return false;
-    }
-
-    private boolean countDir(int fakeX, int fakeY) {
-        int dem = 0;
-        for (int i = 0; i < 4; i++) {
-            if (validSquare(fakeX + DIRX[i], fakeY + DIRY[i])) {
-                dem++;
+        if (HelloApplication.map.sprite[fakeX][fakeY] instanceof Brick) {
+            Brick fuck = (Brick) HelloApplication.map.sprite[fakeX][fakeY];
+            if (fuck.isDestroyed()) {
+                return true;
             }
         }
-        if (dem >= 3) {
-            return true;
-        }
-        if (dem < 2) return false;
-        if (validSquare(fakeX + DIRX[0], fakeY + DIRY[0]) && validSquare(fakeX + DIRX[2], fakeY + DIRY[2])) {
-            return false;
-        }
-        if (validSquare(fakeX + DIRX[1], fakeY + DIRY[1]) && validSquare(fakeX + DIRX[3], fakeY + DIRY[3])) {
-            return false;
-        }
-        return true;
+        return false;
     }
 
     @Override
@@ -96,52 +68,34 @@ public class Oneal extends Entity{
 
     @Override
     public void update() {
-        /*
-        if (destinationX == getSmallX() && destinationY == getSmallY()) {
-            speed = (int)generator.nextLong() + MINSPEED;
-            dir = (int) (Math.random() * 4);
-            for (int i = 0; i < 4; i++) {
-                destinationX += DIRX[dir];
-                destinationY += DIRY[dir];
-                while (!countDir(destinationX, destinationY)) {
-                    if (HelloApplication.map.sprite[destinationX][destinationY] instanceof Wall) {
-                        break;
-                    }
-                    if (HelloApplication.map.sprite[destinationX][destinationY] instanceof Brick) {
-                        Brick fuck = (Brick) HelloApplication.map.sprite[destinationX][destinationY];
-                        if (!fuck.isDestroyed()) {
-                            break;
-                        }
-                    }
-                    destinationX += DIRX[dir];
-                    destinationY += DIRY[dir];
+        if (x == destinationX && y == destinationY) {
+            int dem = 0;
+            for (int i = 0; i <= 3; i++) {
+                if (i != (dir + 2) % 4 && validSquare(getSmallX() + DIRX[i], getSmallY() + DIRY[i])) {
+                    arrDir[dem] = i;
+//                    System.out.println(i);
+                    dem++;
                 }
-                if (!countDir(destinationX, destinationY)) {
-                    destinationX -= DIRX[dir];
-                    destinationY -= DIRY[dir];
-                }
-                if (destinationY != getSmallY() || destinationX != getSmallX()) {
-                    break;
-                }
-                dir = (dir + 1) % 4;
             }
-        }
-        System.out.println(destinationX + ", " + destinationY);
-        x += DIRX[dir] * Sprite.SCALED_SIZE;
-        y += DIRY[dir] * Sprite.SCALED_SIZE;
-        */
-        int dem = 0;
-        for (int i = 0; i < 3; i++) {
-            if (i != dir && validSquare(getSmallX() + DIRX[i], getSmallY() + DIRY[i])) {
-                arrDir[dem] = i;
-                dem++;
+//            System.out.println("end");
+            if (dem != 0) {
+                //            dir = arrDir[(int) (Math.random() * dem)];
+                //            int fuck = direction.nextInt();
+                int fuck = (int) System.currentTimeMillis() % dem;
+                if (fuck < 0) fuck += dem;
+                dir = arrDir[fuck];
+                //            System.out.println(fuck);
+            } else {
+                dir = (dir + 2) % 4;
             }
+//            System.out.println("equal: " + destinationX + ", " + destinationY + ": " + x + ", " + y);
+            //        HelloApplication.map.sprite[getSmallX()][getSmallY()] = new Grass(getSmallX(), getSmallY(), Picture.grass.getFxImage());
+            this.destinationX = x + DIRX[dir] * Sprite.SCALED_SIZE;
+            this.destinationY = y + DIRY[dir] * Sprite.SCALED_SIZE;
         }
-        if (dem != 0) {
-            dir = arrDir[(int) (Math.random() * dem)];
-        }
-        this.x += DIRX[dir] * Sprite.SCALED_SIZE;
-        this.y += DIRY[dir] * Sprite.SCALED_SIZE;
-        dir = (dir + 2) % 4;
+
+        this.x += DIRX[dir];
+        this.y += DIRY[dir];
+//        System.out.println(destinationX + ", " + destinationY + ": " + x + ", " + y);
     }
 }

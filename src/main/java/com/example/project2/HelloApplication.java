@@ -31,6 +31,8 @@ public class HelloApplication extends Application {
 
     private Picture pictures = new Picture();
     public static Map map = new Map();
+    private boolean keyPressed = false;
+    private KeyEvent event;
 
     public static void main(String[] args) {
         launch();
@@ -54,14 +56,28 @@ public class HelloApplication extends Application {
             @Override
             public void handle(long l) {
                 render();
+                normalUpdate();
                 scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
                     @Override
-                    public void handle(KeyEvent event) {
-                        try {
-                            update(event);
-                        } catch (InterruptedException e) {
-                            throw new RuntimeException(e);
-                        }
+                    public void handle(KeyEvent keyEvent) {
+                        keyPressed = true;
+                        event = keyEvent;
+//                        try {
+//                            update(event);
+//                        } catch (InterruptedException e) {
+//                            throw new RuntimeException(e);
+//                        }
+                    }
+                });
+                scene.setOnKeyReleased(new EventHandler<KeyEvent>() {
+                    @Override
+                    public void handle(KeyEvent keyEvent) {
+                        keyPressed = false;
+//                        try {
+//                            updateReleased(keyEvent);
+//                        } catch (InterruptedException e) {
+//                            throw new RuntimeException(e);
+//                        }
                     }
                 });
             }
@@ -98,15 +114,30 @@ public class HelloApplication extends Application {
         }
     }
 
+    public void updateReleased() {
+        keyPressed = false;
+    }
+
+    public void normalUpdate() {
+        for(int i = 0; i < entities.size(); i++) {
+            if(!(entities.get(i) instanceof Bomber)) {
+                entities.get(i).update();
+            } else {
+                if (keyPressed) {
+                    entities.get(i).update(event);
+                }
+            }
+        }
+    }
     public void update(KeyEvent event) throws InterruptedException {
-        Thread.sleep(300);
+//        Thread.sleep(300);
         for(int i = 0; i < entities.size(); i++) {
             if(entities.get(i) instanceof Bomber) {
                 entities.get(i).update(event);
             }
-            else {
-                entities.get(i).update();
-            }
+//            else {
+//                entities.get(i).update();
+//            }
         }
     }
 
