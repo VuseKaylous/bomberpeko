@@ -24,6 +24,14 @@ public abstract class Entity {
         this.img = img;
     }
 
+    public int getSmallX() {
+        return this.x / Sprite.SCALED_SIZE;
+    }
+
+    public int getSmallY() {
+        return this.y / Sprite.SCALED_SIZE;
+    }
+
     public void render(GraphicsContext gc) {
         gc.drawImage(img, x, y);
     }

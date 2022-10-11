@@ -16,6 +16,10 @@ public class Brick extends Entity{
         destroyed = true;
     }
 
+    public boolean isDestroyed() {
+        return destroyed;
+    }
+
     @Override
     public void update() {
         if (destroyed) {
