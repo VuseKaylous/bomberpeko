@@ -18,10 +18,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
+import javax.swing.JPanel;
 
 public class HelloApplication extends Application {
     private Canvas canvas;
     private GraphicsContext gc;
+
+    public static final int FPS = 60;
+    public static final boolean gameThread = true;
 
     public static final int WIDTH = 13;
     public static final int HEIGHT = 31;
@@ -56,12 +60,8 @@ public class HelloApplication extends Application {
             @Override
             public void handle(long l) {
                 render();
-                try {
-                    update();
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
+                update();
                 }
-            }
         };
         timer.start();
 
@@ -95,8 +95,24 @@ public class HelloApplication extends Application {
         }
     }
 
-    public void update() throws InterruptedException {
-        Thread.sleep(1000);
+    public void update(){
+//        double drawInterValue = 1000000000/120;
+//        double nextDrawTime = System.nanoTime() + drawInterValue;
+//
+//        try {
+//            double remainingTime = nextDrawTime - System.nanoTime();
+//            remainingTime = remainingTime/100000;
+//            Thread.sleep((long) remainingTime);
+//            nextDrawTime += drawInterValue;
+//        } catch (InterruptedException e) {
+//            throw new RuntimeException(e);
+//        }
+        double drawInterval = 100000000/FPS;
+        double delta = 0;
+        long lastTime = System.nanoTime();
+        long currentTime;
+        long timer = 0;
+        int drawCount = 0;
         entities.forEach(Entity::update);
     }
 
