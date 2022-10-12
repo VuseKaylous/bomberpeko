@@ -1,12 +1,12 @@
 package com.example.project2.entities;
 
-import com.example.project2.entities.Entity;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyEvent;
 
-public class Brick extends Entity{
+public class Brick extends Entity {
     private boolean destroyed;
     private int frame;
+
     public Brick(int x, int y, Image img) {
         super(x, y, img);
         destroyed = false;
@@ -28,7 +28,7 @@ public class Brick extends Entity{
                 return;
             }
             frame = frame + 1;
-            this.img = Picture.brick[frame/32].getFxImage();
+            this.img = Picture.brick[frame / 32].getFxImage();
         }
     }
 

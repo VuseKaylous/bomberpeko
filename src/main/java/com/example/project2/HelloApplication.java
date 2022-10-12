@@ -9,7 +9,6 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 
@@ -26,10 +25,10 @@ public class HelloApplication extends Application {
     public static final int WIDTH = 13;
     public static final int HEIGHT = 31;
     public int test = 0;
-    private List<Entity> entities = new ArrayList<>();
-    private List<Entity> stillObjects = new ArrayList<>();
+    public static List<Entity> entities = new ArrayList<>();
+    private final List<Entity> stillObjects = new ArrayList<>();
 
-    private Picture pictures = new Picture();
+    private final Picture pictures = new Picture();
     public static Map map = new Map();
     private boolean keyPressed = false;
     private KeyEvent event;
@@ -73,11 +72,6 @@ public class HelloApplication extends Application {
                     @Override
                     public void handle(KeyEvent keyEvent) {
                         keyPressed = false;
-//                        try {
-//                            updateReleased(keyEvent);
-//                        } catch (InterruptedException e) {
-//                            throw new RuntimeException(e);
-//                        }
                     }
                 });
             }
@@ -119,25 +113,22 @@ public class HelloApplication extends Application {
     }
 
     public void normalUpdate() {
-        for(int i = 0; i < entities.size(); i++) {
-            if(!(entities.get(i) instanceof Bomber)) {
-                entities.get(i).update();
+        for (Entity entity : entities) {
+            if (!(entity instanceof Bomber)) {
+                entity.update();
             } else {
                 if (keyPressed) {
-                    entities.get(i).update(event);
+                    entity.update(event);
                 }
             }
         }
     }
+
     public void update(KeyEvent event) throws InterruptedException {
-//        Thread.sleep(300);
-        for(int i = 0; i < entities.size(); i++) {
-            if(entities.get(i) instanceof Bomber) {
-                entities.get(i).update(event);
+        for (Entity entity : entities) {
+            if (entity instanceof Bomber) {
+                entity.update(event);
             }
-//            else {
-//                entities.get(i).update();
-//            }
         }
     }
 

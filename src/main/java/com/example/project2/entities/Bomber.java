@@ -13,7 +13,8 @@ import java.util.Scanner;
 public class Bomber extends Entity {
     private final int[] change_x = {-1, 0, 1, 0};
     private final int[] change_y = {0, -1, 0, 1};
-    private final int speed = 4;
+    private final int speed = 2;
+
     public Bomber(int x, int y, Image img) {
         super(x, y, img);
     }
@@ -33,22 +34,22 @@ public class Bomber extends Entity {
         int dy = 0;
         KeyCode key = event.getCode();
         switch (key) {
-            case LEFT:
+            case LEFT -> {
                 dx = change_x[0];
                 dy = change_y[0];
-                break;
-            case UP:
+            }
+            case UP -> {
                 dx = change_x[1];
                 dy = change_y[1];
-                break;
-            case RIGHT:
+            }
+            case RIGHT -> {
                 dx = change_x[2];
                 dy = change_y[2];
-                break;
-            case DOWN:
+            }
+            case DOWN -> {
                 dx = change_x[3];
                 dy = change_y[3];
-                break;
+            }
         }
         /*
         int x1 = x / Sprite.SCALED_SIZE + dx;
