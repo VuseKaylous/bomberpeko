@@ -28,6 +28,7 @@ public class HelloApplication extends Application {
     public int test = 0;
     private List<Entity> entities = new ArrayList<>();
     private List<Entity> stillObjects = new ArrayList<>();
+    private Entity bomber;
 
     private Picture pictures = new Picture();
     public static Map map = new Map();
@@ -97,8 +98,8 @@ public class HelloApplication extends Application {
                 for (int x = 0; x < HEIGHT; x++) {
                     Entity object;
                     if (data.charAt(x) == 'p') {
-                        object = new Bomber(x, y, pictures.player[1][0].getFxImage());
-                        entities.add(object);
+                        bomber = new Bomber(x, y, pictures.player[1][0].getFxImage());
+//                        entities.add(object);
                     } else if (data.charAt(x) == '1') {
                         object = new Balloom(x, y, pictures.balloom[0][0].getFxImage());
                         entities.add(object);
@@ -119,14 +120,11 @@ public class HelloApplication extends Application {
     }
 
     public void normalUpdate() {
+        if (keyPressed) {
+            bomber.update(event);
+        }
         for(int i = 0; i < entities.size(); i++) {
-            if(!(entities.get(i) instanceof Bomber)) {
-                entities.get(i).update();
-            } else {
-                if (keyPressed) {
-                    entities.get(i).update(event);
-                }
-            }
+            entities.get(i).update();
         }
     }
     public void update(KeyEvent event) throws InterruptedException {
