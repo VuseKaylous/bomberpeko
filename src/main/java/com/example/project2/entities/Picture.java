@@ -12,7 +12,7 @@ public class Picture {
     public Sprite[][] kondoria = new Sprite[3][3]; // (left - right - dead), (time)
     public Sprite[][][] explosion = new Sprite[3][3][3]; // (vertical, horizontal, middle) - (small,medium,big), (length)
     public Sprite[] mob_dead = new Sprite[3];
-    public Sprite[] bomb = new Sprite[3];
+    public static Sprite[] bomb = new Sprite[3];
     public static Sprite[] brick = new Sprite[4]; // normal, exploded 1-2-3
     public static Sprite[] powerup = new Sprite[7]; //bomb - flames - speed - wallpass - detonator - bombpass - flamepass
     public static Sprite grass = new Sprite(Sprite.DEFAULT_SIZE, 6, 0, SpriteSheet.tiles, 16, 16);

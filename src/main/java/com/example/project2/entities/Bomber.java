@@ -7,15 +7,23 @@ import javafx.geometry.Rectangle2D;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-
+import com.example.project2.entities.*;
 import java.util.Scanner;
 
 public class Bomber extends Entity {
+    public Entity[][] bomb = new Entity[HelloApplication.HEIGHT][HelloApplication.WIDTH];
     private final int[] change_x = {-1, 0, 1, 0};
     private final int[] change_y = {0, -1, 0, 1};
-    private final int speed = 4;
+    private final int speed = 2;
     public Bomber(int x, int y, Image img) {
         super(x, y, img);
+    }
+
+    public int getX() {
+        return this.x;
+    }
+    public int getY() {
+        return this.x;
     }
 
     @Override
@@ -31,6 +39,8 @@ public class Bomber extends Entity {
     public void update(KeyEvent event) {
         int dx = 0;
         int dy = 0;
+        int x = this.x + dx * speed;
+        int y = this.x + dy * speed;
         KeyCode key = event.getCode();
         switch (key) {
             case LEFT:
@@ -48,6 +58,9 @@ public class Bomber extends Entity {
             case DOWN:
                 dx = change_x[3];
                 dy = change_y[3];
+                break;
+            case Q:
+                bomb[x][y] = new bomb(x, y, Picture.bomb[1].getFxImage());
                 break;
         }
         /*
@@ -67,8 +80,7 @@ public class Bomber extends Entity {
         }
 
          */
-        x = x + dx * speed;
-        y = y + dy * speed;
+
         for (int i = 0; i < HelloApplication.HEIGHT; i++) {
             for (int j = 0; j < HelloApplication.WIDTH; j++) {
                 if (HelloApplication.map.sprite[i][j] instanceof Grass) {
