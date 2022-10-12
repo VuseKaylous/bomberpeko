@@ -26,7 +26,8 @@ public class HelloApplication extends Application {
     public static final int HEIGHT = 31;
     public int test = 0;
     public static List<Entity> entities = new ArrayList<>();
-    private final List<Entity> stillObjects = new ArrayList<>();
+    private List<Entity> stillObjects = new ArrayList<>();
+    private Entity bomber;
 
     private final Picture pictures = new Picture();
     public static Map map = new Map();
@@ -61,11 +62,6 @@ public class HelloApplication extends Application {
                     public void handle(KeyEvent keyEvent) {
                         keyPressed = true;
                         event = keyEvent;
-//                        try {
-//                            update(event);
-//                        } catch (InterruptedException e) {
-//                            throw new RuntimeException(e);
-//                        }
                     }
                 });
                 scene.setOnKeyReleased(new EventHandler<KeyEvent>() {
@@ -91,8 +87,7 @@ public class HelloApplication extends Application {
                 for (int x = 0; x < HEIGHT; x++) {
                     Entity object;
                     if (data.charAt(x) == 'p') {
-                        object = new Bomber(x, y, pictures.player[1][0].getFxImage());
-                        entities.add(object);
+                        bomber = new Bomber(x, y, pictures.player[1][0].getFxImage());
                     } else if (data.charAt(x) == '1') {
                         object = new Balloom(x, y, pictures.balloom[0][0].getFxImage());
                         entities.add(object);
@@ -113,14 +108,11 @@ public class HelloApplication extends Application {
     }
 
     public void normalUpdate() {
-        for (Entity entity : entities) {
-            if (!(entity instanceof Bomber)) {
-                entity.update();
-            } else {
-                if (keyPressed) {
-                    entity.update(event);
-                }
-            }
+        if (keyPressed) {
+            bomber.update(event);
+        }
+        for (int i = 0; i < entities.size(); i++) {
+            entities.get(i).update();
         }
     }
 
