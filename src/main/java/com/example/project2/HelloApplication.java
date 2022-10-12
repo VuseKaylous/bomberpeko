@@ -132,5 +132,6 @@ public class HelloApplication extends Application {
             }
         }
         entities.forEach(g -> g.render(gc));
+        bomber.render(gc);
     }
 }

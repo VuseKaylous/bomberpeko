@@ -13,10 +13,10 @@ import javafx.geometry.Rectangle2D;
 
 public abstract class Entity {
     //Tọa độ ngang tính từ góc trái trên trong Canvas
-    protected static int x;
+    protected int x;
 
     //Tọa độ dọc tính từ góc trái trên trong Canvas
-    protected static int y;
+    protected int y;
     public static final int[] DIRX = new int[]{0, 1, 0, -1};
     public static final int[] DIRY = new int[]{1, 0, -1, 0};
 
