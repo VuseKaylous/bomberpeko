@@ -99,7 +99,7 @@ public class HelloApplication extends Application {
                     Entity object;
                     if (data.charAt(x) == 'p') {
                         bomber = new Bomber(x, y, pictures.player[1][0].getFxImage());
-//                        entities.add(object);
+                        //entities.add(object);
                     } else if (data.charAt(x) == '1') {
                         object = new Balloom(x, y, pictures.balloom[0][0].getFxImage());
                         entities.add(object);
