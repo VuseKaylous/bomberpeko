@@ -9,12 +9,16 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
 
+import javafx.geometry.Rectangle2D;
+
 public abstract class Entity {
     //Tọa độ ngang tính từ góc trái trên trong Canvas
     protected int x;
 
     //Tọa độ dọc tính từ góc trái trên trong Canvas
     protected int y;
+    public static final int[] DIRX = new int[]{0, 1, 0, -1};
+    public static final int[] DIRY = new int[]{1, 0, -1, 0};
 
     protected Image img;
 
@@ -25,9 +29,25 @@ public abstract class Entity {
         this.img = img;
     }
 
+    public int getSmallX() {
+        return this.x / Sprite.SCALED_SIZE;
+    }
+
+    public int getSmallY() {
+        return this.y / Sprite.SCALED_SIZE;
+    }
+
     public void render(GraphicsContext gc) {
         gc.drawImage(img, x, y);
     }
+
+    public Rectangle2D getBoundary() {
+        return new Rectangle2D(x, y, img.getWidth(), img.getHeight());
+    }
+
+//    public boolean checkCollision(Entity spr) {
+//        return spr.getBoundary().intersects(this.getBoundary());
+//    }
 
     public abstract void update();
 
