@@ -99,7 +99,7 @@ public class HelloApplication extends Application {
     }
 
     public void update(KeyEvent event) throws InterruptedException {
-        Thread.sleep(300);
+        Thread.sleep(100);
         for(int i = 0; i < entities.size(); i++) {
             if(entities.get(i) instanceof Bomber) {
                 entities.get(i).update(event);

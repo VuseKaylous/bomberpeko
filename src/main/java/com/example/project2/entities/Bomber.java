@@ -23,8 +23,8 @@ public class Bomber extends Entity {
 
     @Override
     public void update(KeyEvent event) {
-        int dx = 0;
-        int dy = 0;
+        double dx = 0;
+        double dy = 0;
         KeyCode key = event.getCode();
         switch (key) {
             case LEFT:
@@ -42,10 +42,11 @@ public class Bomber extends Entity {
             case DOWN:
                 dx = change_x[3];
                 dy = change_y[3];
+
                 break;
         }
-        int x1 = x / Sprite.SCALED_SIZE + dx;
-        int y1 = y / Sprite.SCALED_SIZE + dy;
+        int x1 = (int) (x / Sprite.SCALED_SIZE + dx);
+        int y1 = (int) (y / Sprite.SCALED_SIZE + dy);
         if (x1 < 0 || x1 >= HelloApplication.HEIGHT || y1 < 0 || y1 >= HelloApplication.WIDTH) {
             return;
         } else if (HelloApplication.map.sprite[x1][y1] instanceof Wall) {
