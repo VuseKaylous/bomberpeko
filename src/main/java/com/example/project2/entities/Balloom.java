@@ -6,19 +6,26 @@ import javafx.scene.image.Image;
 import javafx.scene.input.KeyEvent;
 
 public class Balloom extends Entity {
-    int destinationX;
-    int destinationY;
-    int dir;
+    private int destinationX;
+    private int destinationY;
+    private int startX;
+    private int startY;
+    private boolean stop = false;
 
     public Balloom(int x, int y, Image img) {
         super(x, y, img);
-        destinationX = this.x;
-        destinationY = this.y;
+        this.destinationX = x * Sprite.SCALED_SIZE;
+        this.destinationY = y * Sprite.SCALED_SIZE;
     }
 
     private boolean validSquare(int fakeX, int fakeY) {
         if (fakeX < 0 || fakeX >= HelloApplication.HEIGHT || fakeY < 0 || fakeY >= HelloApplication.WIDTH) {
             return false;
+        }
+        for (Entity entity : HelloApplication.entities) {
+            if (fakeX == entity.getSmallX() && fakeY == entity.getSmallY()) {
+                return false;
+            }
         }
         if (HelloApplication.map.sprite[fakeX][fakeY] instanceof Grass) {
             return true;
@@ -31,8 +38,7 @@ public class Balloom extends Entity {
 
     @Override
     public void update() {
-        boolean stop = false;
-        if (x == destinationX && y == destinationY || stop) {
+        if (x == destinationX && y == destinationY) {
             int[] arrDir = new int[4];
             int dem = 0;
             for (int i = 0; i <= 3; i++) {
@@ -42,28 +48,31 @@ public class Balloom extends Entity {
                 }
             }
             if (dem != 0) {
-                int id = (int) System.currentTimeMillis() % dem;
+                int id = (int) (Math.random() * dem);
                 if (id < 0) id += dem;
                 dir = arrDir[id];
             } else {
                 dir = (dir + 2) % 4;
             }
-            this.destinationX = x + DIRX[dir] * Sprite.SCALED_SIZE;
-            this.destinationY = y + DIRY[dir] * Sprite.SCALED_SIZE;
+            destinationX = x + DIRX[dir] * Sprite.SCALED_SIZE;
+            destinationY = y + DIRY[dir] * Sprite.SCALED_SIZE;
+            startX = x;
+            startY = y;
+            stop = false;
         }
-        for (Entity entity : HelloApplication.entities) {
-            if (entity instanceof Grass) {
-                continue;
-            } else {
-                if (x + DIRX[dir] == entity.x && y + DIRY[dir] == entity.y) {
+        if (!stop) {
+            for (Entity entity : HelloApplication.entities) {
+                if (this.check_collision(entity)) {
                     stop = true;
+                    destinationX = startX;
+                    destinationY = startY;
+                    dir = (dir + 2) % 4;
+                    break;
                 }
             }
         }
-        if (!stop) {
-            x += DIRX[dir];
-            y += DIRY[dir];
-        }
+        x += DIRX[dir];
+        y += DIRY[dir];
     }
 
     @Override

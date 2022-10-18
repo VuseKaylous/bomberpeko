@@ -51,18 +51,10 @@ public class Bomber extends Entity {
         int direction = 4; // ko co event thi dung yen
         KeyCode key = event.getCode();
         switch (key) {
-            case LEFT:
-                direction = 0;
-                break;
-            case UP:
-                direction = 1;
-                break;
-            case RIGHT:
-                direction = 2;
-                break;
-            case DOWN:
-                direction = 3;
-                break;
+            case LEFT -> direction = 0;
+            case UP -> direction = 1;
+            case RIGHT -> direction = 2;
+            case DOWN -> direction = 3;
         }
         x = x + change_x[direction] * speed;
         y = y + change_y[direction] * speed;

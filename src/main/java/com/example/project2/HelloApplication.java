@@ -24,9 +24,8 @@ public class HelloApplication extends Application {
 
     public static final int WIDTH = 13;
     public static final int HEIGHT = 31;
-    public int test = 0;
     public static List<Entity> entities = new ArrayList<>();
-    private List<Entity> stillObjects = new ArrayList<>();
+    private final List<Entity> stillObjects = new ArrayList<>();
     private Entity bomber;
 
     private final Picture pictures = new Picture();
@@ -57,19 +56,11 @@ public class HelloApplication extends Application {
             public void handle(long l) {
                 render();
                 normalUpdate();
-                scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
-                    @Override
-                    public void handle(KeyEvent keyEvent) {
-                        keyPressed = true;
-                        event = keyEvent;
-                    }
+                scene.setOnKeyPressed(keyEvent -> {
+                    keyPressed = true;
+                    event = keyEvent;
                 });
-                scene.setOnKeyReleased(new EventHandler<KeyEvent>() {
-                    @Override
-                    public void handle(KeyEvent keyEvent) {
-                        keyPressed = false;
-                    }
-                });
+                scene.setOnKeyReleased(keyEvent -> keyPressed = false);
             }
         };
         timer.start();
@@ -111,8 +102,8 @@ public class HelloApplication extends Application {
         if (keyPressed) {
             bomber.update(event);
         }
-        for (int i = 0; i < entities.size(); i++) {
-            entities.get(i).update();
+        for (Entity entity : entities) {
+            entity.update();
         }
     }
 

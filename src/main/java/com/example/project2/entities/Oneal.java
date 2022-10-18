@@ -10,20 +10,17 @@ import java.util.Random;
 import java.util.random.RandomGenerator;
 
 public class Oneal extends Entity {
-    private int dir;
     private final int[] arrDir = new int[4];
+    private int startX;
+    private int startY;
 
     //speed
     private final RandomGenerator generator = new Random(System.currentTimeMillis());
-    private int speed;
 
     //goal
     public int destinationX, destinationY;
+    private boolean stop;
 
-
-    /**
-     * constructor
-     */
     public Oneal(int x, int y, Image img) {
         super(x, y, img);
         destinationX = x * Sprite.SCALED_SIZE;
@@ -33,6 +30,11 @@ public class Oneal extends Entity {
     private boolean validSquare(int fakeX, int fakeY) {
         if (fakeX < 0 || fakeX >= HelloApplication.HEIGHT || fakeY < 0 || fakeY >= HelloApplication.WIDTH) {
             return false;
+        }
+        for (Entity entity : HelloApplication.entities) {
+            if (fakeX == entity.getSmallX() && fakeY == entity.getSmallY()) {
+                return false;
+            }
         }
         if (HelloApplication.map.sprite[fakeX][fakeY] instanceof Grass) {
             return true;
@@ -50,8 +52,7 @@ public class Oneal extends Entity {
 
     @Override
     public void update() {
-        boolean stop = false;
-        if ((x == destinationX && y == destinationY) || stop == true) {
+        if (x == destinationX && y == destinationY) {
             int dem = 0;
             for (int i = 0; i <= 3; i++) {
                 if (i != (dir + 2) % 4 && validSquare(getSmallX() + DIRX[i], getSmallY() + DIRY[i])) {
@@ -60,27 +61,30 @@ public class Oneal extends Entity {
                 }
             }
             if (dem != 0) {
-                int id = (int) System.currentTimeMillis() % dem;
+                int id = (int) (Math.random() * dem);
                 if (id < 0) id += dem;
                 dir = arrDir[id];
             } else {
-                dir = (dir + 2) % 4;
+                dir = (this.dir + 2) % 4;
             }
-            this.destinationX = x + DIRX[dir] * Sprite.SCALED_SIZE;
-            this.destinationY = y + DIRY[dir] * Sprite.SCALED_SIZE;
+            destinationX = x + DIRX[dir] * Sprite.SCALED_SIZE;
+            destinationY = y + DIRY[dir] * Sprite.SCALED_SIZE;
+            startX = x;
+            startY = y;
+            stop = false;
         }
-        for (Entity entity : HelloApplication.entities) {
-            if (entity instanceof Grass) {
-                continue;
-            } else {
-                if (x + DIRX[dir] == entity.x && y + DIRY[dir] == entity.y) {
+        if (!stop) {
+            for (Entity entity : HelloApplication.entities) {
+                if (this.check_collision(entity)) {
                     stop = true;
+                    destinationY = startY;
+                    destinationX = startX;
+                    dir = (dir + 2) % 4;
+                    break;
                 }
             }
         }
-        if (!stop) {
-            x += DIRX[dir];
-            y += DIRY[dir];
-        }
+        x += DIRX[dir];
+        y += DIRY[dir];
     }
 }
