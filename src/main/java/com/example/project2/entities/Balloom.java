@@ -16,6 +16,9 @@ public class Balloom extends Entity {
         super(x, y, img);
         this.destinationX = x * Sprite.SCALED_SIZE;
         this.destinationY = y * Sprite.SCALED_SIZE;
+        startX = destinationX;
+        startY = destinationY;
+        stop = false;
     }
 
     private boolean validSquare(int fakeX, int fakeY) {
@@ -60,19 +63,20 @@ public class Balloom extends Entity {
             startY = y;
             stop = false;
         }
-        if (!stop) {
-            for (Entity entity : HelloApplication.entities) {
-                if (this.check_collision(entity)) {
-                    stop = true;
-                    destinationX = startX;
-                    destinationY = startY;
-                    dir = (dir + 2) % 4;
-                    break;
-                }
-            }
-        }
         x += DIRX[dir];
         y += DIRY[dir];
+        for (Entity entity : HelloApplication.entities) {
+            if (this.check_collision(entity)) {
+                stop = true;
+                destinationX = startX;
+                destinationY = startY;
+                x -= DIRX[dir];
+                y -= DIRY[dir];
+                dir = (dir + 2) % 4;
+                break;
+            }
+        }
+
     }
 
     @Override

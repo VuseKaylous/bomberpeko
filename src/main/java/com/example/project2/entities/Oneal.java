@@ -25,6 +25,9 @@ public class Oneal extends Entity {
         super(x, y, img);
         destinationX = x * Sprite.SCALED_SIZE;
         destinationY = y * Sprite.SCALED_SIZE;
+        startX = destinationX;
+        startY = destinationY;
+        stop = false;
     }
 
     private boolean validSquare(int fakeX, int fakeY) {
@@ -73,18 +76,19 @@ public class Oneal extends Entity {
             startY = y;
             stop = false;
         }
-        if (!stop) {
-            for (Entity entity : HelloApplication.entities) {
-                if (this.check_collision(entity)) {
-                    stop = true;
-                    destinationY = startY;
-                    destinationX = startX;
-                    dir = (dir + 2) % 4;
-                    break;
-                }
-            }
-        }
         x += DIRX[dir];
         y += DIRY[dir];
+        for (Entity entity : HelloApplication.entities) {
+            if (this.check_collision(entity)) {
+                stop = true;
+                destinationX = startX;
+                destinationY = startY;
+                x -= DIRX[dir];
+                y -= DIRY[dir];
+                dir = (dir + 2) % 4;
+                break;
+            }
+        }
+
     }
 }
