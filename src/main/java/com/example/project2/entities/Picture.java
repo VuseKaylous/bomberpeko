@@ -4,13 +4,13 @@ import com.example.project2.graphics.Sprite;
 import com.example.project2.graphics.SpriteSheet;
 
 public class Picture {
-    public Sprite[][] player = new Sprite[5][3]; // up - right - down - left - dead
+    public static Sprite[][] player = new Sprite[5][3]; // up - right - down - left - dead
     public Sprite[][] balloom = new Sprite[3][3]; // left - right - dead
     public Sprite[][] oneal = new Sprite[3][3]; // left - right - dead
     public Sprite[][] doll = new Sprite[3][3]; // left - right - dead
     public Sprite[][] minvo = new Sprite[3][3]; // left - right - dead
     public Sprite[][] kondoria = new Sprite[3][3]; // (left - right - dead), (time)
-    public Sprite[][][] explosion = new Sprite[3][3][3]; // (vertical, horizontal, middle) - (small,medium,big), (length)
+    public static Sprite[][][] explosion = new Sprite[3][3][3]; // (vertical, horizontal, middle) - (small,medium,big), (length)
     public Sprite[] mob_dead = new Sprite[3];
     public static Sprite[] bomb = new Sprite[3];
     public static Sprite[] brick = new Sprite[4]; // normal, exploded 1-2-3

@@ -22,13 +22,15 @@ import java.util.Scanner;
 public class HelloApplication extends Application {
     private Canvas canvas;
     private GraphicsContext gc;
+    public int count;
 
     public static final int WIDTH = 13;
     public static final int HEIGHT = 31;
     public int test = 0;
-    private List<Entity> entities = new ArrayList<>();
-    private List<Entity> stillObjects = new ArrayList<>();
+    public static List<Entity> entities = new ArrayList<>();
+    public static List<Entity> stillObjects = new ArrayList<>();
     private Entity bomber;
+    private Entity bomb;
 
     private Picture pictures = new Picture();
     public static Map map = new Map();
@@ -58,6 +60,7 @@ public class HelloApplication extends Application {
             public void handle(long l) {
                 render();
                 normalUpdate();
+
                 scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
                     @Override
                     public void handle(KeyEvent keyEvent) {
@@ -118,14 +121,19 @@ public class HelloApplication extends Application {
     public void updateReleased() {
         keyPressed = false;
     }
-
     public void normalUpdate() {
+        count++;
         if (keyPressed) {
             bomber.update(event);
         }
         for(int i = 0; i < entities.size(); i++) {
             entities.get(i).update();
         }
+        for(int i = 0; i < stillObjects.size(); i++) {
+            stillObjects.get(i).update();
+        }
+        bomber.update();
+        //bomb.update();
     }
     public void update(KeyEvent event) throws InterruptedException {
 //        Thread.sleep(300);
@@ -133,6 +141,10 @@ public class HelloApplication extends Application {
             if(entities.get(i) instanceof Bomber) {
                 entities.get(i).update(event);
             }
+            if(stillObjects.get(i) instanceof Bomber) {
+                stillObjects.get(i).update(event);
+            }
+
 //            else {
 //                entities.get(i).update();
 //            }
@@ -147,6 +159,7 @@ public class HelloApplication extends Application {
             }
         }
         entities.forEach(g -> g.render(gc));
+        stillObjects.forEach(g -> g.render(gc));
         bomber.render(gc);
     }
 }
