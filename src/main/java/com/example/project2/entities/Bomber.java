@@ -9,8 +9,6 @@ import javafx.scene.input.KeyEvent;
 public class Bomber extends Entity {
     private final int[] change_x = {-1, 0, 1, 0, 0};
     private final int[] change_y = {0, -1, 0, 1, 0};
-    private final int speed = 2;
-    private final int snapSize = 5;
 
     public Bomber(int x, int y, Image img) {
         super(x, y, img);
@@ -56,9 +54,11 @@ public class Bomber extends Entity {
             case RIGHT -> direction = 2;
             case DOWN -> direction = 3;
         }
+        int speed = 2;
         x = x + change_x[direction] * speed;
         y = y + change_y[direction] * speed;
 
+        int snapSize = 5;
         for (int snap = 0; snap <= snapSize; snap++) {
             if (direction % 2 == 0 && direction < 4) { // di theo chieu y
                 y += snap;
