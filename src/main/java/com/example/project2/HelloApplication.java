@@ -2,6 +2,7 @@ package com.example.project2;
 
 import com.example.project2.entities.*;
 import com.example.project2.graphics.Sprite;
+import com.example.project2.menu.Menu;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.event.EventHandler;
@@ -11,6 +12,7 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
 import java.io.File;
@@ -25,15 +27,18 @@ public class HelloApplication extends Application {
 
     public static final int WIDTH = 13;
     public static final int HEIGHT = 31;
+    // 416 x 992
     public int test = 0;
     private List<Entity> entities = new ArrayList<>();
     private List<Entity> stillObjects = new ArrayList<>();
-    private Entity bomber;
+    public static Bomber bomber;
 
     private Picture pictures = new Picture();
     public static Map map = new Map();
     private boolean keyPressed = false;
     private KeyEvent event;
+    private int gameState = 1; // 0: gameplay, 1: pause screen
+    private Menu menu = new Menu();
 
     public static void main(String[] args) {
         launch();
@@ -43,6 +48,8 @@ public class HelloApplication extends Application {
     public void start(Stage stage) throws Exception {
         canvas = new Canvas(Sprite.SCALED_SIZE * HEIGHT, Sprite.SCALED_SIZE * WIDTH);
         gc = canvas.getGraphicsContext2D();
+
+        // gc : items(bomber, ...) -> canvas -> Group root -> scene -> stage
 
         // Tạo root container
         Group root = new Group();
@@ -56,31 +63,31 @@ public class HelloApplication extends Application {
         AnimationTimer timer = new AnimationTimer() {
             @Override
             public void handle(long l) {
+                if (gameState == 0) {
+                    stage.setScene(scene);
+                } else {
+                    stage.setScene(menu.scene);
+                }
                 render();
-                normalUpdate();
-                scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
-                    @Override
-                    public void handle(KeyEvent keyEvent) {
-                        keyPressed = true;
-                        event = keyEvent;
-//                        try {
-//                            update(event);
-//                        } catch (InterruptedException e) {
-//                            throw new RuntimeException(e);
-//                        }
-                    }
-                });
-                scene.setOnKeyReleased(new EventHandler<KeyEvent>() {
-                    @Override
-                    public void handle(KeyEvent keyEvent) {
-                        keyPressed = false;
-//                        try {
-//                            updateReleased(keyEvent);
-//                        } catch (InterruptedException e) {
-//                            throw new RuntimeException(e);
-//                        }
-                    }
-                });
+                if (gameState == 0) {
+                    normalUpdate();
+                    scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
+                        @Override
+                        public void handle(KeyEvent keyEvent) {
+                            keyPressed = true;
+                            event = keyEvent;
+                        }
+                    });
+                    scene.setOnKeyReleased(new EventHandler<KeyEvent>() {
+                        @Override
+                        public void handle(KeyEvent keyEvent) {
+                            keyPressed = false;
+                        }
+                    });
+                } else if (gameState == 1) {
+
+                }
+
             }
         };
         timer.start();
@@ -141,12 +148,17 @@ public class HelloApplication extends Application {
 
     public void render() {
         gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
-        for (int i = 0; i < HEIGHT; i++) {
-            for (int j = 0; j < WIDTH; j++) {
-                map.sprite[i][j].render(gc);
+        if (gameState == 0) {
+            for (int i = 0; i < HEIGHT; i++) {
+                for (int j = 0; j < WIDTH; j++) {
+                    map.sprite[i][j].render(gc);
+                }
             }
+            entities.forEach(g -> g.render(gc));
+            bomber.render(gc);
+        } else if (gameState == 1) {
+            menu.render();
         }
-        entities.forEach(g -> g.render(gc));
-        bomber.render(gc);
+
     }
 }
