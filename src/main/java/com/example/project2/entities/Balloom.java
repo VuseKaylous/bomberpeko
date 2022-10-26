@@ -10,7 +10,7 @@ public class Balloom extends Entity {
     private int destinationY;
     private int startX;
     private int startY;
-    private boolean stop = false;
+    private int dir;
 
     public Balloom(int x, int y, Image img) {
         super(x, y, img);
@@ -18,7 +18,6 @@ public class Balloom extends Entity {
         this.destinationY = y * Sprite.SCALED_SIZE;
         startX = destinationX;
         startY = destinationY;
-        stop = false;
     }
 
     private boolean validSquare(int fakeX, int fakeY) {
@@ -61,13 +60,11 @@ public class Balloom extends Entity {
             destinationY = y + DIRY[dir] * Sprite.SCALED_SIZE;
             startX = x;
             startY = y;
-            stop = false;
         }
         x += DIRX[dir];
         y += DIRY[dir];
         for (Entity entity : HelloApplication.entities) {
             if (this.check_collision(entity)) {
-                stop = true;
                 destinationX = startX;
                 destinationY = startY;
                 x -= DIRX[dir];

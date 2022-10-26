@@ -1,22 +1,19 @@
 package com.example.project2.entities;
 
-
 import com.example.project2.graphics.Sprite;
-import javafx.scene.SnapshotParameters;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
+
 import javafx.scene.input.KeyEvent;
-import javafx.scene.paint.Color;
 
 import javafx.geometry.Rectangle2D;
 
 public abstract class Entity {
     //Tọa độ ngang tính từ góc trái trên trong Canvas
-    protected int x;
+    public int x;
+
     //Tọa độ dọc tính từ góc trái trên trong Canvas
-    protected int y;
-    protected int dir;
+    public int y;
     public static final int[] DIRX = new int[]{0, 1, 0, -1};
     public static final int[] DIRY = new int[]{1, 0, -1, 0};
 
