@@ -40,17 +40,17 @@ public class Bomber extends Entity {
         //bug ở đây
         for (int i = 0; i < count.size(); i++) {
             int num = count.get(i);
-            if (num <= 50 + i) {
+            if (num <= 25 + i) {
                 Bomb current = (Bomb) HelloApplication.bomb.get(i);
                 Bomb Bomb2 = new Bomb(current.x / Sprite.SCALED_SIZE, current.y / Sprite.SCALED_SIZE, Picture.bomb[1].getFxImage());
                 HelloApplication.bomb.set(i, Bomb2);
             }
-            if (50 + i < num && num <= 100 + i) {
+            if (25 + i < num && num <= 50 + i) {
                 Bomb current = (Bomb) HelloApplication.bomb.get(i);
                 Bomb Bomb2 = new Bomb(current.x / Sprite.SCALED_SIZE, current.y / Sprite.SCALED_SIZE, Picture.bomb[2].getFxImage());
                 HelloApplication.bomb.set(i, Bomb2);
             }
-            if (100 + i < num && num <= 150 + i) {
+            if (50 + i < num && num <= 60 + i) {
                 Bomb current = (Bomb) HelloApplication.bomb.get(i);
                 Bomb Explo1 = new Bomb(current.x / Sprite.SCALED_SIZE,
                         current.y / Sprite.SCALED_SIZE, Picture.explosion[2][0][0].getFxImage());
@@ -69,7 +69,7 @@ public class Bomber extends Entity {
                 }
                 HelloApplication.bomb.set(i, Explo1);
             }
-            if (150 + i < num && num <= 200 + i) {
+            if (60 + i < num && num <= 70 + i) {
                 Bomb current = (Bomb) HelloApplication.bomb.get(i);
                 Bomb Explo2 = new Bomb(current.x / Sprite.SCALED_SIZE,
                         current.y / Sprite.SCALED_SIZE, Picture.explosion[2][1][0].getFxImage());
@@ -88,7 +88,7 @@ public class Bomber extends Entity {
                 }
                 HelloApplication.bomb.set(i, Explo2);
             }
-            if (200 + i < num && num <= 250 + i) {
+            if (70 + i < num && num <= 80 + i) {
                 Bomb current = (Bomb) HelloApplication.bomb.get(i);
                 Bomb Explo3 = new Bomb(current.x / Sprite.SCALED_SIZE,
                         current.y / Sprite.SCALED_SIZE, Picture.explosion[2][2][0].getFxImage());
@@ -107,7 +107,7 @@ public class Bomber extends Entity {
                 }
                 HelloApplication.bomb.set(i, Explo3);
             }
-            if (num > 250 + i) {
+            if (num > 80 + i) {
                 HelloApplication.bomb.remove(i);
                 count.remove(i);
                 HelloApplication.flame.remove(i);
