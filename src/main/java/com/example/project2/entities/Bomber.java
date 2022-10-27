@@ -1,12 +1,26 @@
 package com.example.project2.entities;
 
 import com.example.project2.HelloApplication;
+import com.example.project2.entities.*;
+import com.example.project2.graphics.Sound;
+import com.example.project2.graphics.Sprite;
+import com.example.project2.graphics.SpriteSheet;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 
 public class Bomber extends Entity {
+    Sound sound1 = new Sound();
+    public Bomber(int x, int y, Image img) {
+        super(x, y, img);
+    }
+    public bomb newBomb = new bomb(x / Sprite.SCALED_SIZE, y / Sprite.SCALED_SIZE, Picture.bomb[0].getFxImage());
+
+    public bomb newBomb1 = new bomb(newBomb.x / Sprite.SCALED_SIZE, newBomb.y / Sprite.SCALED_SIZE, Picture.bomb[1].getFxImage());
+     public bomb newBomb2 = new bomb(newBomb1.x / Sprite.SCALED_SIZE, newBomb1.y / Sprite.SCALED_SIZE, Picture.bomb[2].getFxImage());
+    public bomb Explosive1 = new bomb(newBomb2.x / Sprite.SCALED_SIZE, newBomb2.y / Sprite.SCALED_SIZE, Picture.explosion[0][1][1].getFxImage());
+    public int count = 1;
     private final int[] change_x = {-1, 0, 1, 0, 0};
     private final int[] change_y = {0, -1, 0, 1, 0};
     private final int speed = 2;
@@ -19,6 +33,26 @@ public class Bomber extends Entity {
     @Override
     public void update() {
 
+    public void updateImage() {
+        if (count == 100) {
+            HelloApplication.stillObjects.remove(newBomb);
+            HelloApplication.stillObjects.add(newBomb1);
+            //System.out.println("1");
+        }else if (count == 200) {
+            HelloApplication.stillObjects.remove(newBomb1);
+            HelloApplication.stillObjects.add(newBomb2);
+            //System.out.println("2");
+        }else if(count == 300) {
+            HelloApplication.stillObjects.remove(newBomb2);
+            //System.out.println("3");
+            HelloApplication.stillObjects.add(Explosive1);
+            playSEE(1);
+        }else if(count == 400) {
+
+            HelloApplication.stillObjects.remove(Explosive1);
+
+
+        }
     }
 
     public Rectangle2D getBoundary() {
@@ -94,4 +128,21 @@ public class Bomber extends Entity {
         x = x - change_x[direction] * speed;
         y = y - change_y[direction] * speed;
     }
+    public void playMusicc(int i) {
+        sound1.setFile(i);
+        sound1.play();
+        sound1.loop();
+
+    }
+
+    public void stopMusicc() {
+        sound1.stop();
+    }
+    public void playSEE(int i) {
+        sound1.setFile(i);
+        sound1.play();
+
+    }
+
+
 }

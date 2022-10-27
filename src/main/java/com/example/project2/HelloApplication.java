@@ -1,6 +1,7 @@
 package com.example.project2;
 
 import com.example.project2.entities.*;
+import com.example.project2.graphics.Sound;
 import com.example.project2.graphics.Sprite;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
@@ -22,6 +23,8 @@ public class HelloApplication extends Application {
     private Canvas canvas;
     private GraphicsContext gc;
 
+    Sound sound = new Sound();
+    Thread gameThread;
     public static final int WIDTH = 13;
     public static final int HEIGHT = 31;
     public static List<Entity> entities = new ArrayList<>();
@@ -92,6 +95,8 @@ public class HelloApplication extends Application {
         } catch (FileNotFoundException e) {
             System.out.println("File not found");
         }
+
+        playMusic(2);
     }
 
     public void updateReleased() {
@@ -124,5 +129,22 @@ public class HelloApplication extends Application {
         }
         entities.forEach(g -> g.render(gc));
         bomber.render(gc);
+    }
+
+    public void playMusic(int i) {
+        sound.setFile(i);
+        sound.play();
+        sound.loop();
+
+    }
+
+    public void stopMusic() {
+        sound.stop();
+    }
+
+    public void playSE(int i) {
+        sound.setFile(i);
+        sound.play();
+
     }
 }
