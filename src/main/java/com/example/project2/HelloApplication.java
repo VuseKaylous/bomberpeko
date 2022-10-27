@@ -28,7 +28,8 @@ public class HelloApplication extends Application {
     public static final int WIDTH = 13;
     public static final int HEIGHT = 31;
     public static List<Entity> entities = new ArrayList<>();
-    private final List<Entity> stillObjects = new ArrayList<>();
+    public static List<Entity> bomb = new ArrayList<>();
+    public static List<List<Entity>> flame = new ArrayList<>();
     private Entity bomber;
 
     private final Picture pictures = new Picture();
@@ -41,7 +42,7 @@ public class HelloApplication extends Application {
     }
 
     @Override
-    public void start(Stage stage) throws Exception {
+    public void start(Stage stage) {
         canvas = new Canvas(Sprite.SCALED_SIZE * HEIGHT, Sprite.SCALED_SIZE * WIDTH);
         gc = canvas.getGraphicsContext2D();
 
@@ -63,7 +64,10 @@ public class HelloApplication extends Application {
                     keyPressed = true;
                     event = keyEvent;
                 });
-                scene.setOnKeyReleased(keyEvent -> keyPressed = false);
+                scene.setOnKeyReleased(keyEvent -> {
+                    ((Bomber) bomber).setBomb(event);
+                    keyPressed = false;
+                });
             }
         };
         timer.start();
@@ -81,7 +85,7 @@ public class HelloApplication extends Application {
                 for (int x = 0; x < HEIGHT; x++) {
                     Entity object;
                     if (data.charAt(x) == 'p') {
-                        bomber = new Bomber(x, y, pictures.player[1][0].getFxImage());
+                        bomber = new Bomber(x, y, Picture.player[1][0].getFxImage());
                     } else if (data.charAt(x) == '1') {
                         object = new Balloom(x, y, pictures.balloom[0][0].getFxImage());
                         entities.add(object);
@@ -99,10 +103,6 @@ public class HelloApplication extends Application {
         playMusic(2);
     }
 
-    public void updateReleased() {
-        keyPressed = false;
-    }
-
     public void normalUpdate() {
         if (keyPressed) {
             bomber.update(event);
@@ -110,15 +110,10 @@ public class HelloApplication extends Application {
         for (Entity entity : entities) {
             entity.update();
         }
+        bomber.update();
+        //bomb.update();
     }
 
-    public void update(KeyEvent event) throws InterruptedException {
-        for (Entity entity : entities) {
-            if (entity instanceof Bomber) {
-                entity.update(event);
-            }
-        }
-    }
 
     public void render() {
         gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
@@ -128,6 +123,10 @@ public class HelloApplication extends Application {
             }
         }
         entities.forEach(g -> g.render(gc));
+        bomb.forEach(g -> g.render(gc));
+        for(List<Entity> e : flame) {
+            e.forEach(g -> g.render(gc));
+        }
         bomber.render(gc);
     }
 

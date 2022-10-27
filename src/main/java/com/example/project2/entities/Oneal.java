@@ -5,7 +5,6 @@ import com.example.project2.graphics.Sprite;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyEvent;
 
-import java.security.Key;
 import java.util.Random;
 import java.util.random.RandomGenerator;
 
@@ -19,7 +18,7 @@ public class Oneal extends Entity {
 
     //goal
     public int destinationX, destinationY;
-    private boolean stop;
+    public int dir;
 
     public Oneal(int x, int y, Image img) {
         super(x, y, img);
@@ -27,7 +26,6 @@ public class Oneal extends Entity {
         destinationY = y * Sprite.SCALED_SIZE;
         startX = destinationX;
         startY = destinationY;
-        stop = false;
     }
 
     private boolean validSquare(int fakeX, int fakeY) {
@@ -74,13 +72,11 @@ public class Oneal extends Entity {
             destinationY = y + DIRY[dir] * Sprite.SCALED_SIZE;
             startX = x;
             startY = y;
-            stop = false;
         }
         x += DIRX[dir];
         y += DIRY[dir];
         for (Entity entity : HelloApplication.entities) {
             if (this.check_collision(entity)) {
-                stop = true;
                 destinationX = startX;
                 destinationY = startY;
                 x -= DIRX[dir];
