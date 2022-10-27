@@ -10,8 +10,6 @@ import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 
-import java.util.List;
-
 public class Bomber extends Entity {
     Sound sound1 = new Sound();
     public Bomber(int x, int y, Image img) {
@@ -28,32 +26,12 @@ public class Bomber extends Entity {
     private final int speed = 2;
     private final int snapSize = 5;
 
-
-
-    @Override
-    public String toString() {
-        return super.toString();
-    }
-
-    @Override
-    public int getSmallX() {
-        return x / Sprite.SCALED_SIZE;
-    }
-
-    @Override
-    public int getSmallY() {
-        return y / Sprite.SCALED_SIZE;
+    public Bomber(int x, int y, Image img) {
+        super(x, y, img);
     }
 
     @Override
     public void update() {
-        //bien count chay moi lan update
-        count++;
-        System.out.println(count);
-        updateImage();
-        //bomb.update();
-//        System.out.println(count);
-    }
 
     public void updateImage() {
         if (count == 100) {
@@ -76,9 +54,6 @@ public class Bomber extends Entity {
 
         }
     }
-
-
-
 
     public Rectangle2D getBoundary() {
         return new Rectangle2D(x, y, 12 * 2, 16 * 2);
@@ -107,35 +82,14 @@ public class Bomber extends Entity {
 
     @Override
     public void update(KeyEvent event) {
-
         int direction = 4; // ko co event thi dung yen
         KeyCode key = event.getCode();
         switch (key) {
-            case LEFT:
-                direction = 0;
-                break;
-            case UP:
-                direction = 1;
-                break;
-            case RIGHT:
-                //Bomber rightDir = new Bomber(x / Sprite.SCALED_SIZE, y / Sprite.SCALED_SIZE, Picture.player[1][3].getFxImage());
-                direction = 2;
-                break;
-            case DOWN:
-                direction = 3;
-                break;
-            case Q:
-                //khoi tao qua bom roi dat vao duoi chan con bomber
-                count = 0;
-                bomb newBomb = new bomb(x / Sprite.SCALED_SIZE, y / Sprite.SCALED_SIZE, Picture.bomb[0].getFxImage());
-//                bomb newBomb1 = new bomb(newBomb.x / Sprite.SCALED_SIZE, newBomb.y / Sprite.SCALED_SIZE, Picture.bomb[1].getFxImage());
-//                bomb newBomb2 = new bomb(newBomb1.x / Sprite.SCALED_SIZE, newBomb1.y / Sprite.SCALED_SIZE, Picture.bomb[2].getFxImage());
-//                bomb Explosive1 = new bomb(x / Sprite.SCALED_SIZE, y / Sprite.SCALED_SIZE, Picture.explosion[0][1][1].getFxImage());
-                HelloApplication.stillObjects.add(newBomb);
-                update();
-                break;
+            case LEFT -> direction = 0;
+            case UP -> direction = 1;
+            case RIGHT -> direction = 2;
+            case DOWN -> direction = 3;
         }
-
         x = x + change_x[direction] * speed;
         y = y + change_y[direction] * speed;
 
