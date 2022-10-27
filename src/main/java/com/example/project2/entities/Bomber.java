@@ -2,6 +2,7 @@ package com.example.project2.entities;
 
 import com.example.project2.HelloApplication;
 import com.example.project2.entities.*;
+import com.example.project2.graphics.Sound;
 import com.example.project2.graphics.Sprite;
 import com.example.project2.graphics.SpriteSheet;
 import javafx.geometry.Rectangle2D;
@@ -12,6 +13,7 @@ import javafx.scene.input.KeyEvent;
 import java.util.List;
 
 public class Bomber extends Entity {
+    Sound sound1 = new Sound();
     public Bomber(int x, int y, Image img) {
         super(x, y, img);
     }
@@ -66,8 +68,12 @@ public class Bomber extends Entity {
             HelloApplication.stillObjects.remove(newBomb2);
             //System.out.println("3");
             HelloApplication.stillObjects.add(Explosive1);
+            playSEE(1);
         }else if(count == 400) {
+
             HelloApplication.stillObjects.remove(Explosive1);
+
+
         }
     }
 
@@ -167,6 +173,21 @@ public class Bomber extends Entity {
         }
         x = x - change_x[direction] * speed;
         y = y - change_y[direction] * speed;
+    }
+    public void playMusicc(int i) {
+        sound1.setFile(i);
+        sound1.play();
+        sound1.loop();
+
+    }
+
+    public void stopMusicc() {
+        sound1.stop();
+    }
+    public void playSEE(int i) {
+        sound1.setFile(i);
+        sound1.play();
+
     }
 
 
