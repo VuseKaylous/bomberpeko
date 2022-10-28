@@ -120,7 +120,7 @@ public class HelloApplication extends Application {
             System.out.println("File not found");
         }
 
-        playMusic(2);
+        playMusic(0);
     }
 
     public void updateReleased() {
