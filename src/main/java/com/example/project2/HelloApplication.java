@@ -105,7 +105,6 @@ public class HelloApplication extends Application {
             entity.update();
         }
         bomber.update();
-        //bomb.update();
     }
 
 
@@ -113,12 +112,19 @@ public class HelloApplication extends Application {
         gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
         for (int i = 0; i < HEIGHT; i++) {
             for (int j = 0; j < WIDTH; j++) {
-                map.sprite[i][j].render(gc);
+                if (map.sprite[i][j] instanceof Brick) {
+                    if (!((Brick) map.sprite[i][j]).isDestroyed()) {
+                        map.sprite[i][j].render(gc);
+                    } else {
+                        map.tool[i][j].render(gc);
+                    }
+                } else map.sprite[i][j].render(gc);
             }
         }
+
         entities.forEach(g -> g.render(gc));
         bomb.forEach(g -> g.render(gc));
-        for(List<Entity> e : flame) {
+        for (List<Entity> e : flame) {
             e.forEach(g -> g.render(gc));
         }
         bomber.render(gc);
