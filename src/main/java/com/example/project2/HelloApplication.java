@@ -37,7 +37,8 @@ public class HelloApplication extends Application {
     public static Map map = new Map();
     private boolean keyPressed = false;
     private KeyEvent event;
-    private int gameState = 1; // 0: gameplay, 1: pause screen
+//    public static MouseEvent mouseEvent;
+    public static int gameState = 0; // 0: gameplay, 1: pause screen, 2: end game
     private Menu menu = new Menu();
 
     public static void main(String[] args) {
@@ -65,7 +66,7 @@ public class HelloApplication extends Application {
             public void handle(long l) {
                 if (gameState == 0) {
                     stage.setScene(scene);
-                } else {
+                } else if (gameState == 1) {
                     stage.setScene(menu.scene);
                 }
                 render();
@@ -76,6 +77,9 @@ public class HelloApplication extends Application {
                         public void handle(KeyEvent keyEvent) {
                             keyPressed = true;
                             event = keyEvent;
+                            if (event.getCode() == KeyCode.P) { // p: pause screen
+                                gameState = 1;
+                            }
                         }
                     });
                     scene.setOnKeyReleased(new EventHandler<KeyEvent>() {
@@ -85,9 +89,11 @@ public class HelloApplication extends Application {
                         }
                     });
                 } else if (gameState == 1) {
-
+                    menu.handleEvent();
+                } else if (gameState == 2) { // end game
+                    this.stop();
+                    stage.close();
                 }
-
             }
         };
         timer.start();
@@ -159,6 +165,6 @@ public class HelloApplication extends Application {
         } else if (gameState == 1) {
             menu.render();
         }
-
     }
+
 }

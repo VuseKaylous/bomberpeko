@@ -8,6 +8,7 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
@@ -20,17 +21,22 @@ import java.util.ArrayList;
 
 import static com.example.project2.HelloApplication.HEIGHT;
 import static com.example.project2.HelloApplication.WIDTH;
+//import static com.example.project2.HelloApplication.mouseEvent;
 
 public class Menu {
     private int size = 2;
+    private final int CONTINUE = 0;
+    private final int EXIT = 1;
     private String[] options = new String[]{"Continue", "Exit"};
     private Rectangle[] decorationRect = new Rectangle[size]; // rect - height: 20;
+    private Button[] buttons = new Button[size];
     private int rectHeight = 30;
     private int rectWidth = 100;
     private GraphicsContext gc;
     private Canvas canvas;
     private Group root;
     public Scene scene;
+    public static MouseEvent mouseEvent;
     private Color[] fillColor = new Color[size];
 
     public Menu() {
@@ -41,58 +47,63 @@ public class Menu {
         scene = new Scene(root);
     }
 
+    static boolean inRect(Rectangle rect) {
+        if (mouseEvent == null) {
+            return false;
+        }
+        double x = mouseEvent.getX();
+        double y = mouseEvent.getY();
+//        System.out.println(x + " " + y);
+        return (rect.getX() <= x && x <= rect.getX() + rect.getWidth() &&
+                rect.getY() <= y && y <= rect.getY() + rect.getHeight());
+    }
+
     public void render() {
+        gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
         gc.setFont(new Font("Comic Sans MS", 20));
         gc.setTextAlign(TextAlignment.CENTER);
         gc.setTextBaseline(VPos.CENTER);
-//        gc.fillText(options[0], canvas.getWidth() / 2, canvas.getHeight() / 2);
-
-//        fillColor = Color.color(0, 0, 0);
-        if (size % 2 == 0) {
-            for (int i = 0; i < size / 2; i++) {
-                int rectY = (int) canvas.getHeight() / 2 - ((size / 2 - i) * (rectHeight + rectHeight/2));
-                gc.fillText(options[i], canvas.getWidth() / 2, rectY );
-                decorationRect[i] = new Rectangle(canvas.getWidth() / 2 - rectWidth / 2, rectY - rectHeight / 2, rectWidth, rectHeight);
-                fillColor[i] = Color.BLACK;
-                int finalI = i;
-                decorationRect[i].setOnMouseEntered(new EventHandler<MouseEvent>() {
-                    @Override
-                    public void handle(MouseEvent mouseEvent) {
-                        fillColor[finalI] = Color.color(36, 117, 189);
-                    }
-                });
-                decorationRect[i].setFill(fillColor[i]);
-            }
-            for (int i = size - 1; i >= size / 2; i--) {
-                int rectY = (int) canvas.getHeight() / 2 - ((size / 2 - i) * (rectHeight + rectHeight/2));
-                gc.fillText(options[i], canvas.getWidth() / 2, canvas.getHeight() / 2 - ((size / 2 - i) * (rectHeight + rectHeight/2)) );
-                decorationRect[i] = new Rectangle(canvas.getWidth() / 2 - rectWidth / 2, rectY - rectHeight / 2, rectWidth, rectHeight);
-//                decorationRect[i].setFill(Color.BLACK);
-                fillColor[i] = Color.BLACK;
-                int finalI = i;
-                decorationRect[i].setOnMouseEntered(new EventHandler<MouseEvent>() {
-                    @Override
-                    public void handle(MouseEvent mouseEvent) {
-                        fillColor[finalI] = Color.color(36, 117, 189);
-                    }
-                });
-                decorationRect[i].setFill(fillColor[i]);
-            }
-        } else {
-            for (int i = 0; i < size / 2; i++) {
-                gc.fillText(options[i], canvas.getWidth() / 2, canvas.getHeight() / 2 - ((size / 2 - i) * (rectHeight + rectHeight/2) + rectHeight / 2) );
-            }
-            for (int i = size - 1; i > size / 2; i--) {
-                gc.fillText(options[i], canvas.getWidth() / 2, canvas.getHeight() / 2 - ((size / 2 - i) * (rectHeight + rectHeight/2) - rectHeight / 2) );
-            }
+        for (int i = 0; i < size; i++) {
+            int rectY = (int) canvas.getHeight() / 2 - ((size / 2 - i) * (rectHeight * 2));
+            gc.fillText(options[i], canvas.getWidth() / 2, rectY );
+            decorationRect[i] = new Rectangle(canvas.getWidth() / 2 - rectWidth / 2, rectY - rectHeight / 2, rectWidth, rectHeight);
         }
         for (int i = 0; i < size; i++) {
+            if (decorationRect[i] == null) {
+                continue;
+            }
+            fillColor[i] = Color.BLACK;
+            if (inRect(decorationRect[i])) {
+                fillColor[i] = Color.color(36 / 255.0, 117 / 255.0, 189 / 255.0);
+            }
+//            decorationRect[i].setFill(fillColor[i]);
             gc.setStroke(Paint.valueOf(String.valueOf(fillColor[i])));
-            System.out.println(String.valueOf(fillColor[i]));
+//            System.out.println(String.valueOf(fillColor[i]));
             gc.strokeRect(decorationRect[i].getX(),
                     decorationRect[i].getY(),
                     decorationRect[i].getWidth(),
                     decorationRect[i].getHeight());
         }
+    }
+
+    public void handleEvent() {
+        scene.setOnMouseMoved(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mEvent) {
+                mouseEvent = mEvent;
+            }
+        });
+        scene.setOnMouseReleased(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mEvent) {
+                mouseEvent = mEvent;
+                if (inRect(decorationRect[CONTINUE])) {
+                    HelloApplication.gameState = 0;
+                } else if (inRect(decorationRect[EXIT])) {
+                    HelloApplication.gameState = 2;
+                }
+//                System.out.println(mouseEvent.getEventType());
+            }
+        });
     }
 }

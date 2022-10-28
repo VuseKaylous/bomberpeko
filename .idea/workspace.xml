@@ -4,35 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2a4cc65c-99d6-4c51-92c0-f372add3f834" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_openjfx_javafx_base_17_0_1.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_openjfx_javafx_base_win_17_0_1.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_openjfx_javafx_controls_17_0_1.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_openjfx_javafx_controls_win_17_0_1.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_openjfx_javafx_graphics_17_0_1.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_openjfx_javafx_graphics_win_17_0_1.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bomberpeko.iml" beforeDir="false" afterPath="$PROJECT_DIR$/bomberpeko.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/BombermanGame.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Main.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/entities/Bomber.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/entities/Entity.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/entities/Grass.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/entities/Wall.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/graphics/Sprite.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/graphics/SpriteSheet.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/BombermanGame$1.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/BombermanGame.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/Main.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/entities/Bomber.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/entities/Entity.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/entities/Grass.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/entities/Wall.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/graphics/Sprite.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/graphics/SpriteSheet.class" beforeDir="false" />
-    </list>
+    <list default="true" id="2a4cc65c-99d6-4c51-92c0-f372add3f834" name="Changes" comment="create Menu.java" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -66,15 +38,15 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "project.structure.last.edited": "SDKs",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.2"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;SDKs&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager" selected="Application.HelloApplication">
     <configuration name="BombermanGame (1)" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="BombermanGame" />
@@ -140,6 +112,14 @@
       <option name="presentableId" value="Default" />
       <updated>1663817269468</updated>
     </task>
+    <task id="LOCAL-00001" summary="create Menu.java">
+      <created>1666605947239</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1666605947239</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -152,5 +132,9 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="create Menu.java" />
+    <option name="LAST_COMMIT_MESSAGE" value="create Menu.java" />
   </component>
 </project>
