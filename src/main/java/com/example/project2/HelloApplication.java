@@ -10,7 +10,6 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 
@@ -23,19 +22,17 @@ import java.util.Scanner;
 public class HelloApplication extends Application {
     private Canvas canvas;
     private GraphicsContext gc;
-    public int count;
 
     Sound sound = new Sound();
     Thread gameThread;
     public static final int WIDTH = 13;
     public static final int HEIGHT = 31;
-    public int test = 0;
     public static List<Entity> entities = new ArrayList<>();
-    public static List<Entity> stillObjects = new ArrayList<>();
+    public static List<Entity> bomb = new ArrayList<>();
+    public static List<List<Entity>> flame = new ArrayList<>();
     private Entity bomber;
-    private Entity bomb;
 
-    private Picture pictures = new Picture();
+    private final Picture pictures = new Picture();
     public static Map map = new Map();
     private boolean keyPressed = false;
     private KeyEvent event;
@@ -45,7 +42,7 @@ public class HelloApplication extends Application {
     }
 
     @Override
-    public void start(Stage stage) throws Exception {
+    public void start(Stage stage) {
         canvas = new Canvas(Sprite.SCALED_SIZE * HEIGHT, Sprite.SCALED_SIZE * WIDTH);
         gc = canvas.getGraphicsContext2D();
 
@@ -63,29 +60,13 @@ public class HelloApplication extends Application {
             public void handle(long l) {
                 render();
                 normalUpdate();
-
-                scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
-                    @Override
-                    public void handle(KeyEvent keyEvent) {
-                        keyPressed = true;
-                        event = keyEvent;
-//                        try {
-//                            update(event);
-//                        } catch (InterruptedException e) {
-//                            throw new RuntimeException(e);
-//                        }
-                    }
+                scene.setOnKeyPressed(keyEvent -> {
+                    keyPressed = true;
+                    event = keyEvent;
                 });
-                scene.setOnKeyReleased(new EventHandler<KeyEvent>() {
-                    @Override
-                    public void handle(KeyEvent keyEvent) {
-                        keyPressed = false;
-//                        try {
-//                            updateReleased(keyEvent);
-//                        } catch (InterruptedException e) {
-//                            throw new RuntimeException(e);
-//                        }
-                    }
+                scene.setOnKeyReleased(keyEvent -> {
+                    ((Bomber) bomber).setBomb(event);
+                    keyPressed = false;
                 });
             }
         };
@@ -104,8 +85,7 @@ public class HelloApplication extends Application {
                 for (int x = 0; x < HEIGHT; x++) {
                     Entity object;
                     if (data.charAt(x) == 'p') {
-                        bomber = new Bomber(x, y, pictures.player[1][0].getFxImage());
-                        //entities.add(object);
+                        bomber = new Bomber(x, y, Picture.player[1][0].getFxImage());
                     } else if (data.charAt(x) == '1') {
                         object = new Balloom(x, y, pictures.balloom[0][0].getFxImage());
                         entities.add(object);
@@ -123,38 +103,17 @@ public class HelloApplication extends Application {
         playMusic(0);
     }
 
-    public void updateReleased() {
-        keyPressed = false;
-    }
     public void normalUpdate() {
-        count++;
         if (keyPressed) {
             bomber.update(event);
         }
-        for(int i = 0; i < entities.size(); i++) {
-            entities.get(i).update();
-        }
-        for(int i = 0; i < stillObjects.size(); i++) {
-            stillObjects.get(i).update();
+        for (Entity entity : entities) {
+            entity.update();
         }
         bomber.update();
         //bomb.update();
     }
-    public void update(KeyEvent event) throws InterruptedException {
-//        Thread.sleep(300);
-        for(int i = 0; i < entities.size(); i++) {
-            if(entities.get(i) instanceof Bomber) {
-                entities.get(i).update(event);
-            }
-            if(stillObjects.get(i) instanceof Bomber) {
-                stillObjects.get(i).update(event);
-            }
 
-//            else {
-//                entities.get(i).update();
-//            }
-        }
-    }
 
     public void render() {
         gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
@@ -164,7 +123,10 @@ public class HelloApplication extends Application {
             }
         }
         entities.forEach(g -> g.render(gc));
-        stillObjects.forEach(g -> g.render(gc));
+        bomb.forEach(g -> g.render(gc));
+        for(List<Entity> e : flame) {
+            e.forEach(g -> g.render(gc));
+        }
         bomber.render(gc);
     }
 
