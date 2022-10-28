@@ -18,18 +18,16 @@ public class Bomber extends Entity {
     public Bomber(int x, int y, Image img) {
         super(x, y, img);
     }
-    public bomb newBomb = new bomb(x / Sprite.SCALED_SIZE, y / Sprite.SCALED_SIZE, Picture.bomb[0].getFxImage());
+    public Bomb newBomb = new Bomb(x / Sprite.SCALED_SIZE, y / Sprite.SCALED_SIZE, Picture.bomb[0].getFxImage());
 
-    public bomb newBomb1 = new bomb(newBomb.x / Sprite.SCALED_SIZE, newBomb.y / Sprite.SCALED_SIZE, Picture.bomb[1].getFxImage());
-     public bomb newBomb2 = new bomb(newBomb1.x / Sprite.SCALED_SIZE, newBomb1.y / Sprite.SCALED_SIZE, Picture.bomb[2].getFxImage());
-    public bomb Explosive1 = new bomb(newBomb2.x / Sprite.SCALED_SIZE, newBomb2.y / Sprite.SCALED_SIZE, Picture.explosion[0][1][1].getFxImage());
+    public Bomb newBomb1 = new Bomb(newBomb.x / Sprite.SCALED_SIZE, newBomb.y / Sprite.SCALED_SIZE, Picture.bomb[1].getFxImage());
+     public Bomb newBomb2 = new Bomb(newBomb1.x / Sprite.SCALED_SIZE, newBomb1.y / Sprite.SCALED_SIZE, Picture.bomb[2].getFxImage());
+    public Bomb Explosive1 = new Bomb(newBomb2.x / Sprite.SCALED_SIZE, newBomb2.y / Sprite.SCALED_SIZE, Picture.explosion[0][1][1].getFxImage());
     public int count = 1;
     private final int[] change_x = {-1, 0, 1, 0, 0};
     private final int[] change_y = {0, -1, 0, 1, 0};
 
-    public Bomber(int x, int y, Image img) {
-        super(x, y, img);
-    }
+
 
     @Override
     public void update() {
