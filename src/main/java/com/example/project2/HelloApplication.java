@@ -1,6 +1,7 @@
 package com.example.project2;
 
 import com.example.project2.entities.*;
+import com.example.project2.graphics.Sound;
 import com.example.project2.graphics.Sprite;
 import com.example.project2.menu.Menu;
 import javafx.animation.AnimationTimer;
@@ -25,15 +26,16 @@ public class HelloApplication extends Application {
     private Canvas canvas;
     private GraphicsContext gc;
 
+    Sound sound = new Sound();
+    Thread gameThread;
     public static final int WIDTH = 13;
     public static final int HEIGHT = 31;
-    // 416 x 992
-    public int test = 0;
-    private List<Entity> entities = new ArrayList<>();
-    private List<Entity> stillObjects = new ArrayList<>();
-    public static Bomber bomber;
+    public static List<Entity> entities = new ArrayList<>();
+    public static List<Entity> bomb = new ArrayList<>();
+    public static List<List<Entity>> flame = new ArrayList<>();
+    private Entity bomber;
 
-    private Picture pictures = new Picture();
+    private final Picture pictures = new Picture();
     public static Map map = new Map();
     private boolean keyPressed = false;
     private KeyEvent event;
@@ -46,7 +48,7 @@ public class HelloApplication extends Application {
     }
 
     @Override
-    public void start(Stage stage) throws Exception {
+    public void start(Stage stage) {
         canvas = new Canvas(Sprite.SCALED_SIZE * HEIGHT, Sprite.SCALED_SIZE * WIDTH);
         gc = canvas.getGraphicsContext2D();
 
@@ -72,21 +74,32 @@ public class HelloApplication extends Application {
                 render();
                 if (gameState == 0) {
                     normalUpdate();
-                    scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
-                        @Override
-                        public void handle(KeyEvent keyEvent) {
-                            keyPressed = true;
-                            event = keyEvent;
-                            if (event.getCode() == KeyCode.P) { // p: pause screen
-                                gameState = 1;
-                            }
+//                    scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
+//                        @Override
+//                        public void handle(KeyEvent keyEvent) {
+//                            keyPressed = true;
+//                            event = keyEvent;
+//                            if (event.getCode() == KeyCode.P) { // p: pause screen
+//                                gameState = 1;
+//                            }
+//                        }
+//                    });
+//                    scene.setOnKeyReleased(new EventHandler<KeyEvent>() {
+//                        @Override
+//                        public void handle(KeyEvent keyEvent) {
+//                            keyPressed = false;
+//                        }
+//                    });
+                    scene.setOnKeyPressed(keyEvent -> {
+                        keyPressed = true;
+                        event = keyEvent;
+                        if (event.getCode() == KeyCode.P) { // p: pause screen
+                            gameState = 1;
                         }
                     });
-                    scene.setOnKeyReleased(new EventHandler<KeyEvent>() {
-                        @Override
-                        public void handle(KeyEvent keyEvent) {
-                            keyPressed = false;
-                        }
+                    scene.setOnKeyReleased(keyEvent -> {
+                        ((Bomber) bomber).setBomb(event);
+                        keyPressed = false;
                     });
                 } else if (gameState == 1) {
                     menu.handleEvent();
@@ -111,8 +124,7 @@ public class HelloApplication extends Application {
                 for (int x = 0; x < HEIGHT; x++) {
                     Entity object;
                     if (data.charAt(x) == 'p') {
-                        bomber = new Bomber(x, y, pictures.player[1][0].getFxImage());
-//                        entities.add(object);
+                        bomber = new Bomber(x, y, Picture.player[1][0].getFxImage());
                     } else if (data.charAt(x) == '1') {
                         object = new Balloom(x, y, pictures.balloom[0][0].getFxImage());
                         entities.add(object);
@@ -126,31 +138,21 @@ public class HelloApplication extends Application {
         } catch (FileNotFoundException e) {
             System.out.println("File not found");
         }
-    }
 
-    public void updateReleased() {
-        keyPressed = false;
+        playMusic(2);
     }
 
     public void normalUpdate() {
         if (keyPressed) {
             bomber.update(event);
         }
-        for(int i = 0; i < entities.size(); i++) {
-            entities.get(i).update();
+        for (Entity entity : entities) {
+            entity.update();
         }
+        bomber.update();
+        //bomb.update();
     }
-    public void update(KeyEvent event) throws InterruptedException {
-//        Thread.sleep(300);
-        for(int i = 0; i < entities.size(); i++) {
-            if(entities.get(i) instanceof Bomber) {
-                entities.get(i).update(event);
-            }
-//            else {
-//                entities.get(i).update();
-//            }
-        }
-    }
+
 
     public void render() {
         gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
@@ -165,6 +167,28 @@ public class HelloApplication extends Application {
         } else if (gameState == 1) {
             menu.render();
         }
+        entities.forEach(g -> g.render(gc));
+        bomb.forEach(g -> g.render(gc));
+        for(List<Entity> e : flame) {
+            e.forEach(g -> g.render(gc));
+        }
+        bomber.render(gc);
     }
 
+    public void playMusic(int i) {
+        sound.setFile(i);
+        sound.play();
+        sound.loop();
+
+    }
+
+    public void stopMusic() {
+        sound.stop();
+    }
+
+    public void playSE(int i) {
+        sound.setFile(i);
+        sound.play();
+
+    }
 }
