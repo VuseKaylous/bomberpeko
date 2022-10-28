@@ -1,10 +1,7 @@
 package com.example.project2.entities;
 
 import com.example.project2.HelloApplication;
-import com.example.project2.entities.*;
-import com.example.project2.graphics.Sound;
 import com.example.project2.graphics.Sprite;
-import com.example.project2.graphics.SpriteSheet;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
@@ -14,16 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Bomber extends Entity {
-    Sound sound1 = new Sound();
-    public Bomber(int x, int y, Image img) {
-        super(x, y, img);
-    }
-    public bomb newBomb = new bomb(x / Sprite.SCALED_SIZE, y / Sprite.SCALED_SIZE, Picture.bomb[0].getFxImage());
-
-    public bomb newBomb1 = new bomb(newBomb.x / Sprite.SCALED_SIZE, newBomb.y / Sprite.SCALED_SIZE, Picture.bomb[1].getFxImage());
-     public bomb newBomb2 = new bomb(newBomb1.x / Sprite.SCALED_SIZE, newBomb1.y / Sprite.SCALED_SIZE, Picture.bomb[2].getFxImage());
-    public bomb Explosive1 = new bomb(newBomb2.x / Sprite.SCALED_SIZE, newBomb2.y / Sprite.SCALED_SIZE, Picture.explosion[0][1][1].getFxImage());
-    public int count = 1;
+    public static List<Integer> count = new ArrayList<>();
     private final int[] change_x = {-1, 0, 1, 0, 0};
     private final int[] change_y = {0, -1, 0, 1, 0};
 
@@ -52,17 +40,17 @@ public class Bomber extends Entity {
         //bug ở đây
         for (int i = 0; i < count.size(); i++) {
             int num = count.get(i);
-            if (num <= 25 + i) {
+            if (num <= 50 + i) {
                 Bomb current = (Bomb) HelloApplication.bomb.get(i);
                 Bomb Bomb2 = new Bomb(current.x / Sprite.SCALED_SIZE, current.y / Sprite.SCALED_SIZE, Picture.bomb[1].getFxImage());
                 HelloApplication.bomb.set(i, Bomb2);
             }
-            if (25 + i < num && num <= 50 + i) {
+            if (50 + i < num && num <= 100 + i) {
                 Bomb current = (Bomb) HelloApplication.bomb.get(i);
                 Bomb Bomb2 = new Bomb(current.x / Sprite.SCALED_SIZE, current.y / Sprite.SCALED_SIZE, Picture.bomb[2].getFxImage());
                 HelloApplication.bomb.set(i, Bomb2);
             }
-            if (50 + i < num && num <= 60 + i) {
+            if (100 + i < num && num <= 150 + i) {
                 Bomb current = (Bomb) HelloApplication.bomb.get(i);
                 Bomb Explo1 = new Bomb(current.x / Sprite.SCALED_SIZE,
                         current.y / Sprite.SCALED_SIZE, Picture.explosion[2][0][0].getFxImage());
@@ -81,7 +69,7 @@ public class Bomber extends Entity {
                 }
                 HelloApplication.bomb.set(i, Explo1);
             }
-            if (60 + i < num && num <= 70 + i) {
+            if (150 + i < num && num <= 200 + i) {
                 Bomb current = (Bomb) HelloApplication.bomb.get(i);
                 Bomb Explo2 = new Bomb(current.x / Sprite.SCALED_SIZE,
                         current.y / Sprite.SCALED_SIZE, Picture.explosion[2][1][0].getFxImage());
@@ -100,7 +88,7 @@ public class Bomber extends Entity {
                 }
                 HelloApplication.bomb.set(i, Explo2);
             }
-            if (70 + i < num && num <= 80 + i) {
+            if (200 + i < num && num <= 250 + i) {
                 Bomb current = (Bomb) HelloApplication.bomb.get(i);
                 Bomb Explo3 = new Bomb(current.x / Sprite.SCALED_SIZE,
                         current.y / Sprite.SCALED_SIZE, Picture.explosion[2][2][0].getFxImage());
@@ -119,7 +107,7 @@ public class Bomber extends Entity {
                 }
                 HelloApplication.bomb.set(i, Explo3);
             }
-            if (num > 80 + i) {
+            if (num > 250 + i) {
                 HelloApplication.bomb.remove(i);
                 count.remove(i);
                 HelloApplication.flame.remove(i);
@@ -214,21 +202,4 @@ public class Bomber extends Entity {
         x = x - change_x[direction] * speed;
         y = y - change_y[direction] * speed;
     }
-    public void playMusicc(int i) {
-        sound1.setFile(i);
-        sound1.play();
-        sound1.loop();
-
-    }
-
-    public void stopMusicc() {
-        sound1.stop();
-    }
-    public void playSEE(int i) {
-        sound1.setFile(i);
-        sound1.play();
-
-    }
-
-
 }

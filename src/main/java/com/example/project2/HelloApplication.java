@@ -3,6 +3,7 @@ package com.example.project2;
 import com.example.project2.entities.*;
 import com.example.project2.graphics.Sound;
 import com.example.project2.graphics.Sprite;
+import com.example.project2.menu.Menu;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.event.EventHandler;
@@ -10,7 +11,9 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
 import java.io.File;
@@ -36,6 +39,9 @@ public class HelloApplication extends Application {
     public static Map map = new Map();
     private boolean keyPressed = false;
     private KeyEvent event;
+//    public static MouseEvent mouseEvent;
+    public static int gameState = 0; // 0: gameplay, 1: pause screen, 2: end game
+    private Menu menu = new Menu();
 
     public static void main(String[] args) {
         launch();
@@ -45,6 +51,8 @@ public class HelloApplication extends Application {
     public void start(Stage stage) {
         canvas = new Canvas(Sprite.SCALED_SIZE * HEIGHT, Sprite.SCALED_SIZE * WIDTH);
         gc = canvas.getGraphicsContext2D();
+
+        // gc : items(bomber, ...) -> canvas -> Group root -> scene -> stage
 
         // Tạo root container
         Group root = new Group();
@@ -58,16 +66,47 @@ public class HelloApplication extends Application {
         AnimationTimer timer = new AnimationTimer() {
             @Override
             public void handle(long l) {
+                if (gameState == 0) {
+                    stage.setScene(scene);
+                } else if (gameState == 1) {
+                    stage.setScene(menu.scene);
+                }
                 render();
-                normalUpdate();
-                scene.setOnKeyPressed(keyEvent -> {
-                    keyPressed = true;
-                    event = keyEvent;
-                });
-                scene.setOnKeyReleased(keyEvent -> {
-                    ((Bomber) bomber).setBomb(event);
-                    keyPressed = false;
-                });
+                if (gameState == 0) {
+                    normalUpdate();
+//                    scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
+//                        @Override
+//                        public void handle(KeyEvent keyEvent) {
+//                            keyPressed = true;
+//                            event = keyEvent;
+//                            if (event.getCode() == KeyCode.P) { // p: pause screen
+//                                gameState = 1;
+//                            }
+//                        }
+//                    });
+//                    scene.setOnKeyReleased(new EventHandler<KeyEvent>() {
+//                        @Override
+//                        public void handle(KeyEvent keyEvent) {
+//                            keyPressed = false;
+//                        }
+//                    });
+                    scene.setOnKeyPressed(keyEvent -> {
+                        keyPressed = true;
+                        event = keyEvent;
+                        if (event.getCode() == KeyCode.P) { // p: pause screen
+                            gameState = 1;
+                        }
+                    });
+                    scene.setOnKeyReleased(keyEvent -> {
+                        ((Bomber) bomber).setBomb(event);
+                        keyPressed = false;
+                    });
+                } else if (gameState == 1) {
+                    menu.handleEvent();
+                } else if (gameState == 2) { // end game
+                    this.stop();
+                    stage.close();
+                }
             }
         };
         timer.start();
@@ -100,7 +139,7 @@ public class HelloApplication extends Application {
             System.out.println("File not found");
         }
 
-        playMusic(2);
+        playMusic(0);
     }
 
     public void normalUpdate() {
@@ -117,10 +156,16 @@ public class HelloApplication extends Application {
 
     public void render() {
         gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
-        for (int i = 0; i < HEIGHT; i++) {
-            for (int j = 0; j < WIDTH; j++) {
-                map.sprite[i][j].render(gc);
+        if (gameState == 0) {
+            for (int i = 0; i < HEIGHT; i++) {
+                for (int j = 0; j < WIDTH; j++) {
+                    map.sprite[i][j].render(gc);
+                }
             }
+            entities.forEach(g -> g.render(gc));
+            bomber.render(gc);
+        } else if (gameState == 1) {
+            menu.render();
         }
         entities.forEach(g -> g.render(gc));
         bomb.forEach(g -> g.render(gc));
