@@ -4,7 +4,6 @@ import com.example.project2.entities.*;
 import com.example.project2.graphics.Sprite;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
-import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
