@@ -23,7 +23,6 @@ public class HelloApplication extends Application {
     private GraphicsContext gc;
 
     Sound sound = new Sound();
-    Thread gameThread;
     public static final int WIDTH = 13;
     public static final int HEIGHT = 31;
     public static List<Entity> entities = new ArrayList<>();

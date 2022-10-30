@@ -15,15 +15,7 @@ import java.util.List;
 
 public class Bomber extends Entity {
     Sound sound1 = new Sound();
-    public Bomber(int x, int y, Image img) {
-        super(x, y, img);
-    }
-    public bomb newBomb = new bomb(x / Sprite.SCALED_SIZE, y / Sprite.SCALED_SIZE, Picture.bomb[0].getFxImage());
-
-    public bomb newBomb1 = new bomb(newBomb.x / Sprite.SCALED_SIZE, newBomb.y / Sprite.SCALED_SIZE, Picture.bomb[1].getFxImage());
-     public bomb newBomb2 = new bomb(newBomb1.x / Sprite.SCALED_SIZE, newBomb1.y / Sprite.SCALED_SIZE, Picture.bomb[2].getFxImage());
-    public bomb Explosive1 = new bomb(newBomb2.x / Sprite.SCALED_SIZE, newBomb2.y / Sprite.SCALED_SIZE, Picture.explosion[0][1][1].getFxImage());
-    public int count = 1;
+    public List<Integer> count = new ArrayList<>();
     private final int[] change_x = {-1, 0, 1, 0, 0};
     private final int[] change_y = {0, -1, 0, 1, 0};
 
@@ -195,7 +187,7 @@ public class Bomber extends Entity {
                     break;
                 }
             }
-            if(!check) {
+            if (!check) {
                 Bomb newBomb = new Bomb((x + 10) / Sprite.SCALED_SIZE,
                         (y + 10) / Sprite.SCALED_SIZE, Picture.bomb[0].getFxImage());
                 count.add(0);
@@ -256,6 +248,7 @@ public class Bomber extends Entity {
         x = x - change_x[direction] * speed;
         y = y - change_y[direction] * speed;
     }
+
     public void playMusicc(int i) {
         sound1.setFile(i);
         sound1.play();
@@ -266,6 +259,7 @@ public class Bomber extends Entity {
     public void stopMusicc() {
         sound1.stop();
     }
+
     public void playSEE(int i) {
         sound1.setFile(i);
         sound1.play();
