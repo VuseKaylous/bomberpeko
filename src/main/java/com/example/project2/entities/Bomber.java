@@ -1,10 +1,7 @@
 package com.example.project2.entities;
 
 import com.example.project2.HelloApplication;
-import com.example.project2.entities.*;
-import com.example.project2.graphics.Sound;
 import com.example.project2.graphics.Sprite;
-import com.example.project2.graphics.SpriteSheet;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
@@ -14,8 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Bomber extends Entity {
-    Sound sound1 = new Sound();
-    public List<Integer> count = new ArrayList<>();
+    public static List<Integer> count = new ArrayList<>();
     private final int[] change_x = {-1, 0, 1, 0, 0};
     private final int[] change_y = {0, -1, 0, 1, 0};
 
@@ -248,23 +244,4 @@ public class Bomber extends Entity {
         x = x - change_x[direction] * speed;
         y = y - change_y[direction] * speed;
     }
-
-    public void playMusicc(int i) {
-        sound1.setFile(i);
-        sound1.play();
-        sound1.loop();
-
-    }
-
-    public void stopMusicc() {
-        sound1.stop();
-    }
-
-    public void playSEE(int i) {
-        sound1.setFile(i);
-        sound1.play();
-
-    }
-
-
 }
