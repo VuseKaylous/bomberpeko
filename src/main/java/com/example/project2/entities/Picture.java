@@ -21,11 +21,11 @@ public class Picture {
 
     public Picture() {
         for (int i = 0; i < 3; i++) {
-            player[0][i] = new Sprite(Sprite.DEFAULT_SIZE, 0, i, SpriteSheet.tiles, 12, 12);
-            player[1][i] = new Sprite(Sprite.DEFAULT_SIZE, 1, i, SpriteSheet.tiles, 12, 12);
-            player[2][i] = new Sprite(Sprite.DEFAULT_SIZE, 2, i, SpriteSheet.tiles, 12, 12);
-            player[3][i] = new Sprite(Sprite.DEFAULT_SIZE, 3, i, SpriteSheet.tiles, 12, 12);
-            player[4][i] = new Sprite(Sprite.DEFAULT_SIZE, 4 + i, 2, SpriteSheet.tiles, 12, 12);
+            player[0][i] = new Sprite(Sprite.DEFAULT_SIZE, 0, i, SpriteSheet.tiles, 10, 10);
+            player[1][i] = new Sprite(Sprite.DEFAULT_SIZE, 1, i, SpriteSheet.tiles, 10, 10);
+            player[2][i] = new Sprite(Sprite.DEFAULT_SIZE, 2, i, SpriteSheet.tiles, 10, 10);
+            player[3][i] = new Sprite(Sprite.DEFAULT_SIZE, 3, i, SpriteSheet.tiles, 10, 10);
+            player[4][i] = new Sprite(Sprite.DEFAULT_SIZE, 4 + i, 2, SpriteSheet.tiles, 10, 10);
         }
         for (int i = 0; i < 2; i++) {
             for (int j = 0; j < 3; j++) {

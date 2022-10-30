@@ -60,8 +60,8 @@ public class HelloApplication extends Application {
                     event = keyEvent;
                 });
                 scene.setOnKeyReleased(keyEvent -> {
-                    ((Bomber) bomber).setBomb(event);
                     keyPressed = false;
+                    ((Bomber) bomber).setBomb(event);
                 });
             }
         };
