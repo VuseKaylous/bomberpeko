@@ -70,15 +70,24 @@ public class Bomber extends Entity {
                         if (HelloApplication.map.sprite[newX][newY] instanceof Brick) {
                             if (!((Brick) HelloApplication.map.sprite[newX][newY]).isDestroyed()) {
                                 HelloApplication.map.sprite[newX][newY] = new Brick(newX, newY, Picture.brick[1].getFxImage());
+                            } else {
+                                Bomb Flame;
+                                if (j % 2 == 1) {
+                                    Flame = new Bomb(newX, newY, Picture.explosion[0][1][j - 1].getFxImage());
+                                } else {
+                                    Flame = new Bomb(newX, newY, Picture.explosion[1][1][j].getFxImage());
+                                }
+                                HelloApplication.flame.get(i).add(Flame);
                             }
-                        }
-                        Bomb Flame;
-                        if (j % 2 == 1) {
-                            Flame = new Bomb(newX, newY, Picture.explosion[0][0][j - 1].getFxImage());
                         } else {
-                            Flame = new Bomb(newX, newY, Picture.explosion[1][0][j].getFxImage());
+                            Bomb Flame;
+                            if (j % 2 == 1) {
+                                Flame = new Bomb(newX, newY, Picture.explosion[0][1][j - 1].getFxImage());
+                            } else {
+                                Flame = new Bomb(newX, newY, Picture.explosion[1][1][j].getFxImage());
+                            }
+                            HelloApplication.flame.get(i).add(Flame);
                         }
-                        HelloApplication.flame.get(i).add(Flame);
                     }
                 }
             }
@@ -93,15 +102,24 @@ public class Bomber extends Entity {
                         if (HelloApplication.map.sprite[newX][newY] instanceof Brick) {
                             if (!((Brick) HelloApplication.map.sprite[newX][newY]).isDestroyed()) {
                                 HelloApplication.map.sprite[newX][newY] = new Brick(newX, newY, Picture.brick[2].getFxImage());
+                            } else {
+                                Bomb Flame;
+                                if (j % 2 == 1) {
+                                    Flame = new Bomb(newX, newY, Picture.explosion[0][1][j - 1].getFxImage());
+                                } else {
+                                    Flame = new Bomb(newX, newY, Picture.explosion[1][1][j].getFxImage());
+                                }
+                                HelloApplication.flame.get(i).add(Flame);
                             }
-                        }
-                        Bomb Flame;
-                        if (j % 2 == 1) {
-                            Flame = new Bomb(newX, newY, Picture.explosion[0][1][j - 1].getFxImage());
                         } else {
-                            Flame = new Bomb(newX, newY, Picture.explosion[1][1][j].getFxImage());
+                            Bomb Flame;
+                            if (j % 2 == 1) {
+                                Flame = new Bomb(newX, newY, Picture.explosion[0][1][j - 1].getFxImage());
+                            } else {
+                                Flame = new Bomb(newX, newY, Picture.explosion[1][1][j].getFxImage());
+                            }
+                            HelloApplication.flame.get(i).add(Flame);
                         }
-                        HelloApplication.flame.get(i).add(Flame);
                     }
                 }
             }
@@ -116,15 +134,24 @@ public class Bomber extends Entity {
                         if (HelloApplication.map.sprite[newX][newY] instanceof Brick) {
                             if (!((Brick) HelloApplication.map.sprite[newX][newY]).isDestroyed()) {
                                 HelloApplication.map.sprite[newX][newY] = new Brick(newX, newY, Picture.brick[3].getFxImage());
+                            } else {
+                                Bomb Flame;
+                                if (j % 2 == 1) {
+                                    Flame = new Bomb(newX, newY, Picture.explosion[0][1][j - 1].getFxImage());
+                                } else {
+                                    Flame = new Bomb(newX, newY, Picture.explosion[1][1][j].getFxImage());
+                                }
+                                HelloApplication.flame.get(i).add(Flame);
                             }
-                        }
-                        Bomb Flame;
-                        if (j % 2 == 1) {
-                            Flame = new Bomb(newX, newY, Picture.explosion[0][2][j - 1].getFxImage());
                         } else {
-                            Flame = new Bomb(newX, newY, Picture.explosion[1][2][j].getFxImage());
+                            Bomb Flame;
+                            if (j % 2 == 1) {
+                                Flame = new Bomb(newX, newY, Picture.explosion[0][1][j - 1].getFxImage());
+                            } else {
+                                Flame = new Bomb(newX, newY, Picture.explosion[1][1][j].getFxImage());
+                            }
+                            HelloApplication.flame.get(i).add(Flame);
                         }
-                        HelloApplication.flame.get(i).add(Flame);
                     }
                 }
             }

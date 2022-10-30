@@ -12,7 +12,6 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
 import java.io.File;
@@ -26,7 +25,6 @@ public class HelloApplication extends Application {
     private GraphicsContext gc;
 
     Sound sound = new Sound();
-    Thread gameThread;
     public static final int WIDTH = 13;
     public static final int HEIGHT = 31;
     public static List<Entity> entities = new ArrayList<>();
@@ -38,9 +36,8 @@ public class HelloApplication extends Application {
     public static Map map = new Map();
     private boolean keyPressed = false;
     private KeyEvent event;
-//    public static MouseEvent mouseEvent;
     public static int gameState = 0; // 0: gameplay, 1: pause screen, 2: end game
-    private Menu menu = new Menu();
+    private final Menu menu = new Menu();
 
     public static void main(String[] args) {
         launch();
@@ -71,22 +68,6 @@ public class HelloApplication extends Application {
                 render();
                 if (gameState == 0) {
                     normalUpdate();
-//                    scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
-//                        @Override
-//                        public void handle(KeyEvent keyEvent) {
-//                            keyPressed = true;
-//                            event = keyEvent;
-//                            if (event.getCode() == KeyCode.P) { // p: pause screen
-//                                gameState = 1;
-//                            }
-//                        }
-//                    });
-//                    scene.setOnKeyReleased(new EventHandler<KeyEvent>() {
-//                        @Override
-//                        public void handle(KeyEvent keyEvent) {
-//                            keyPressed = false;
-//                        }
-//                    });
                     scene.setOnKeyPressed(keyEvent -> {
                         keyPressed = true;
                         event = keyEvent;
@@ -182,16 +163,6 @@ public class HelloApplication extends Application {
         sound.setFile(i);
         sound.play();
         sound.loop();
-
-    }
-
-    public void stopMusic() {
-        sound.stop();
-    }
-
-    public void playSE(int i) {
-        sound.setFile(i);
-        sound.play();
 
     }
 }
