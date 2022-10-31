@@ -2,6 +2,8 @@ package com.example.project2.graphics;
 
 import javafx.scene.image.*;
 
+import java.util.Arrays;
+
 public class Sprite {
 
     public static final int DEFAULT_SIZE = 16;
@@ -39,9 +41,7 @@ public class Sprite {
     }
 
     private void setColor(int color) {
-        for (int i = 0; i < _pixels.length; i++) {
-            _pixels[i] = color;
-        }
+        Arrays.fill(_pixels, color);
     }
 
     private void load() {
@@ -94,13 +94,13 @@ public class Sprite {
             }
         }
         Image input = new ImageView(wr).getImage();
-        return resample(input, SCALED_SIZE / DEFAULT_SIZE);
+        return resample(input);
     }
 
-    private Image resample(Image input, int scaleFactor) {
+    private Image resample(Image input) {
         final int W = (int) input.getWidth();
         final int H = (int) input.getHeight();
-        final int S = scaleFactor;
+        final int S = 2;
 
         WritableImage output = new WritableImage(
                 W * S,

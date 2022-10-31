@@ -4,7 +4,7 @@ import javafx.scene.image.Image;
 import javafx.scene.input.KeyEvent;
 
 public class Brick extends Entity {
-    private boolean destroyed;
+    public boolean destroyed;
     private int frame;
 
     public Brick(int x, int y, Image img) {
