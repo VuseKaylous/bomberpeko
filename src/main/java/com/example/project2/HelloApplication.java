@@ -31,15 +31,15 @@ public class HelloApplication extends Application {
     public static final int WIDTH = 13;
     public static final int HEIGHT = 31;
     public static List<Entity> entities = new ArrayList<>();
+    public static List<Entity> player = new ArrayList<>();
     public static List<Entity> bomb = new ArrayList<>();
     public static List<List<Entity>> flame = new ArrayList<>();
     private Entity bomber;
 
-    private final Picture pictures = new Picture();
+    public Picture pictures = new Picture();
     public static Map map = new Map();
     private boolean keyPressed = false;
     private KeyEvent event;
-//    public static MouseEvent mouseEvent;
     public static int gameState = 0; // 0: gameplay, 1: pause screen, 2: end game
     private Menu menu = new Menu();
 
