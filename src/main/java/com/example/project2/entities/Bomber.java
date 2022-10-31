@@ -105,77 +105,136 @@ public class Bomber extends Entity {
     }
 
     public void updateImage() {
-        //bug ở đây
         for (int i = 0; i < count.size(); i++) {
             int num = count.get(i);
-            if (num <= 50 + i) {
+            if (num <= 20 + i) {
                 Bomb current = (Bomb) HelloApplication.bomb.get(i);
-                Bomb Bomb2 = new Bomb(current.x / Sprite.SCALED_SIZE, current.y / Sprite.SCALED_SIZE, Picture.bomb[1].getFxImage());
+                Bomb Bomb2 = new Bomb(current.getSmallX(), current.getSmallY(), Picture.bomb[1].getFxImage());
                 HelloApplication.bomb.set(i, Bomb2);
             }
-            if (50 + i < num && num <= 100 + i) {
+            if (20 + i < num && num <= 40 + i) {
                 Bomb current = (Bomb) HelloApplication.bomb.get(i);
-                Bomb Bomb2 = new Bomb(current.x / Sprite.SCALED_SIZE, current.y / Sprite.SCALED_SIZE, Picture.bomb[2].getFxImage());
+                Bomb Bomb2 = new Bomb(current.getSmallX(), current.getSmallY(), Picture.bomb[0].getFxImage());
                 HelloApplication.bomb.set(i, Bomb2);
             }
-            if (100 + i < num && num <= 150 + i) {
+            if (40 + i < num && num <= 60 + i) {
                 Bomb current = (Bomb) HelloApplication.bomb.get(i);
-                Bomb Explo1 = new Bomb(current.x / Sprite.SCALED_SIZE,
-                        current.y / Sprite.SCALED_SIZE, Picture.explosion[2][0][0].getFxImage());
-                for (int j = 0; j < 4; j++) {
-                    if (validSquare(current.getSmallX() + change_x[j], current.getSmallY() + change_y[j])) {
-                        Bomb Flame;
-                        if (j % 2 == 1) {
-                            Flame = new Bomb(current.getSmallX() + change_x[j],
-                                    current.getSmallY() + change_y[j], Picture.explosion[0][0][j - 1].getFxImage());
-                        } else {
-                            Flame = new Bomb(current.getSmallX() + change_x[j],
-                                    current.getSmallY() + change_y[j], Picture.explosion[1][0][j].getFxImage());
-                        }
-                        HelloApplication.flame.get(i).add(Flame);
-                    }
-                }
+                Bomb Bomb2 = new Bomb(current.getSmallX(), current.getSmallY(), Picture.bomb[1].getFxImage());
+                HelloApplication.bomb.set(i, Bomb2);
+            }
+            if (60 + i < num && num <= 80 + i) {
+                Bomb current = (Bomb) HelloApplication.bomb.get(i);
+                Bomb Bomb2 = new Bomb(current.getSmallX(), current.getSmallY(), Picture.bomb[2].getFxImage());
+                HelloApplication.bomb.set(i, Bomb2);
+            }
+            if (80 + i < num && num <= 82 + i) {
+                Bomb current = (Bomb) HelloApplication.bomb.get(i);
+                Bomb Explo1 = new Bomb(current.getSmallX(), current.getSmallY(), Picture.explosion[2][0][0].getFxImage());
                 HelloApplication.bomb.set(i, Explo1);
-            }
-            if (150 + i < num && num <= 200 + i) {
-                Bomb current = (Bomb) HelloApplication.bomb.get(i);
-                Bomb Explo2 = new Bomb(current.x / Sprite.SCALED_SIZE,
-                        current.y / Sprite.SCALED_SIZE, Picture.explosion[2][1][0].getFxImage());
                 for (int j = 0; j < 4; j++) {
-                    if (validSquare(current.getSmallX() + change_x[j], current.getSmallY() + change_y[j])) {
-                        Bomb Flame;
-                        if (j % 2 == 1) {
-                            Flame = new Bomb(current.getSmallX() + change_x[j],
-                                    current.getSmallY() + change_y[j], Picture.explosion[0][1][j - 1].getFxImage());
+                    int newX = current.getSmallX() + change_x[j];
+                    int newY = current.getSmallY() + change_y[j];
+                    if (validSquare(newX, newY)) {
+                        if (HelloApplication.map.sprite[newX][newY] instanceof Brick) {
+                            if (!((Brick) HelloApplication.map.sprite[newX][newY]).isDestroyed()) {
+                                HelloApplication.map.sprite[newX][newY] = new Brick(newX, newY, Picture.brick[1].getFxImage());
+                            } else {
+                                Bomb Flame;
+                                if (j % 2 == 1) {
+                                    Flame = new Bomb(newX, newY, Picture.explosion[0][1][j - 1].getFxImage());
+                                } else {
+                                    Flame = new Bomb(newX, newY, Picture.explosion[1][1][j].getFxImage());
+                                }
+                                HelloApplication.flame.get(i).add(Flame);
+                            }
                         } else {
-                            Flame = new Bomb(current.getSmallX() + change_x[j],
-                                    current.getSmallY() + change_y[j], Picture.explosion[1][1][j].getFxImage());
+                            Bomb Flame;
+                            if (j % 2 == 1) {
+                                Flame = new Bomb(newX, newY, Picture.explosion[0][1][j - 1].getFxImage());
+                            } else {
+                                Flame = new Bomb(newX, newY, Picture.explosion[1][1][j].getFxImage());
+                            }
+                            HelloApplication.flame.get(i).add(Flame);
                         }
-                        HelloApplication.flame.get(i).add(Flame);
                     }
                 }
+            }
+            if (82 + i < num && num <= 84 + i) {
+                Bomb current = (Bomb) HelloApplication.bomb.get(i);
+                Bomb Explo2 = new Bomb(current.getSmallX(), current.getSmallY(), Picture.explosion[2][1][0].getFxImage());
                 HelloApplication.bomb.set(i, Explo2);
-            }
-            if (200 + i < num && num <= 250 + i) {
-                Bomb current = (Bomb) HelloApplication.bomb.get(i);
-                Bomb Explo3 = new Bomb(current.x / Sprite.SCALED_SIZE,
-                        current.y / Sprite.SCALED_SIZE, Picture.explosion[2][2][0].getFxImage());
                 for (int j = 0; j < 4; j++) {
-                    if (validSquare(current.getSmallX() + change_x[j], current.getSmallY() + change_y[j])) {
-                        Bomb Flame;
-                        if (j % 2 == 1) {
-                            Flame = new Bomb(current.getSmallX() + change_x[j],
-                                    current.getSmallY() + change_y[j], Picture.explosion[0][2][j - 1].getFxImage());
+                    int newX = current.getSmallX() + change_x[j];
+                    int newY = current.getSmallY() + change_y[j];
+                    if (validSquare(newX, newY)) {
+                        if (HelloApplication.map.sprite[newX][newY] instanceof Brick) {
+                            if (!((Brick) HelloApplication.map.sprite[newX][newY]).isDestroyed()) {
+                                HelloApplication.map.sprite[newX][newY] = new Brick(newX, newY, Picture.brick[2].getFxImage());
+                            } else {
+                                Bomb Flame;
+                                if (j % 2 == 1) {
+                                    Flame = new Bomb(newX, newY, Picture.explosion[0][1][j - 1].getFxImage());
+                                } else {
+                                    Flame = new Bomb(newX, newY, Picture.explosion[1][1][j].getFxImage());
+                                }
+                                HelloApplication.flame.get(i).add(Flame);
+                            }
                         } else {
-                            Flame = new Bomb(current.getSmallX() + change_x[j],
-                                    current.getSmallY() + change_y[j], Picture.explosion[1][2][j].getFxImage());
+                            Bomb Flame;
+                            if (j % 2 == 1) {
+                                Flame = new Bomb(newX, newY, Picture.explosion[0][1][j - 1].getFxImage());
+                            } else {
+                                Flame = new Bomb(newX, newY, Picture.explosion[1][1][j].getFxImage());
+                            }
+                            HelloApplication.flame.get(i).add(Flame);
                         }
-                        HelloApplication.flame.get(i).add(Flame);
                     }
                 }
-                HelloApplication.bomb.set(i, Explo3);
             }
-            if (num > 250 + i) {
+            if (84 + i < num && num <= 86 + i) {
+                Bomb current = (Bomb) HelloApplication.bomb.get(i);
+                Bomb Explo3 = new Bomb(current.getSmallX(), current.getSmallY(), Picture.explosion[2][2][0].getFxImage());
+                HelloApplication.bomb.set(i, Explo3);
+                for (int j = 0; j < 4; j++) {
+                    int newX = current.getSmallX() + change_x[j];
+                    int newY = current.getSmallY() + change_y[j];
+                    if (validSquare(newX, newY)) {
+                        if (HelloApplication.map.sprite[newX][newY] instanceof Brick) {
+                            if (!((Brick) HelloApplication.map.sprite[newX][newY]).isDestroyed()) {
+                                HelloApplication.map.sprite[newX][newY] = new Brick(newX, newY, Picture.brick[3].getFxImage());
+                            } else {
+                                Bomb Flame;
+                                if (j % 2 == 1) {
+                                    Flame = new Bomb(newX, newY, Picture.explosion[0][1][j - 1].getFxImage());
+                                } else {
+                                    Flame = new Bomb(newX, newY, Picture.explosion[1][1][j].getFxImage());
+                                }
+                                HelloApplication.flame.get(i).add(Flame);
+                            }
+                        } else {
+                            Bomb Flame;
+                            if (j % 2 == 1) {
+                                Flame = new Bomb(newX, newY, Picture.explosion[0][1][j - 1].getFxImage());
+                            } else {
+                                Flame = new Bomb(newX, newY, Picture.explosion[1][1][j].getFxImage());
+                            }
+                            HelloApplication.flame.get(i).add(Flame);
+                        }
+                    }
+                }
+            }
+            if (num > 86 + i) {
+                for (int j = 0; j < 4; j++) {
+                    int newX = HelloApplication.bomb.get(i).getSmallX() + change_x[j];
+                    int newY = HelloApplication.bomb.get(i).getSmallY() + change_y[j];
+                    if (validSquare(newX, newY)) {
+                        if (HelloApplication.map.sprite[newX][newY] instanceof Brick) {
+                            if (!((Brick) HelloApplication.map.sprite[newX][newY]).isDestroyed()) {
+                                ((Brick) HelloApplication.map.sprite[newX][newY]).destroyed = true;
+                            }
+                        }
+                    }
+                }
                 HelloApplication.bomb.remove(i);
                 count.remove(i);
                 HelloApplication.flame.remove(i);
@@ -211,13 +270,23 @@ public class Bomber extends Entity {
     }
 
     public void setBomb(KeyEvent event) {
+        boolean check = false;
         KeyCode key = event.getCode();
         if (key == KeyCode.Q) {
-            Bomb newBomb = new Bomb(x / Sprite.SCALED_SIZE, y / Sprite.SCALED_SIZE, Picture.bomb[0].getFxImage());
-            count.add(0);
-            HelloApplication.bomb.add(newBomb);
-            List<Entity> l = new ArrayList<>();
-            HelloApplication.flame.add(l);
+            for (Entity bomb : HelloApplication.bomb) {
+                if (bomb.getSmallX() == (x + 10) / Sprite.SCALED_SIZE && bomb.getSmallY() == (y + 10) / Sprite.SCALED_SIZE) {
+                    check = true;
+                    break;
+                }
+            }
+            if (!check) {
+                Bomb newBomb = new Bomb((x + 10) / Sprite.SCALED_SIZE,
+                        (y + 10) / Sprite.SCALED_SIZE, Picture.bomb[0].getFxImage());
+                count.add(0);
+                HelloApplication.bomb.add(newBomb);
+                List<Entity> l = new ArrayList<>();
+                HelloApplication.flame.add(l);
+            }
         }
     }
 

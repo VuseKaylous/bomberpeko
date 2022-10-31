@@ -6,14 +6,12 @@ import com.example.project2.graphics.Sprite;
 import com.example.project2.menu.Menu;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
-import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
 import java.io.File;
@@ -27,7 +25,6 @@ public class HelloApplication extends Application {
     private GraphicsContext gc;
 
     Sound sound = new Sound();
-    Thread gameThread;
     public static final int WIDTH = 13;
     public static final int HEIGHT = 31;
     public static List<Entity> entities = new ArrayList<>();
@@ -41,7 +38,7 @@ public class HelloApplication extends Application {
     private boolean keyPressed = false;
     private KeyEvent event;
     public static int gameState = 0; // 0: gameplay, 1: pause screen, 2: end game
-    private Menu menu = new Menu();
+    private final Menu menu = new Menu();
 
     public static void main(String[] args) {
         launch();
@@ -51,8 +48,6 @@ public class HelloApplication extends Application {
     public void start(Stage stage) {
         canvas = new Canvas(Sprite.SCALED_SIZE * HEIGHT, Sprite.SCALED_SIZE * WIDTH);
         gc = canvas.getGraphicsContext2D();
-
-        // gc : items(bomber, ...) -> canvas -> Group root -> scene -> stage
 
         // Tạo root container
         Group root = new Group();
@@ -74,22 +69,6 @@ public class HelloApplication extends Application {
                 render();
                 if (gameState == 0) {
                     normalUpdate();
-//                    scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
-//                        @Override
-//                        public void handle(KeyEvent keyEvent) {
-//                            keyPressed = true;
-//                            event = keyEvent;
-//                            if (event.getCode() == KeyCode.P) { // p: pause screen
-//                                gameState = 1;
-//                            }
-//                        }
-//                    });
-//                    scene.setOnKeyReleased(new EventHandler<KeyEvent>() {
-//                        @Override
-//                        public void handle(KeyEvent keyEvent) {
-//                            keyPressed = false;
-//                        }
-//                    });
                     scene.setOnKeyPressed(keyEvent -> {
                         keyPressed = true;
                         event = keyEvent;
@@ -150,7 +129,6 @@ public class HelloApplication extends Application {
             entity.update();
         }
         bomber.update();
-        //bomb.update();
     }
 
 
@@ -159,7 +137,13 @@ public class HelloApplication extends Application {
         if (gameState == 0) {
             for (int i = 0; i < HEIGHT; i++) {
                 for (int j = 0; j < WIDTH; j++) {
-                    map.sprite[i][j].render(gc);
+                    if (map.sprite[i][j] instanceof Brick) {
+                        if (!((Brick) map.sprite[i][j]).isDestroyed()) {
+                            map.sprite[i][j].render(gc);
+                        } else {
+                            map.tool[i][j].render(gc);
+                        }
+                    } else map.sprite[i][j].render(gc);
                 }
             }
             entities.forEach(g -> g.render(gc));
@@ -167,9 +151,10 @@ public class HelloApplication extends Application {
         } else if (gameState == 1) {
             menu.render();
         }
+
         entities.forEach(g -> g.render(gc));
         bomb.forEach(g -> g.render(gc));
-        for(List<Entity> e : flame) {
+        for (List<Entity> e : flame) {
             e.forEach(g -> g.render(gc));
         }
         bomber.render(gc);
@@ -179,16 +164,6 @@ public class HelloApplication extends Application {
         sound.setFile(i);
         sound.play();
         sound.loop();
-
-    }
-
-    public void stopMusic() {
-        sound.stop();
-    }
-
-    public void playSE(int i) {
-        sound.setFile(i);
-        sound.play();
 
     }
 }
