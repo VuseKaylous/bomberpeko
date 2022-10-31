@@ -82,7 +82,7 @@
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="2a4cc65c-99d6-4c51-92c0-f372add3f834" name="Changes" comment="" />
+      <changelist id="c5008602-0af8-426c-94e2-2d82db46798d" name="Changes" comment="rac" />
       <created>1663817269468</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
@@ -103,7 +103,19 @@
       <map>
         <entry key="MAIN">
           <value>
-            <State />
+            <State>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="origin/master" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
           </value>
         </entry>
       </map>

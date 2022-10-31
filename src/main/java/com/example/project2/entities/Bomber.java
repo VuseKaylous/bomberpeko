@@ -1,6 +1,7 @@
 package com.example.project2.entities;
 
 import com.example.project2.HelloApplication;
+import com.example.project2.graphics.Sound;
 import com.example.project2.graphics.Sprite;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.image.Image;
@@ -14,6 +15,25 @@ public class Bomber extends Entity {
     public static List<Integer> count = new ArrayList<>();
     private final int[] change_x = {-1, 0, 1, 0, 0};
     private final int[] change_y = {0, -1, 0, 1, 0};
+    Sound soundtmp = new Sound();
+    public String dir = "";
+    int count_move = 0;
+    //    Bomber left = new Bomber(x, y, Picture.player[4][2].getFxImage());
+//    Bomber left1 = new Bomber(x, y, Picture.player[4][1].getFxImage());
+//    Bomber left2 = new Bomber(x, y, Picture.player[4][0].getFxImage());
+    Image left = Picture.player[3][2].getFxImage();
+    Image left1 = Picture.player[3][1].getFxImage();
+    Image left2 = Picture.player[3][0].getFxImage();
+    Image right = Picture.player[1][2].getFxImage();
+    Image right1 = Picture.player[1][1].getFxImage();
+    Image right2 = Picture.player[1][0].getFxImage();
+    Image up = Picture.player[0][2].getFxImage();
+    Image up1 = Picture.player[0][1].getFxImage();
+    Image up2 = Picture.player[0][0].getFxImage();
+    Image down = Picture.player[2][2].getFxImage();
+    Image down1 = Picture.player[2][1].getFxImage();
+    Image down2 = Picture.player[2][0].getFxImage();
+
 
     public Bomber(int x, int y, Image img) {
         super(x, y, img);
@@ -22,8 +42,11 @@ public class Bomber extends Entity {
     @Override
     public void update() {
         //biến count để đếm thời gian đổi ảnh
+
+        System.out.println(count_move);
         count.replaceAll(integer -> integer + 1);
         updateImage();
+        bomberUpdateImage();
     }
 
     private boolean validSquare(int fakeX, int fakeY) {
@@ -34,6 +57,51 @@ public class Bomber extends Entity {
             return true;
         }
         return HelloApplication.map.sprite[fakeX][fakeY] instanceof Brick;
+    }
+
+    public void bomberUpdateImage() {
+        switch (dir) {
+            case "left":
+                if (count_move == 0) {
+                    img = left;
+                } else if (count_move == 10) {
+                    img = left1;
+                } else if (count_move == 20) {
+                    img = left2;
+                    count_move = 0;
+                }
+                break;
+            case "right":
+                if (count_move == 0) {
+                    img = right;
+                } else if (count_move == 10) {
+                    img = right1;
+                } else if (count_move == 20) {
+                    img = right2;
+                    count_move = 0;
+                }
+                break;
+            case "up":
+                if (count_move == 0) {
+                    img = up;
+                } else if (count_move == 10) {
+                    img = up1;
+                } else if (count_move == 20) {
+                    img = up2;
+                    count_move = 0;
+                }
+                break;
+            case "down":
+                if (count_move == 0) {
+                    img = down;
+                } else if (count_move == 10) {
+                    img = down1;
+                } else if (count_move == 20) {
+                    img = down2;
+                    count_move = 0;
+                }
+                break;
+        }
     }
 
     public void updateImage() {
@@ -171,6 +239,7 @@ public class Bomber extends Entity {
                 count.remove(i);
                 HelloApplication.flame.remove(i);
                 i--;
+                //playMusic(1); chưa biết nhét mô
             }
         }
     }
@@ -226,10 +295,26 @@ public class Bomber extends Entity {
         int direction = 4; // ko co event thi dung yen
         KeyCode key = event.getCode();
         switch (key) {
-            case LEFT -> direction = 0;
-            case UP -> direction = 1;
-            case RIGHT -> direction = 2;
-            case DOWN -> direction = 3;
+            case LEFT:
+                count_move++;
+                direction = 0;
+                dir = "left";
+                break;
+            case UP:
+                count_move++;
+                direction = 1;
+                dir = "up";
+                break;
+            case RIGHT:
+                count_move++;
+                direction = 2;
+                dir = "right";
+                break;
+            case DOWN:
+                count_move++;
+                direction = 3;
+                dir = "down";
+                break;
         }
         int speed = 2;
         x = x + change_x[direction] * speed;
@@ -270,5 +355,22 @@ public class Bomber extends Entity {
         }
         x = x - change_x[direction] * speed;
         y = y - change_y[direction] * speed;
+    }
+
+    public void playMusic(int i) {
+        soundtmp.setFile(i);
+        soundtmp.play();
+        soundtmp.loop();
+
+    }
+
+    public void stopMusic() {
+        soundtmp.stop();
+    }
+
+    public void playSE(int i) {
+        soundtmp.setFile(i);
+        soundtmp.play();
+
     }
 }
