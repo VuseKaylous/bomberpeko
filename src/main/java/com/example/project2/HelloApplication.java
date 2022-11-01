@@ -32,7 +32,7 @@ public class HelloApplication extends Application {
     public static List<List<Bomb>> flame = new ArrayList<>();
     private Bomber bomber;
 
-    private final Picture pictures = new Picture();
+    public Picture pictures = new Picture();
     public static Map map = new Map();
     private boolean keyPressed = false;
     private KeyEvent event;
