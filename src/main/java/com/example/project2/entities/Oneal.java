@@ -59,13 +59,13 @@ public class Oneal extends Entity {
 
     public void updateImage() {
         if (10 < cnt && cnt <= 16) {
-            img = Picture.balloom[2][0].getFxImage();
+            img = Picture.oneal[2][0].getFxImage();
         } else if (16 < cnt && cnt <= 22) {
-            img = Picture.mob_dead[0].getFxImage();
+            img = Picture.mob_dead[0][1].getFxImage();
         } else if (22 < cnt && cnt <= 28) {
-            img = Picture.mob_dead[1].getFxImage();
+            img = Picture.mob_dead[1][1].getFxImage();
         } else if (28 < cnt && cnt <= 34) {
-            img = Picture.mob_dead[2].getFxImage();
+            img = Picture.mob_dead[2][1].getFxImage();
         }
     }
 

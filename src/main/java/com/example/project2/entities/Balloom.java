@@ -34,11 +34,11 @@ public class Balloom extends Entity {
         if (10 < cnt && cnt <= 16) {
             img = Picture.balloom[2][0].getFxImage();
         } else if (16 < cnt && cnt <= 22) {
-            img = Picture.mob_dead[0].getFxImage();
+            img = Picture.mob_dead[0][0].getFxImage();
         } else if (22 < cnt && cnt <= 28) {
-            img = Picture.mob_dead[1].getFxImage();
+            img = Picture.mob_dead[1][0].getFxImage();
         } else if (28 < cnt && cnt <= 34) {
-            img = Picture.mob_dead[2].getFxImage();
+            img = Picture.mob_dead[2][0].getFxImage();
         }
     }
 

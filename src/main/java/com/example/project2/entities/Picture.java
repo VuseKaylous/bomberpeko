@@ -11,7 +11,7 @@ public class Picture {
     public Sprite[][] minvo = new Sprite[3][3]; // left - right - dead
     public Sprite[][] kondoria = new Sprite[3][3]; // (left - right - dead), (time)
     public static Sprite[][][] explosion = new Sprite[3][3][3]; // (vertical, horizontal, middle) - (small,medium,big), (length)
-    public static Sprite[] mob_dead = new Sprite[3];
+    public static Sprite[][] mob_dead = new Sprite[3][2]; // (time1, time2, time3) - (normal, blue)
     public static Sprite[] bomb = new Sprite[3];
     public static Sprite[] brick = new Sprite[4]; // normal, exploded 1-2-3
     public static Sprite[] powerup = new Sprite[7]; //bomb - flames - speed - wallpass - detonator - bombpass - flamepass
@@ -51,7 +51,8 @@ public class Picture {
         }
 
         for (int i = 0; i < 3; i++) {
-            mob_dead[i] = new Sprite(Sprite.DEFAULT_SIZE, 15, i, SpriteSheet.tiles, 16, 16);
+            mob_dead[i][0] = new Sprite(Sprite.DEFAULT_SIZE, 15, i, SpriteSheet.tiles, 16, 16);
+            mob_dead[i][1] = new Sprite(Sprite.DEFAULT_SIZE, 15, i + 10, SpriteSheet.tiles, 16, 16);
             bomb[i] = new Sprite(Sprite.DEFAULT_SIZE, i, 3, SpriteSheet.tiles, 13, 15);
         }
         for (int i = 0; i < 4; i++) {
