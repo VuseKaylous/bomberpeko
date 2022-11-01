@@ -46,9 +46,9 @@ public abstract class Entity {
         if (this == e) {
             return false;
         } else {
-            for (int i = e.x; i < e.x + Sprite.SCALED_SIZE; i++) {
-                for (int j = e.y; j < e.y + Sprite.SCALED_SIZE; j++) {
-                    if (x <= i && i < x + Sprite.SCALED_SIZE && y <= j && j < y + Sprite.SCALED_SIZE) {
+            for (int i = e.x; i <= e.x + Sprite.SCALED_SIZE; i++) {
+                for (int j = e.y; j <= e.y + Sprite.SCALED_SIZE; j++) {
+                    if (x <= i && i <= x + Sprite.SCALED_SIZE && y <= j && j <= y + Sprite.SCALED_SIZE) {
                         return true;
                     }
                 }

@@ -28,9 +28,9 @@ public class HelloApplication extends Application {
     public static final int WIDTH = 13;
     public static final int HEIGHT = 31;
     public static List<Entity> entities = new ArrayList<>();
-    public static List<Entity> bomb = new ArrayList<>();
-    public static List<List<Entity>> flame = new ArrayList<>();
-    private Entity bomber;
+    public static List<Bomb> bomb = new ArrayList<>();
+    public static List<List<Bomb>> flame = new ArrayList<>();
+    private Bomber bomber;
 
     private final Picture pictures = new Picture();
     public static Map map = new Map();
@@ -76,7 +76,7 @@ public class HelloApplication extends Application {
                         }
                     });
                     scene.setOnKeyReleased(keyEvent -> {
-                        ((Bomber) bomber).setBomb(event);
+                        bomber.setBomb(event);
                         keyPressed = false;
                     });
                 } else if (gameState == 1) {
@@ -104,10 +104,10 @@ public class HelloApplication extends Application {
                     if (data.charAt(x) == 'p') {
                         bomber = new Bomber(x, y, Picture.player[1][0].getFxImage());
                     } else if (data.charAt(x) == '1') {
-                        object = new Balloom(x, y, pictures.balloom[0][0].getFxImage());
+                        object = new Balloom(x, y, Picture.balloom[0][0].getFxImage());
                         entities.add(object);
                     } else if (data.charAt(x) == '2') {
-                        object = new Oneal(x, y, pictures.oneal[0][0].getFxImage());
+                        object = new Oneal(x, y, Picture.oneal[0][0].getFxImage());
                         entities.add(object);
                     }
                 }
@@ -124,9 +124,20 @@ public class HelloApplication extends Application {
         if (keyPressed) {
             bomber.update(event);
         }
-        for (Entity entity : entities) {
-            entity.update();
+        for (int i = 0; i < entities.size(); i++) {
+            if (entities.get(i) instanceof Balloom balloom) {
+                if (balloom.is_dead && balloom.cnt > 32) {
+                    entities.remove(i);
+                    i--;
+                }
+            } else if (entities.get(i) instanceof Oneal oneal) {
+                if (oneal.is_dead && oneal.cnt > 32) {
+                    entities.remove(i);
+                    i--;
+                }
+            }
         }
+        entities.forEach(Entity::update);
         bomber.update();
     }
 
@@ -153,7 +164,7 @@ public class HelloApplication extends Application {
 
         entities.forEach(g -> g.render(gc));
         bomb.forEach(g -> g.render(gc));
-        for (List<Entity> e : flame) {
+        for (List<Bomb> e : flame) {
             e.forEach(g -> g.render(gc));
         }
         bomber.render(gc);

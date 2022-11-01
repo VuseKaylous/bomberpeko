@@ -40,36 +40,27 @@ public class Bomber extends Entity {
         for (int i = 0; i < count.size(); i++) {
             int num = count.get(i);
             if (num <= 20 + i) {
-                Bomb current = (Bomb) HelloApplication.bomb.get(i);
-                Bomb Bomb2 = new Bomb(current.getSmallX(), current.getSmallY(), Picture.bomb[1].getFxImage());
-                HelloApplication.bomb.set(i, Bomb2);
+                HelloApplication.bomb.get(i).setImg(Picture.bomb[1].getFxImage());
             }
             if (20 + i < num && num <= 40 + i) {
-                Bomb current = (Bomb) HelloApplication.bomb.get(i);
-                Bomb Bomb2 = new Bomb(current.getSmallX(), current.getSmallY(), Picture.bomb[0].getFxImage());
-                HelloApplication.bomb.set(i, Bomb2);
+                HelloApplication.bomb.get(i).setImg(Picture.bomb[0].getFxImage());
             }
             if (40 + i < num && num <= 60 + i) {
-                Bomb current = (Bomb) HelloApplication.bomb.get(i);
-                Bomb Bomb2 = new Bomb(current.getSmallX(), current.getSmallY(), Picture.bomb[1].getFxImage());
-                HelloApplication.bomb.set(i, Bomb2);
+                HelloApplication.bomb.get(i).setImg(Picture.bomb[1].getFxImage());
             }
             if (60 + i < num && num <= 80 + i) {
-                Bomb current = (Bomb) HelloApplication.bomb.get(i);
-                Bomb Bomb2 = new Bomb(current.getSmallX(), current.getSmallY(), Picture.bomb[2].getFxImage());
-                HelloApplication.bomb.set(i, Bomb2);
+                HelloApplication.bomb.get(i).setImg(Picture.bomb[2].getFxImage());
             }
             if (80 + i < num && num <= 82 + i) {
-                Bomb current = (Bomb) HelloApplication.bomb.get(i);
-                Bomb Explo1 = new Bomb(current.getSmallX(), current.getSmallY(), Picture.explosion[2][0][0].getFxImage());
-                HelloApplication.bomb.set(i, Explo1);
+                HelloApplication.bomb.get(i).setImg(Picture.explosion[2][0][0].getFxImage());
+                Bomb current = HelloApplication.bomb.get(i);
                 for (int j = 0; j < 4; j++) {
                     int newX = current.getSmallX() + change_x[j];
                     int newY = current.getSmallY() + change_y[j];
                     if (validSquare(newX, newY)) {
                         if (HelloApplication.map.sprite[newX][newY] instanceof Brick) {
                             if (!((Brick) HelloApplication.map.sprite[newX][newY]).isDestroyed()) {
-                                HelloApplication.map.sprite[newX][newY] = new Brick(newX, newY, Picture.brick[1].getFxImage());
+                                ((Brick) HelloApplication.map.sprite[newX][newY]).setImg(Picture.brick[1].getFxImage());
                             } else {
                                 Bomb Flame;
                                 if (j % 2 == 1) {
@@ -86,22 +77,28 @@ public class Bomber extends Entity {
                             } else {
                                 Flame = new Bomb(newX, newY, Picture.explosion[1][1][j].getFxImage());
                             }
+                            for (Entity e : HelloApplication.entities) {
+                                if (e instanceof Balloom && (e.check_collision(Flame) || e.check_collision(current))) {
+                                    ((Balloom) e).is_dead = true;
+                                } else if (e instanceof Oneal && (e.check_collision(Flame) || e.check_collision(current))) {
+                                    ((Oneal) e).is_dead = true;
+                                }
+                            }
                             HelloApplication.flame.get(i).add(Flame);
                         }
                     }
                 }
             }
             if (82 + i < num && num <= 84 + i) {
-                Bomb current = (Bomb) HelloApplication.bomb.get(i);
-                Bomb Explo2 = new Bomb(current.getSmallX(), current.getSmallY(), Picture.explosion[2][1][0].getFxImage());
-                HelloApplication.bomb.set(i, Explo2);
+                HelloApplication.bomb.get(i).setImg(Picture.explosion[2][1][0].getFxImage());
+                Bomb current = HelloApplication.bomb.get(i);
                 for (int j = 0; j < 4; j++) {
                     int newX = current.getSmallX() + change_x[j];
                     int newY = current.getSmallY() + change_y[j];
                     if (validSquare(newX, newY)) {
                         if (HelloApplication.map.sprite[newX][newY] instanceof Brick) {
                             if (!((Brick) HelloApplication.map.sprite[newX][newY]).isDestroyed()) {
-                                HelloApplication.map.sprite[newX][newY] = new Brick(newX, newY, Picture.brick[2].getFxImage());
+                                ((Brick) HelloApplication.map.sprite[newX][newY]).setImg(Picture.brick[2].getFxImage());
                             } else {
                                 Bomb Flame;
                                 if (j % 2 == 1) {
@@ -124,16 +121,15 @@ public class Bomber extends Entity {
                 }
             }
             if (84 + i < num && num <= 86 + i) {
-                Bomb current = (Bomb) HelloApplication.bomb.get(i);
-                Bomb Explo3 = new Bomb(current.getSmallX(), current.getSmallY(), Picture.explosion[2][2][0].getFxImage());
-                HelloApplication.bomb.set(i, Explo3);
+                HelloApplication.bomb.get(i).setImg(Picture.explosion[2][2][0].getFxImage());
+                Bomb current = HelloApplication.bomb.get(i);
                 for (int j = 0; j < 4; j++) {
                     int newX = current.getSmallX() + change_x[j];
                     int newY = current.getSmallY() + change_y[j];
                     if (validSquare(newX, newY)) {
                         if (HelloApplication.map.sprite[newX][newY] instanceof Brick) {
                             if (!((Brick) HelloApplication.map.sprite[newX][newY]).isDestroyed()) {
-                                HelloApplication.map.sprite[newX][newY] = new Brick(newX, newY, Picture.brick[3].getFxImage());
+                                ((Brick) HelloApplication.map.sprite[newX][newY]).setImg(Picture.brick[3].getFxImage());
                             } else {
                                 Bomb Flame;
                                 if (j % 2 == 1) {
@@ -204,10 +200,12 @@ public class Bomber extends Entity {
         boolean check = false;
         KeyCode key = event.getCode();
         if (key == KeyCode.Q) {
-            for (Entity bomb : HelloApplication.bomb) {
-                if (bomb.getSmallX() == (x + 10) / Sprite.SCALED_SIZE && bomb.getSmallY() == (y + 10) / Sprite.SCALED_SIZE) {
+            if (HelloApplication.bomb.size() != 0) {
+                check = true;
+            }
+            for (Entity e : HelloApplication.entities) {
+                if (e.check_collision(this)) {
                     check = true;
-                    break;
                 }
             }
             if (!check) {
@@ -215,7 +213,7 @@ public class Bomber extends Entity {
                         (y + 10) / Sprite.SCALED_SIZE, Picture.bomb[0].getFxImage());
                 count.add(0);
                 HelloApplication.bomb.add(newBomb);
-                List<Entity> l = new ArrayList<>();
+                List<Bomb> l = new ArrayList<>();
                 HelloApplication.flame.add(l);
             }
         }

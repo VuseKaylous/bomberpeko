@@ -13,8 +13,8 @@ public class Brick extends Entity {
         frame = 0;
     }
 
-    public void setDestroyed() {
-        destroyed = true;
+    public void setImg(Image img) {
+        this.img = img;
     }
 
     public boolean isDestroyed() {
