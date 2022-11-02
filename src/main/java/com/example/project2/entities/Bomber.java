@@ -17,10 +17,9 @@ public class Bomber extends Entity {
     private final int[] change_y = {0, -1, 0, 1, 0};
     Sound soundtmp = new Sound();
     public String dir = "";
+    public static boolean getSpeedItem = false;
     int count_move = 0;
-    //    Bomber left = new Bomber(x, y, Picture.player[4][2].getFxImage());
-//    Bomber left1 = new Bomber(x, y, Picture.player[4][1].getFxImage());
-//    Bomber left2 = new Bomber(x, y, Picture.player[4][0].getFxImage());
+    int speed;
     Image left = Picture.player[3][2].getFxImage();
     Image left1 = Picture.player[3][1].getFxImage();
     Image left2 = Picture.player[3][0].getFxImage();
@@ -42,8 +41,6 @@ public class Bomber extends Entity {
     @Override
     public void update() {
         //biến count để đếm thời gian đổi ảnh
-
-        System.out.println(count_move);
         count.replaceAll(integer -> integer + 1);
         updateImage();
         bomberUpdateImage();
@@ -120,6 +117,7 @@ public class Bomber extends Entity {
                 HelloApplication.bomb.get(i).setImg(Picture.bomb[2].getFxImage());
             }
             if (80 + i < num && num <= 82 + i) {
+                playMusic(1);
                 HelloApplication.bomb.get(i).setImg(Picture.explosion[2][0][0].getFxImage());
                 Bomb current = HelloApplication.bomb.get(i);
                 for (int j = 0; j < 4; j++) {
@@ -129,6 +127,7 @@ public class Bomber extends Entity {
                         if (HelloApplication.map.sprite[newX][newY] instanceof Brick) {
                             if (!((Brick) HelloApplication.map.sprite[newX][newY]).isDestroyed()) {
                                 ((Brick) HelloApplication.map.sprite[newX][newY]).setImg(Picture.brick[1].getFxImage());
+                                playMusic(3);
                             } else {
                                 Bomb Flame;
                                 if (j % 2 == 1) {
@@ -235,7 +234,6 @@ public class Bomber extends Entity {
                 count.remove(i);
                 HelloApplication.flame.remove(i);
                 i--;
-                //playMusic(1); chưa biết nhét mô
             }
         }
     }
@@ -269,6 +267,7 @@ public class Bomber extends Entity {
         boolean check = false;
         KeyCode key = event.getCode();
         if (key == KeyCode.Q) {
+            playMusic(2);
             if (HelloApplication.bomb.size() != 0) {
                 check = true;
             }
@@ -290,6 +289,19 @@ public class Bomber extends Entity {
 
     @Override
     public void update(KeyEvent event) {
+        if (HelloApplication.map.tool[getSmallX()][getSmallY()] instanceof SpeedItem) {
+            if(HelloApplication.map.sprite[getSmallX()][getSmallY()] instanceof Brick brick) {
+                if(brick.isDestroyed()) {
+                    getSpeedItem = true;
+                    System.out.println("true");// đéo chạy
+                }
+            }
+        }
+        if(getSpeedItem == true) { //chạy ngon
+            speed = 5;
+        }else{
+            speed = 2;
+        }
         int direction = 4; // ko co event thi dung yen
         KeyCode key = event.getCode();
         switch (key) {
@@ -314,7 +326,7 @@ public class Bomber extends Entity {
                 dir = "down";
                 break;
         }
-        int speed = 2;
+        //System.out.println(speed);
         x = x + change_x[direction] * speed;
         y = y + change_y[direction] * speed;
 
@@ -358,8 +370,6 @@ public class Bomber extends Entity {
     public void playMusic(int i) {
         soundtmp.setFile(i);
         soundtmp.play();
-        soundtmp.loop();
-
     }
 
     public void stopMusic() {

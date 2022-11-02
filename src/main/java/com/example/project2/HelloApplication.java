@@ -151,6 +151,9 @@ public class HelloApplication extends Application {
                         if (!((Brick) map.sprite[i][j]).isDestroyed()) {
                             map.sprite[i][j].render(gc);
                         } else {
+                            if(map.tool[i][j] instanceof SpeedItem && Bomber.getSpeedItem) {
+                                map.tool[i][j] = new Grass(i, j, Picture.grass.getFxImage());
+                            }
                             map.tool[i][j].render(gc);
                         }
                     } else map.sprite[i][j].render(gc);
