@@ -4,10 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="839e0b9d-8749-4e67-8fe2-b00d10678716" name="Changes" comment="done 2 quái version2">
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/project2/entities/Balloom.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/project2/entities/Balloom.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/project2/entities/Oneal.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/project2/entities/Oneal.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/project2/entities/Picture.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/project2/entities/Picture.java" afterDir="false" />
+    <list default="true" id="839e0b9d-8749-4e67-8fe2-b00d10678716" name="Changes" comment="done 2 quái version3">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/project2/entities/Bomber.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/project2/entities/Bomber.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -113,7 +112,14 @@
       <option name="project" value="LOCAL" />
       <updated>1667315653145</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="done 2 quái version3">
+      <created>1667316155221</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1667316155221</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -132,6 +138,7 @@
     <MESSAGE value="latest version" />
     <MESSAGE value="done 2 quái" />
     <MESSAGE value="done 2 quái version2" />
-    <option name="LAST_COMMIT_MESSAGE" value="done 2 quái version2" />
+    <MESSAGE value="done 2 quái version3" />
+    <option name="LAST_COMMIT_MESSAGE" value="done 2 quái version3" />
   </component>
 </project>
