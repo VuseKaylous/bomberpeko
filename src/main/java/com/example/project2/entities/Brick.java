@@ -4,7 +4,7 @@ import javafx.scene.image.Image;
 import javafx.scene.input.KeyEvent;
 
 public class Brick extends Entity {
-    private boolean destroyed;
+    public boolean destroyed;
     private int frame;
 
     public Brick(int x, int y, Image img) {
@@ -13,8 +13,8 @@ public class Brick extends Entity {
         frame = 0;
     }
 
-    public void setDestroyed() {
-        destroyed = true;
+    public void setImg(Image img) {
+        this.img = img;
     }
 
     public boolean isDestroyed() {

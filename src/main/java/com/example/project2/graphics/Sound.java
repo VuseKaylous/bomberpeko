@@ -7,29 +7,37 @@ import java.net.URL;
 
 public class Sound {
     Clip clip;
-    URL soundURL[] = new URL[30];
+    URL[] soundURL = new URL[30];
 
     public Sound() {
         soundURL[0] = getClass().getResource("/sound/Merchant.wav");
         soundURL[1] = getClass().getResource("/sound/hitmonster.wav");
-        soundURL[2] = getClass().getResource("/sound/Recording.wav");
+        //soundURL[2] = getClass().getResource("/sound/Recording.wav");
     }
 
     public void setFile(int i) {
-        try{
+        try {
             AudioInputStream ais = AudioSystem.getAudioInputStream(soundURL[i]);
             clip = AudioSystem.getClip();
             clip.open(ais);
-        }catch(Exception e) {
+        } catch (Exception ignored) {
         }
     }
 
     public void play() {
-        clip.start();
+        try {
+            clip.start();
+        } catch (NullPointerException e) {
+            System.out.println("dcm Kiên");
+        }
     }
 
     public void loop() {
-        clip.loop(Clip.LOOP_CONTINUOUSLY);
+        try {
+            clip.loop(Clip.LOOP_CONTINUOUSLY);
+        } catch (NullPointerException e) {
+            System.out.println("file của bố đâu");
+        }
     }
 
     public void stop() {
