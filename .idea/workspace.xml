@@ -4,12 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c5008602-0af8-426c-94e2-2d82db46798d" name="Changes" comment="rac">
-      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+    <list default="true" id="c5008602-0af8-426c-94e2-2d82db46798d" name="Changes" comment="bomber quay dau ngon vcl">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/project2/HelloApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/project2/HelloApplication.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/project2/entities/Bomber.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/project2/entities/Bomber.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -92,7 +88,14 @@
       <option name="project" value="LOCAL" />
       <updated>1666605947239</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="bomber quay dau ngon vcl">
+      <created>1667229447018</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1667229447018</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -120,6 +123,7 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="create Menu.java" />
-    <option name="LAST_COMMIT_MESSAGE" value="create Menu.java" />
+    <MESSAGE value="bomber quay dau ngon vcl" />
+    <option name="LAST_COMMIT_MESSAGE" value="bomber quay dau ngon vcl" />
   </component>
 </project>
