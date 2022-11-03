@@ -147,10 +147,16 @@ public class HelloApplication extends Application {
         if (gameState == 0) {
             for (int i = 0; i < HEIGHT; i++) {
                 for (int j = 0; j < WIDTH; j++) {
-                    if (map.sprite[i][j] instanceof Brick) {
-                        if (!((Brick) map.sprite[i][j]).isDestroyed()) {
+                    if (map.sprite[i][j] instanceof Brick br) {
+                        if (!br.isDestroyed()) {
                             map.sprite[i][j].render(gc);
                         } else {
+                            if (map.tool[i][j] instanceof BombItem && Bomber.getBomb_item) {
+                                map.tool[i][j] = new Grass(i, j, Picture.grass.getFxImage());
+                            }
+                            if (map.tool[i][j] instanceof FlameItem && Bomber.getFlame_item) {
+                                map.tool[i][j] = new Grass(i, j, Picture.grass.getFxImage());
+                            }
                             map.tool[i][j].render(gc);
                         }
                     } else map.sprite[i][j].render(gc);

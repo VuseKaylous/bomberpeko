@@ -85,7 +85,6 @@ public class Oneal extends Entity {
         if (count % 20 == 0) {
             //random_speed;
             if (count % 200 == 0) {
-                System.out.println("yeah");
                 change_speed = (int) (Math.random() * 2) + 1;
             }
             img = Picture.oneal[(int) (Math.random() * 2)][(int) (Math.random() * 3)].getFxImage();
@@ -110,18 +109,6 @@ public class Oneal extends Entity {
             startX = x;
             startY = y;
         }
-//        x += DIRX[dir];
-//        y += DIRY[dir];
-//        for (Entity entity : HelloApplication.entities) {
-//            if (this.check_collision(entity)) {
-//                destinationX = startX;
-//                destinationY = startY;
-//                x -= DIRX[dir];
-//                y -= DIRY[dir];
-//                dir = (dir + 2) % 4;
-//                break;
-//            }
-//        }
         for (int i = 1; i <= change_speed; i++) {
             x += DIRX[dir];
             y += DIRY[dir];
