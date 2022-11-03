@@ -37,6 +37,8 @@ public class Bomber extends Entity {
 
     public Bomber(int x, int y, Image img) {
         super(x, y, img);
+        count_move = 0;
+        count.clear();
     }
 
     @Override
@@ -151,6 +153,9 @@ public class Bomber extends Entity {
                                 } else if (e instanceof Oneal && (e.check_collision(Flame) || e.check_collision(current))) {
                                     ((Oneal) e).is_dead = true;
                                 }
+                            }
+                            if (this.check_collision(Flame) || this.check_collision(current)) {
+                                HelloApplication.gameState = 3;
                             }
                             HelloApplication.flame.get(i).add(Flame);
                         }
