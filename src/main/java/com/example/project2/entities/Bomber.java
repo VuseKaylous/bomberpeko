@@ -114,19 +114,11 @@ public class Bomber extends Entity {
                                             ((Oneal) e).is_dead = true;
                                         }
                                     }
+                                    if (Flame.check_collision(this) || current.check_collision(this)) {
+                                        HelloApplication.gameState = 3;
+                                    }
                                     HelloApplication.flame.get(i).add(Flame);
                                 }
-
-                                Bomb Flame = new Bomb(newX, newY, Picture.explosion[1 - (j % 2)][id][1].getFxImage());
-                                HelloApplication.flame.get(i).add(Flame);
-                                for (Entity e : HelloApplication.entities) {
-                                    if (e instanceof Balloom && (e.check_collision(Flame) || e.check_collision(current))) {
-                                        ((Balloom) e).is_dead = true;
-                                    } else if (e instanceof Oneal && (e.check_collision(Flame) || e.check_collision(current))) {
-                                        ((Oneal) e).is_dead = true;
-                                    }
-                                }
-                                HelloApplication.flame.get(i).add(Flame);
                             }
                         } else {
                             //không có item
@@ -145,6 +137,9 @@ public class Bomber extends Entity {
                                     } else if (e instanceof Oneal && (e.check_collision(Flame) || e.check_collision(current))) {
                                         ((Oneal) e).is_dead = true;
                                     }
+                                }
+                                if (Flame.check_collision(this) || current.check_collision(this)) {
+                                    HelloApplication.gameState = 3;
                                 }
                                 HelloApplication.flame.get(i).add(Flame);
                             }
@@ -182,12 +177,12 @@ public class Bomber extends Entity {
         }
     }
 
-    public Rectangle2D getBoundary() {
+    public Rectangle2D getBoundary2D() {
         return new Rectangle2D(x, y, 12 * 2, 16 * 2);
     }
 
     public boolean checkCollision(Entity entity) {
-        return entity.getBoundary().intersects(this.getBoundary());
+        return entity.getBoundary2D().intersects(this.getBoundary2D());
     }
 
     public boolean checkSnapAble() {
@@ -230,7 +225,7 @@ public class Bomber extends Entity {
             }
             if (!check) {
                 Bomb newBomb = new Bomb((x + 10) / Sprite.SCALED_SIZE,
-                        (y + 10) / Sprite.SCALED_SIZE, Picture.bomb[0].getFxImage());
+                        (y + 10) / Sprite.SCALED_SIZE - HelloApplication.MENUHEIGHT, Picture.bomb[0].getFxImage());
                 count.add(0);
                 HelloApplication.bomb.add(newBomb);
                 List<Bomb> l = new ArrayList<>();
@@ -249,7 +244,7 @@ public class Bomber extends Entity {
                 }
             }
         }
-        if(getSpeedItem == true) { //chạy ngon
+        if(getSpeedItem) { //chạy ngon
             speed = 5;
         }else {
             speed = 2;

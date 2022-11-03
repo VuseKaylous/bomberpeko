@@ -28,6 +28,7 @@ public class HelloApplication extends Application {
     private GraphicsContext gc;
 
     static Sound sound = new Sound();
+    public static final int MENUHEIGHT = 2;
     public static final int WIDTH = 13;
     public static final int HEIGHT = 31;
     public static List<Entity> entities = new ArrayList<>();
@@ -42,6 +43,7 @@ public class HelloApplication extends Application {
     public static int gameState = 0; // 0: gameplay, 1: pause screen, 2: end game
     private final Menu menu = new PauseScreen();
     private GameOver gameOverScreen = new GameOver();
+    private PauseButton pauseButton;
 //    public static boolean isRestart = false;
 
     public static void main(String[] args) {
@@ -50,7 +52,7 @@ public class HelloApplication extends Application {
 
     @Override
     public void start(Stage stage) {
-        canvas = new Canvas(Sprite.SCALED_SIZE * HEIGHT, Sprite.SCALED_SIZE * WIDTH);
+        canvas = new Canvas(Sprite.SCALED_SIZE * HEIGHT, Sprite.SCALED_SIZE * (WIDTH + MENUHEIGHT));
         gc = canvas.getGraphicsContext2D();
 
         // Tạo root container
@@ -62,6 +64,7 @@ public class HelloApplication extends Application {
         stage.setScene(scene);
         stage.show();
 //        isRestart = false;
+        playMusic(0);
 
         AnimationTimer timer = new AnimationTimer() {
             @Override
@@ -89,6 +92,11 @@ public class HelloApplication extends Application {
                         bomber.setBomb(event);
                         keyPressed = false;
                     });
+                    scene.setOnMouseReleased(mouseEvent -> {
+                        if (Menu.inRect(pauseButton.getBoundary(), mouseEvent)) {
+                            gameState = 1;
+                        }
+                    });
                 } else if (gameState == 1) {
                     menu.handleEvent();
                 } else if (gameState == 2) { // end game
@@ -109,6 +117,15 @@ public class HelloApplication extends Application {
         timer.start();
 
         createMap();
+        createStateBar();
+    }
+
+    private void createStateBar() {
+        pauseButton = new PauseButton(HEIGHT - 2, (float) -1.5, Picture.pauseIcon.getFxImage());
+    }
+
+    private void renderStateBar() {
+        pauseButton.render(gc);
     }
 
     public static void createMap() {
@@ -141,7 +158,7 @@ public class HelloApplication extends Application {
         } catch (FileNotFoundException e) {
             System.out.println("File not found");
         }
-        playMusic(0);
+//        playMusic(0);
     }
 
     public void normalUpdate() {
@@ -164,7 +181,7 @@ public class HelloApplication extends Application {
         for (Entity entity : entities) {
             if (entity instanceof Balloom ||
                     entity instanceof Oneal) {
-                if (bomber.checkCollision(entity)) {
+                if (entity.check_collision(bomber)) {
                     gameState = 3;
                     return;
                 }
@@ -192,6 +209,7 @@ public class HelloApplication extends Application {
             e.forEach(g -> g.render(gc));
         }
         bomber.render(gc);
+        renderStateBar();
     }
 
     public void render() {

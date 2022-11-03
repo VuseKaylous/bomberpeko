@@ -17,8 +17,7 @@ import javafx.scene.text.TextAlignment;
 
 import java.util.ArrayList;
 
-import static com.example.project2.HelloApplication.HEIGHT;
-import static com.example.project2.HelloApplication.WIDTH;
+import static com.example.project2.HelloApplication.*;
 
 public abstract class Menu {
 //    private final int size = 2;
@@ -35,7 +34,7 @@ public abstract class Menu {
     protected boolean darkMode = true;
 
     public Menu() {
-        canvas = new Canvas(Sprite.SCALED_SIZE * HEIGHT, Sprite.SCALED_SIZE * WIDTH);
+        canvas = new Canvas(Sprite.SCALED_SIZE * HEIGHT, Sprite.SCALED_SIZE * (WIDTH + MENUHEIGHT));
         gc = canvas.getGraphicsContext2D();
         Group root = new Group();
         root.getChildren().add(canvas);
@@ -48,7 +47,17 @@ public abstract class Menu {
         this.decorationRect.add(new Rectangle());
     }
 
-    static boolean inRect(Rectangle rect) {
+    public static boolean inRect(Rectangle rect, MouseEvent mEvent) {
+        if (mEvent == null) {
+            return false;
+        }
+        double x = mEvent.getX();
+        double y = mEvent.getY();
+        return (rect.getX() <= x && x <= rect.getX() + rect.getWidth() &&
+                rect.getY() <= y && y <= rect.getY() + rect.getHeight());
+    }
+
+    public static boolean inRect(Rectangle rect) {
         if (mouseEvent == null) {
             return false;
         }
