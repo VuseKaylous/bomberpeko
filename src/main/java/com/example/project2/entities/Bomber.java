@@ -16,10 +16,25 @@ public class Bomber extends Entity {
     private final int[] change_x = {-1, 0, 1, 0, 0};
     private final int[] change_y = {0, -1, 0, 1, 0};
     Sound soundtmp = new Sound();
-    int count_move = 0;
+    public String dir = "";
+    public static boolean getSpeedItem = false;
     public static boolean getBomb_item;
     public static boolean getFlame_item;
-
+    int count_move = 0;
+    int speed;
+    Image left = Picture.player[3][2].getFxImage();
+    Image left1 = Picture.player[3][1].getFxImage();
+    Image left2 = Picture.player[3][0].getFxImage();
+    Image right = Picture.player[1][2].getFxImage();
+    Image right1 = Picture.player[1][1].getFxImage();
+    Image right2 = Picture.player[1][0].getFxImage();
+    Image up = Picture.player[0][2].getFxImage();
+    Image up1 = Picture.player[0][1].getFxImage();
+    Image up2 = Picture.player[0][0].getFxImage();
+    Image down = Picture.player[2][2].getFxImage();
+    Image down1 = Picture.player[2][1].getFxImage();
+    Image down2 = Picture.player[2][0].getFxImage();
+    
     public Bomber(int x, int y, Image img) {
         super(x, y, img);
         count_move = 0;
@@ -61,6 +76,7 @@ public class Bomber extends Entity {
                 HelloApplication.bomb.get(i).setImg(Picture.bomb[2].getFxImage());
             }
             if (80 + i < num && num < 86 + i) {
+//                playMusic(1);
                 int id = 0;
                 if (80 + i < num && num <= 82 + i) id = 0;
                 else if (82 + i <= num && num < 84 + i) id = 1;
@@ -195,6 +211,7 @@ public class Bomber extends Entity {
         boolean check = false;
         KeyCode key = event.getCode();
         if (key == KeyCode.Q) {
+//            playMusic(2);
             if (!getBomb_item && HelloApplication.bomb.size() > 0) {
                 check = true;
             }
@@ -224,6 +241,19 @@ public class Bomber extends Entity {
 
     @Override
     public void update(KeyEvent event) {
+        if (HelloApplication.map.tool[getSmallX()][getSmallY()] instanceof SpeedItem) {
+            if(HelloApplication.map.sprite[getSmallX()][getSmallY()] instanceof Brick brick) {
+                if(brick.isDestroyed()) {
+                    getSpeedItem = true;
+                    System.out.println("true");// đéo chạy
+                }
+            }
+        }
+        if(getSpeedItem == true) { //chạy ngon
+            speed = 5;
+        }else {
+            speed = 2;
+        }
         if (HelloApplication.map.tool[getSmallX()][getSmallY()] instanceof BombItem) {
             if (HelloApplication.map.sprite[getSmallX()][getSmallY()] instanceof Brick brick) {
                 if (brick.isDestroyed()) {
@@ -290,7 +320,7 @@ public class Bomber extends Entity {
                 }
             }
         }
-        int speed = 2;
+        //System.out.println(speed);
         x = x + change_x[direction] * speed;
         y = y + change_y[direction] * speed;
 

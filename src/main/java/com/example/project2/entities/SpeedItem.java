@@ -5,7 +5,7 @@ import javafx.scene.image.Image;
 import javafx.scene.input.KeyEvent;
 
 public class SpeedItem extends Entity {
-    private boolean eaten = false;
+    public boolean eaten = false;
     private boolean updated = false;
     public SpeedItem(int x, int y, Image img) {
         super(x, y, img);
@@ -13,9 +13,7 @@ public class SpeedItem extends Entity {
 
     @Override
     public void update() {
-        if (eaten) {
 
-        }
     }
 
     public void setEaten(boolean eaten) {
