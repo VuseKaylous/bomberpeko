@@ -1,5 +1,6 @@
 package com.example.project2.entities;
 
+import com.example.project2.HelloApplication;
 import com.example.project2.graphics.Sprite;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
@@ -22,7 +23,7 @@ public abstract class Entity {
     //Khởi tạo đối tượng, chuyển từ tọa độ đơn vị sang tọa độ trong canvas
     public Entity(int xUnit, int yUnit, Image img) {
         this.x = xUnit * Sprite.SCALED_SIZE;
-        this.y = yUnit * Sprite.SCALED_SIZE;
+        this.y = (yUnit + HelloApplication.MENUHEIGHT) * Sprite.SCALED_SIZE;
         this.img = img;
     }
 
@@ -31,7 +32,7 @@ public abstract class Entity {
     }
 
     public int getSmallY() {
-        return this.y / Sprite.SCALED_SIZE;
+        return this.y / Sprite.SCALED_SIZE - HelloApplication.MENUHEIGHT;
     }
 
     public void render(GraphicsContext gc) {

@@ -284,7 +284,7 @@ public class Bomber extends Entity {
             }
             if (!check) {
                 Bomb newBomb = new Bomb((x + 10) / Sprite.SCALED_SIZE,
-                        (y + 10) / Sprite.SCALED_SIZE, Picture.bomb[0].getFxImage());
+                        (y + 10) / Sprite.SCALED_SIZE - HelloApplication.MENUHEIGHT, Picture.bomb[0].getFxImage());
                 count.add(0);
                 HelloApplication.bomb.add(newBomb);
                 List<Bomb> l = new ArrayList<>();

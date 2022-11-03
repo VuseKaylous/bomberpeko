@@ -17,8 +17,8 @@ public class Balloom extends Entity {
 
     public Balloom(int x, int y, Image img) {
         super(x, y, img);
-        this.destinationX = x * Sprite.SCALED_SIZE;
-        this.destinationY = y * Sprite.SCALED_SIZE;
+        this.destinationX = this.x;
+        this.destinationY = this.y;
         startX = destinationX;
         startY = destinationY;
         is_dead = false;

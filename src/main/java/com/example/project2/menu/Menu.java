@@ -17,8 +17,7 @@ import javafx.scene.text.TextAlignment;
 
 import java.util.ArrayList;
 
-import static com.example.project2.HelloApplication.HEIGHT;
-import static com.example.project2.HelloApplication.WIDTH;
+import static com.example.project2.HelloApplication.*;
 
 public abstract class Menu {
 //    private final int size = 2;
@@ -35,7 +34,7 @@ public abstract class Menu {
     protected boolean darkMode = true;
 
     public Menu() {
-        canvas = new Canvas(Sprite.SCALED_SIZE * HEIGHT, Sprite.SCALED_SIZE * WIDTH);
+        canvas = new Canvas(Sprite.SCALED_SIZE * HEIGHT, Sprite.SCALED_SIZE * (WIDTH + MENUHEIGHT));
         gc = canvas.getGraphicsContext2D();
         Group root = new Group();
         root.getChildren().add(canvas);

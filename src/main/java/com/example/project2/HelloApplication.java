@@ -28,6 +28,7 @@ public class HelloApplication extends Application {
     private GraphicsContext gc;
 
     static Sound sound = new Sound();
+    public static final int MENUHEIGHT = 2;
     public static final int WIDTH = 13;
     public static final int HEIGHT = 31;
     public static List<Entity> entities = new ArrayList<>();
@@ -50,7 +51,7 @@ public class HelloApplication extends Application {
 
     @Override
     public void start(Stage stage) {
-        canvas = new Canvas(Sprite.SCALED_SIZE * HEIGHT, Sprite.SCALED_SIZE * WIDTH);
+        canvas = new Canvas(Sprite.SCALED_SIZE * HEIGHT, Sprite.SCALED_SIZE * (WIDTH + MENUHEIGHT));
         gc = canvas.getGraphicsContext2D();
 
         // Tạo root container
@@ -62,6 +63,7 @@ public class HelloApplication extends Application {
         stage.setScene(scene);
         stage.show();
 //        isRestart = false;
+        playMusic(0);
 
         AnimationTimer timer = new AnimationTimer() {
             @Override
@@ -141,7 +143,7 @@ public class HelloApplication extends Application {
         } catch (FileNotFoundException e) {
             System.out.println("File not found");
         }
-        playMusic(0);
+//        playMusic(0);
     }
 
     public void normalUpdate() {
