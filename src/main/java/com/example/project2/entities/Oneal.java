@@ -26,8 +26,10 @@ public class Oneal extends Entity {
 
     public Oneal(int x, int y, Image img) {
         super(x, y, img);
-        destinationX = x * Sprite.SCALED_SIZE;
-        destinationY = y * Sprite.SCALED_SIZE;
+//        destinationX = x * Sprite.SCALED_SIZE;
+//        destinationY = y * Sprite.SCALED_SIZE;
+        destinationX = this.x;
+        destinationY = this.y;
         startX = destinationX;
         startY = destinationY;
         is_dead = false;
