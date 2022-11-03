@@ -18,6 +18,8 @@ public class Bomber extends Entity {
     Sound soundtmp = new Sound();
     public String dir = "";
     public static boolean getSpeedItem = false;
+    public static boolean getBomb_item;
+    public static boolean getFlame_item;
     int count_move = 0;
     int speed;
     Image left = Picture.player[3][2].getFxImage();
@@ -32,10 +34,13 @@ public class Bomber extends Entity {
     Image down = Picture.player[2][2].getFxImage();
     Image down1 = Picture.player[2][1].getFxImage();
     Image down2 = Picture.player[2][0].getFxImage();
-
-
+    
     public Bomber(int x, int y, Image img) {
         super(x, y, img);
+        count_move = 0;
+        count.clear();
+        getBomb_item = false;
+        getFlame_item = false;
     }
 
     @Override
@@ -43,7 +48,6 @@ public class Bomber extends Entity {
         //biến count để đếm thời gian đổi ảnh
         count.replaceAll(integer -> integer + 1);
         updateImage();
-        bomberUpdateImage();
     }
 
     private boolean validSquare(int fakeX, int fakeY) {
@@ -54,51 +58,6 @@ public class Bomber extends Entity {
             return true;
         }
         return HelloApplication.map.sprite[fakeX][fakeY] instanceof Brick;
-    }
-
-    public void bomberUpdateImage() {
-        switch (dir) {
-            case "left":
-                if (count_move == 0) {
-                    img = left;
-                } else if (count_move == 10) {
-                    img = left1;
-                } else if (count_move == 20) {
-                    img = left2;
-                    count_move = 0;
-                }
-                break;
-            case "right":
-                if (count_move == 0) {
-                    img = right;
-                } else if (count_move == 10) {
-                    img = right1;
-                } else if (count_move == 20) {
-                    img = right2;
-                    count_move = 0;
-                }
-                break;
-            case "up":
-                if (count_move == 0) {
-                    img = up;
-                } else if (count_move == 10) {
-                    img = up1;
-                } else if (count_move == 20) {
-                    img = up2;
-                    count_move = 0;
-                }
-                break;
-            case "down":
-                if (count_move == 0) {
-                    img = down;
-                } else if (count_move == 10) {
-                    img = down1;
-                } else if (count_move == 20) {
-                    img = down2;
-                    count_move = 0;
-                }
-                break;
-        }
     }
 
     public void updateImage() {
@@ -116,104 +75,79 @@ public class Bomber extends Entity {
             if (60 + i < num && num <= 80 + i) {
                 HelloApplication.bomb.get(i).setImg(Picture.bomb[2].getFxImage());
             }
-            if (80 + i < num && num <= 82 + i) {
-                playMusic(1);
-                HelloApplication.bomb.get(i).setImg(Picture.explosion[2][0][0].getFxImage());
+            if (80 + i < num && num < 86 + i) {
+//                playMusic(1);
+                int id = 0;
+                if (80 + i < num && num <= 82 + i) id = 0;
+                else if (82 + i <= num && num < 84 + i) id = 1;
+                else if (84 + i <= num && num < 86 + i) id = 2;
+                HelloApplication.bomb.get(i).setImg(Picture.explosion[2][id][0].getFxImage());
                 Bomb current = HelloApplication.bomb.get(i);
                 for (int j = 0; j < 4; j++) {
                     int newX = current.getSmallX() + change_x[j];
                     int newY = current.getSmallY() + change_y[j];
+                    int newX2 = newX + change_x[j];
+                    int newY2 = newY + change_y[j];
+
+                    //bug ở đây
+
                     if (validSquare(newX, newY)) {
-                        if (HelloApplication.map.sprite[newX][newY] instanceof Brick) {
-                            if (!((Brick) HelloApplication.map.sprite[newX][newY]).isDestroyed()) {
-                                ((Brick) HelloApplication.map.sprite[newX][newY]).setImg(Picture.brick[1].getFxImage());
-                                playMusic(3);
+                        playMusic(1);
+                        if (getFlame_item && validSquare(newX2, newY2)) {
+                            //có item
+                            if (HelloApplication.map.sprite[newX][newY] instanceof Brick br && !br.isDestroyed()) {
+                                br.setImg(Picture.brick[id + 1].getFxImage());
                             } else {
-                                Bomb Flame;
-                                if (j % 2 == 1) {
-                                    Flame = new Bomb(newX, newY, Picture.explosion[0][1][j - 1].getFxImage());
+                                if (HelloApplication.map.sprite[newX2][newY2] instanceof Brick br && !br.isDestroyed()) {
+                                    br.setImg(Picture.brick[id + 1].getFxImage());
                                 } else {
-                                    Flame = new Bomb(newX, newY, Picture.explosion[1][1][j].getFxImage());
+                                    Bomb Flame;
+                                    if (j % 2 == 1) {
+                                        Flame = new Bomb(newX2, newY2, Picture.explosion[0][id][j - 1].getFxImage());
+                                    } else {
+                                        Flame = new Bomb(newX2, newY2, Picture.explosion[1][id][j].getFxImage());
+                                    }
+                                    for (Entity e : HelloApplication.entities) {
+                                        if (e instanceof Balloom && (e.check_collision(Flame) || e.check_collision(current))) {
+                                            ((Balloom) e).is_dead = true;
+                                        } else if (e instanceof Oneal && (e.check_collision(Flame) || e.check_collision(current))) {
+                                            ((Oneal) e).is_dead = true;
+                                        }
+                                    }
+                                    HelloApplication.flame.get(i).add(Flame);
+                                }
+
+                                Bomb Flame = new Bomb(newX, newY, Picture.explosion[1 - (j % 2)][id][1].getFxImage());
+                                HelloApplication.flame.get(i).add(Flame);
+                                for (Entity e : HelloApplication.entities) {
+                                    if (e instanceof Balloom && (e.check_collision(Flame) || e.check_collision(current))) {
+                                        ((Balloom) e).is_dead = true;
+                                    } else if (e instanceof Oneal && (e.check_collision(Flame) || e.check_collision(current))) {
+                                        ((Oneal) e).is_dead = true;
+                                    }
                                 }
                                 HelloApplication.flame.get(i).add(Flame);
                             }
                         } else {
-                            Bomb Flame;
-                            if (j % 2 == 1) {
-                                Flame = new Bomb(newX, newY, Picture.explosion[0][1][j - 1].getFxImage());
-                            } else {
-                                Flame = new Bomb(newX, newY, Picture.explosion[1][1][j].getFxImage());
-                            }
-                            for (Entity e : HelloApplication.entities) {
-                                if (e instanceof Balloom && (e.check_collision(Flame) || e.check_collision(current))) {
-                                    ((Balloom) e).is_dead = true;
-                                } else if (e instanceof Oneal && (e.check_collision(Flame) || e.check_collision(current))) {
-                                    ((Oneal) e).is_dead = true;
-                                }
-                            }
-                            HelloApplication.flame.get(i).add(Flame);
-                        }
-                    }
-                }
-            }
-            if (82 + i < num && num <= 84 + i) {
-                HelloApplication.bomb.get(i).setImg(Picture.explosion[2][1][0].getFxImage());
-                Bomb current = HelloApplication.bomb.get(i);
-                for (int j = 0; j < 4; j++) {
-                    int newX = current.getSmallX() + change_x[j];
-                    int newY = current.getSmallY() + change_y[j];
-                    if (validSquare(newX, newY)) {
-                        if (HelloApplication.map.sprite[newX][newY] instanceof Brick) {
-                            if (!((Brick) HelloApplication.map.sprite[newX][newY]).isDestroyed()) {
-                                ((Brick) HelloApplication.map.sprite[newX][newY]).setImg(Picture.brick[2].getFxImage());
+                            //không có item
+                            if (HelloApplication.map.sprite[newX][newY] instanceof Brick br && !br.isDestroyed()) {
+                                br.setImg(Picture.brick[id + 1].getFxImage());
                             } else {
                                 Bomb Flame;
                                 if (j % 2 == 1) {
-                                    Flame = new Bomb(newX, newY, Picture.explosion[0][1][j - 1].getFxImage());
+                                    Flame = new Bomb(newX, newY, Picture.explosion[0][id][j - 1].getFxImage());
                                 } else {
-                                    Flame = new Bomb(newX, newY, Picture.explosion[1][1][j].getFxImage());
+                                    Flame = new Bomb(newX, newY, Picture.explosion[1][id][j].getFxImage());
+                                }
+                                for (Entity e : HelloApplication.entities) {
+                                    if (e instanceof Balloom && (e.check_collision(Flame) || e.check_collision(current))) {
+                                        ((Balloom) e).is_dead = true;
+                                    } else if (e instanceof Oneal && (e.check_collision(Flame) || e.check_collision(current))) {
+                                        ((Oneal) e).is_dead = true;
+                                    }
                                 }
                                 HelloApplication.flame.get(i).add(Flame);
                             }
-                        } else {
-                            Bomb Flame;
-                            if (j % 2 == 1) {
-                                Flame = new Bomb(newX, newY, Picture.explosion[0][1][j - 1].getFxImage());
-                            } else {
-                                Flame = new Bomb(newX, newY, Picture.explosion[1][1][j].getFxImage());
-                            }
-                            HelloApplication.flame.get(i).add(Flame);
-                        }
-                    }
-                }
-            }
-            if (84 + i < num && num <= 86 + i) {
-                HelloApplication.bomb.get(i).setImg(Picture.explosion[2][2][0].getFxImage());
-                Bomb current = HelloApplication.bomb.get(i);
-                for (int j = 0; j < 4; j++) {
-                    int newX = current.getSmallX() + change_x[j];
-                    int newY = current.getSmallY() + change_y[j];
-                    if (validSquare(newX, newY)) {
-                        if (HelloApplication.map.sprite[newX][newY] instanceof Brick) {
-                            if (!((Brick) HelloApplication.map.sprite[newX][newY]).isDestroyed()) {
-                                ((Brick) HelloApplication.map.sprite[newX][newY]).setImg(Picture.brick[3].getFxImage());
-                            } else {
-                                Bomb Flame;
-                                if (j % 2 == 1) {
-                                    Flame = new Bomb(newX, newY, Picture.explosion[0][1][j - 1].getFxImage());
-                                } else {
-                                    Flame = new Bomb(newX, newY, Picture.explosion[1][1][j].getFxImage());
-                                }
-                                HelloApplication.flame.get(i).add(Flame);
-                            }
-                        } else {
-                            Bomb Flame;
-                            if (j % 2 == 1) {
-                                Flame = new Bomb(newX, newY, Picture.explosion[0][1][j - 1].getFxImage());
-                            } else {
-                                Flame = new Bomb(newX, newY, Picture.explosion[1][1][j].getFxImage());
-                            }
-                            HelloApplication.flame.get(i).add(Flame);
                         }
                     }
                 }
@@ -222,10 +156,20 @@ public class Bomber extends Entity {
                 for (int j = 0; j < 4; j++) {
                     int newX = HelloApplication.bomb.get(i).getSmallX() + change_x[j];
                     int newY = HelloApplication.bomb.get(i).getSmallY() + change_y[j];
+                    int newX2 = newX + change_x[j];
+                    int newY2 = newY + change_y[j];
                     if (validSquare(newX, newY)) {
-                        if (HelloApplication.map.sprite[newX][newY] instanceof Brick) {
-                            if (!((Brick) HelloApplication.map.sprite[newX][newY]).isDestroyed()) {
-                                ((Brick) HelloApplication.map.sprite[newX][newY]).destroyed = true;
+                        if (HelloApplication.map.sprite[newX][newY] instanceof Brick br) {
+                            if (!br.isDestroyed()) {
+                                br.destroyed = true;
+                            } else {
+                                if (getFlame_item && HelloApplication.map.sprite[newX2][newY2] instanceof Brick brick) {
+                                    brick.destroyed = true;
+                                }
+                            }
+                        } else {
+                            if (getFlame_item && HelloApplication.map.sprite[newX2][newY2] instanceof Brick brick) {
+                                brick.destroyed = true;
                             }
                         }
                     }
@@ -267,12 +211,20 @@ public class Bomber extends Entity {
         boolean check = false;
         KeyCode key = event.getCode();
         if (key == KeyCode.Q) {
-            playMusic(2);
-            if (HelloApplication.bomb.size() != 0) {
+//            playMusic(2);
+            if (!getBomb_item && HelloApplication.bomb.size() > 0) {
+                check = true;
+            }
+            if (getBomb_item && HelloApplication.bomb.size() >= 2) {
                 check = true;
             }
             for (Entity e : HelloApplication.entities) {
                 if (e.check_collision(this)) {
+                    check = true;
+                }
+            }
+            for (Bomb b : HelloApplication.bomb) {
+                if (b.check_collision(this)) {
                     check = true;
                 }
             }
@@ -299,32 +251,74 @@ public class Bomber extends Entity {
         }
         if(getSpeedItem == true) { //chạy ngon
             speed = 5;
-        }else{
+        }else {
             speed = 2;
+        }
+        if (HelloApplication.map.tool[getSmallX()][getSmallY()] instanceof BombItem) {
+            if (HelloApplication.map.sprite[getSmallX()][getSmallY()] instanceof Brick brick) {
+                if (brick.isDestroyed()) {
+                    getBomb_item = true;
+                }
+            }
+        }
+        if (HelloApplication.map.tool[getSmallX()][getSmallY()] instanceof FlameItem) {
+            if (HelloApplication.map.sprite[getSmallX()][getSmallY()] instanceof Brick brick) {
+                if (brick.isDestroyed()) {
+                    getFlame_item = true;
+                }
+            }
         }
         int direction = 4; // ko co event thi dung yen
         KeyCode key = event.getCode();
         switch (key) {
-            case LEFT:
+            case LEFT -> {
                 count_move++;
                 direction = 0;
-                dir = "left";
-                break;
-            case UP:
+                if (count_move == 0) {
+                    img = Picture.player[3][2].getFxImage();
+                } else if (count_move == 10) {
+                    img = Picture.player[3][1].getFxImage();
+                } else if (count_move == 20) {
+                    img = Picture.player[3][0].getFxImage();
+                    count_move = 0;
+                }
+            }
+            case UP -> {
                 count_move++;
                 direction = 1;
-                dir = "up";
-                break;
-            case RIGHT:
+                if (count_move == 0) {
+                    img = Picture.player[0][2].getFxImage();
+                } else if (count_move == 10) {
+                    img = Picture.player[0][1].getFxImage();
+                } else if (count_move == 20) {
+                    img = Picture.player[0][0].getFxImage();
+                    count_move = 0;
+                }
+            }
+            case RIGHT -> {
                 count_move++;
                 direction = 2;
-                dir = "right";
-                break;
-            case DOWN:
+                if (count_move == 0) {
+                    img = Picture.player[1][2].getFxImage();
+                } else if (count_move == 10) {
+                    img = Picture.player[1][1].getFxImage();
+                } else if (count_move == 20) {
+                    img = Picture.player[1][0].getFxImage();
+                    count_move = 0;
+                }
+            }
+            case DOWN -> {
                 count_move++;
                 direction = 3;
-                dir = "down";
-                break;
+                if (count_move == 0) {
+                    img = Picture.player[2][2].getFxImage();
+                } else if (count_move == 10) {
+                    img = Picture.player[2][1].getFxImage();
+                } else if (count_move == 20) {
+                    img = Picture.player[2][0].getFxImage();
+                    count_move = 0;
+                }
+            }
         }
         //System.out.println(speed);
         x = x + change_x[direction] * speed;
