@@ -47,7 +47,17 @@ public abstract class Menu {
         this.decorationRect.add(new Rectangle());
     }
 
-    static boolean inRect(Rectangle rect) {
+    public static boolean inRect(Rectangle rect, MouseEvent mEvent) {
+        if (mEvent == null) {
+            return false;
+        }
+        double x = mEvent.getX();
+        double y = mEvent.getY();
+        return (rect.getX() <= x && x <= rect.getX() + rect.getWidth() &&
+                rect.getY() <= y && y <= rect.getY() + rect.getHeight());
+    }
+
+    public static boolean inRect(Rectangle rect) {
         if (mouseEvent == null) {
             return false;
         }

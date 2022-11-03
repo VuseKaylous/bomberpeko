@@ -8,6 +8,7 @@ import javafx.scene.image.Image;
 import javafx.scene.input.KeyEvent;
 
 import javafx.geometry.Rectangle2D;
+import javafx.scene.shape.Rectangle;
 
 public abstract class Entity {
     //Tọa độ ngang tính từ góc trái trên trong Canvas
@@ -21,9 +22,9 @@ public abstract class Entity {
     protected Image img;
 
     //Khởi tạo đối tượng, chuyển từ tọa độ đơn vị sang tọa độ trong canvas
-    public Entity(int xUnit, int yUnit, Image img) {
-        this.x = xUnit * Sprite.SCALED_SIZE;
-        this.y = (yUnit + HelloApplication.MENUHEIGHT) * Sprite.SCALED_SIZE;
+    public Entity(float xUnit, float yUnit, Image img) {
+        this.x = (int) (xUnit * Sprite.SCALED_SIZE);
+        this.y = (int) ((yUnit + HelloApplication.MENUHEIGHT) * Sprite.SCALED_SIZE);
         this.img = img;
     }
 
@@ -39,15 +40,19 @@ public abstract class Entity {
         gc.drawImage(img, x, y);
     }
 
-    public Rectangle2D getBoundary() {
+    public Rectangle2D getBoundary2D() {
         return new Rectangle2D(x, y, img.getWidth(), img.getHeight());
+    }
+
+    public Rectangle getBoundary() {
+        return new Rectangle(x, y, img.getWidth(), img.getHeight());
     }
 
     public boolean check_collision(Entity e) {
         if (this == e) {
             return false;
         } else {
-            for (int i = e.x; i <= e.x + (e instanceof Bomber ? 24 : Sprite.SCALED_SIZE); i++) {
+            for (int i = e.x; i <= e.x + (e instanceof Bomber ? 22 : Sprite.SCALED_SIZE); i++) {
                 for (int j = e.y; j <= e.y + Sprite.SCALED_SIZE; j++) {
                     if (x < i && i < x + Sprite.SCALED_SIZE && y < j && j < y + Sprite.SCALED_SIZE) {
                         return true;

@@ -87,7 +87,7 @@ public class Oneal extends Entity {
         if (count % 20 == 0) {
             //random_speed;
             if (count % 200 == 0) {
-                System.out.println("yeah");
+//                System.out.println("yeah");
                 change_speed = (int) (Math.random() * 2) + 1;
             }
             img = Picture.oneal[(int) (Math.random() * 2)][(int) (Math.random() * 3)].getFxImage();

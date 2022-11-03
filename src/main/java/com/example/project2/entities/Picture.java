@@ -18,6 +18,7 @@ public class Picture {
     public static Sprite grass = new Sprite(Sprite.DEFAULT_SIZE, 6, 0, SpriteSheet.tiles, 16, 16);
     public static Sprite wall = new Sprite(Sprite.DEFAULT_SIZE, 5, 0, SpriteSheet.tiles, 16, 16);
     public static Sprite portal = new Sprite(Sprite.DEFAULT_SIZE, 4, 0, SpriteSheet.tiles, 16, 16);
+    public static Sprite pauseIcon = new Sprite(Sprite.DEFAULT_SIZE, 0, 12, SpriteSheet.tiles, 16, 16);
 
     public Picture() {
         for (int i = 0; i < 3; i++) {

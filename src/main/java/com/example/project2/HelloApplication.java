@@ -43,6 +43,7 @@ public class HelloApplication extends Application {
     public static int gameState = 0; // 0: gameplay, 1: pause screen, 2: end game
     private final Menu menu = new PauseScreen();
     private GameOver gameOverScreen = new GameOver();
+    private PauseButton pauseButton;
 //    public static boolean isRestart = false;
 
     public static void main(String[] args) {
@@ -91,6 +92,11 @@ public class HelloApplication extends Application {
                         bomber.setBomb(event);
                         keyPressed = false;
                     });
+                    scene.setOnMouseReleased(mouseEvent -> {
+                        if (Menu.inRect(pauseButton.getBoundary(), mouseEvent)) {
+                            gameState = 1;
+                        }
+                    });
                 } else if (gameState == 1) {
                     menu.handleEvent();
                 } else if (gameState == 2) { // end game
@@ -111,6 +117,15 @@ public class HelloApplication extends Application {
         timer.start();
 
         createMap();
+        createStateBar();
+    }
+
+    private void createStateBar() {
+        pauseButton = new PauseButton(HEIGHT - 2, (float) -1.5, Picture.pauseIcon.getFxImage());
+    }
+
+    private void renderStateBar() {
+        pauseButton.render(gc);
     }
 
     public static void createMap() {
@@ -166,7 +181,7 @@ public class HelloApplication extends Application {
         for (Entity entity : entities) {
             if (entity instanceof Balloom ||
                     entity instanceof Oneal) {
-                if (bomber.checkCollision(entity)) {
+                if (entity.check_collision(bomber)) {
                     gameState = 3;
                     return;
                 }
@@ -194,6 +209,7 @@ public class HelloApplication extends Application {
             e.forEach(g -> g.render(gc));
         }
         bomber.render(gc);
+        renderStateBar();
     }
 
     public void render() {
