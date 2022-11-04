@@ -4,8 +4,13 @@ import javafx.scene.image.Image;
 import javafx.scene.input.KeyEvent;
 
 public class FlameItem extends Entity {
-    public FlameItem(int x, int y, Image img) {
+    public FlameItem(double x, double y, Image img) {
         super(x, y, img);
+    }
+
+    public FlameItem(double x, double y) {
+        super(x, y);
+        this.img = Picture.powerup[1].getFxImage();
     }
 
     @Override

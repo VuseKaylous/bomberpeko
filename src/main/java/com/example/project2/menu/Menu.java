@@ -68,23 +68,8 @@ public abstract class Menu {
     }
 
     public void render() {
-        int size = options.size();
         gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
-        gc.setFont(new Font("Comic Sans MS", 20));
-        gc.setTextAlign(TextAlignment.CENTER);
-        gc.setTextBaseline(VPos.CENTER);
-        for (int i = 0; i < size; i++) {
-            int rectHeight = 30;
-            int rectY = (int) canvas.getHeight() / 2 - ((size / 2 - i) * (rectHeight * 2));
-            gc.fillText(options.get(i), canvas.getWidth() / 2, rectY);
-            int rectWidth = 100;
-            Rectangle thisRect = new Rectangle(canvas.getWidth() / 2 - rectWidth / 2.0,
-                    rectY - rectHeight / 2.0,
-                    rectWidth,
-                    rectHeight);
-            decorationRect.set(i, thisRect);
-            paintRect(thisRect);
-        }
+        render(gc);
     }
 
     public void render(GraphicsContext graphicsContext) {
@@ -94,9 +79,11 @@ public abstract class Menu {
         graphicsContext.setTextBaseline(VPos.CENTER);
         for (int i = 0; i < size; i++) {
             int rectHeight = 30;
-            int rectY = (int) canvas.getHeight() / 2 - ((size / 2 - i) * (rectHeight * 2));
-            Text text = new Text(options.get(i));
-            graphicsContext.fillText(text.getText(), canvas.getWidth() / 2, rectY);
+            int rectY = (int) canvas.getHeight() / 2 - rectHeight / 2 - ((size / 2 - i) * (rectHeight * 2));
+            if (size % 2 == 0) {
+                rectY = (int) canvas.getHeight() / 2 + rectHeight / 2 - (size / 2 - i) * (rectHeight * 2);
+            }
+            graphicsContext.fillText(options.get(i), canvas.getWidth() / 2, rectY);
             int rectWidth = 100;
             Rectangle thisRect = new Rectangle(canvas.getWidth() / 2 - rectWidth / 2.0,
                     rectY - rectHeight / 2.0,
@@ -108,22 +95,7 @@ public abstract class Menu {
     }
 
     protected void paintRect(Rectangle rect) {
-        if (rect == null) {
-            return;
-        }
-        Color fillColor = Color.BLACK;
-        if (!darkMode) {
-            fillColor = Color.WHITE;
-        }
-        if (inRect(rect)) {
-            if (darkMode) {
-                fillColor = Color.color(36 / 255.0, 117 / 255.0, 189 / 255.0);
-            } else {
-                fillColor = Color.ALICEBLUE;
-            }
-        }
-        gc.setStroke(Paint.valueOf(String.valueOf(fillColor)));
-        gc.strokeRect(rect.getX(), rect.getY(), rect.getWidth(), rect.getHeight());
+        paintRect(rect, gc);
     }
 
     protected void paintRect(Rectangle rect, GraphicsContext graphicsContext) {
@@ -140,14 +112,6 @@ public abstract class Menu {
             } else {
                 fillColor = Color.color(55 / 255.0,174 / 255.0,208 / 255.0);
             }
-        }
-        graphicsContext.setStroke(Paint.valueOf(String.valueOf(fillColor)));
-        graphicsContext.strokeRect(rect.getX(), rect.getY(), rect.getWidth(), rect.getHeight());
-    }
-
-    protected void paintRect(Rectangle rect, GraphicsContext graphicsContext, Color fillColor) {
-        if (rect == null) {
-            return;
         }
         graphicsContext.setStroke(Paint.valueOf(String.valueOf(fillColor)));
         graphicsContext.strokeRect(rect.getX(), rect.getY(), rect.getWidth(), rect.getHeight());

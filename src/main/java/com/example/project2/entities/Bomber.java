@@ -3,7 +3,9 @@ package com.example.project2.entities;
 import com.example.project2.HelloApplication;
 import com.example.project2.graphics.Sound;
 import com.example.project2.graphics.Sprite;
+import com.example.project2.graphics.SpriteSheet;
 import javafx.geometry.Rectangle2D;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -19,6 +21,7 @@ public class Bomber extends Entity {
     public boolean getSpeed_item;
     public boolean getBomb_item;
     public boolean getFlame_item;
+    private ArrayList<Entity> itemsGot = new ArrayList<Entity>();
     int count_move = 0;
     int speed;
 
@@ -229,6 +232,9 @@ public class Bomber extends Entity {
             if (HelloApplication.map.sprite[getSmallX()][getSmallY()] instanceof Brick brick) {
                 if (brick.isDestroyed()) {
                     getSpeed_item = true;
+                    int id = itemsGot.size();
+                    itemsGot.add(new SpeedItem(1.5 * id + 1,
+                            0.5 - HelloApplication.MENUHEIGHT));
                 }
             }
         }
@@ -236,6 +242,9 @@ public class Bomber extends Entity {
             if (HelloApplication.map.sprite[getSmallX()][getSmallY()] instanceof Brick brick) {
                 if (brick.isDestroyed()) {
                     getBomb_item = true;
+                    int id = itemsGot.size();
+                    itemsGot.add(new BombItem(1.5 * id + 1,
+                            0.5 - HelloApplication.MENUHEIGHT));
                 }
             }
         }
@@ -243,6 +252,9 @@ public class Bomber extends Entity {
             if (HelloApplication.map.sprite[getSmallX()][getSmallY()] instanceof Brick brick) {
                 if (brick.isDestroyed()) {
                     getFlame_item = true;
+                    int id = itemsGot.size();
+                    itemsGot.add(new FlameItem(1.5 * id + 1,
+                            0.5 - HelloApplication.MENUHEIGHT));
                 }
             }
         }
@@ -252,61 +264,30 @@ public class Bomber extends Entity {
         }
         int direction = 4; // ko co event thi dung yen
         KeyCode key = event.getCode();
+        int[] directionToPicture = new int[]{3, 0, 1, 2};
         switch (key) {
             case LEFT -> {
-                count_move++;
                 direction = 0;
-                if (count_move == 0) {
-                    img = Picture.player[3][2].getFxImage();
-                } else if (count_move == 10) {
-                    img = Picture.player[3][1].getFxImage();
-                } else if (count_move == 20) {
-                    img = Picture.player[3][0].getFxImage();
-                    count_move = 0;
-                }
             }
             case UP -> {
-                count_move++;
                 direction = 1;
-                if (count_move == 0) {
-                    img = Picture.player[0][2].getFxImage();
-                } else if (count_move == 10) {
-                    img = Picture.player[0][1].getFxImage();
-                } else if (count_move == 20) {
-                    img = Picture.player[0][0].getFxImage();
-                    count_move = 0;
-                }
             }
             case RIGHT -> {
-                count_move++;
                 direction = 2;
-                if (count_move == 0) {
-                    img = Picture.player[1][2].getFxImage();
-                } else if (count_move == 10) {
-                    img = Picture.player[1][1].getFxImage();
-                } else if (count_move == 20) {
-                    img = Picture.player[1][0].getFxImage();
-                    count_move = 0;
-                }
             }
             case DOWN -> {
-                count_move++;
                 direction = 3;
-                if (count_move == 0) {
-                    img = Picture.player[2][2].getFxImage();
-                } else if (count_move == 10) {
-                    img = Picture.player[2][1].getFxImage();
-                } else if (count_move == 20) {
-                    img = Picture.player[2][0].getFxImage();
-                    count_move = 0;
-                }
             }
+        }
+        count_move = (count_move + 1) % 30;
+        if (count_move % 10 == 0 && direction < 4) {
+            img = Picture.player[directionToPicture[direction]][2 - (count_move / 10)].getFxImage(); // thay anh
         }
         //System.out.println(speed);
         x = x + change_x[direction] * speed;
         y = y + change_y[direction] * speed;
 
-        int snapSize = 5;
+        int snapSize = 6;
         for (int snap = 0; snap <= snapSize; snap++) {
             if (direction % 2 == 0 && direction < 4) { // di theo chieu y
                 y += snap;
@@ -341,6 +322,16 @@ public class Bomber extends Entity {
         }
         x = x - change_x[direction] * speed;
         y = y - change_y[direction] * speed;
+    }
+
+    @Override
+    public void render(GraphicsContext gc) {
+        super.render(gc);
+//        System.out.println(itemsGot.size());
+        for (Entity entity : itemsGot) {
+//            System.out.println("fuck");
+            entity.render(gc);
+        }
     }
 
     public void playMusic(int i) {
