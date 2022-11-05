@@ -3,7 +3,9 @@ package com.example.project2;
 import com.example.project2.entities.*;
 import com.example.project2.graphics.Sound;
 import com.example.project2.graphics.Sprite;
+import com.example.project2.menu.GameOver;
 import com.example.project2.menu.Menu;
+import com.example.project2.menu.PauseScreen;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.scene.Group;
@@ -24,20 +26,23 @@ public class HelloApplication extends Application {
     private Canvas canvas;
     private GraphicsContext gc;
 
-    Sound sound = new Sound();
+    static Sound sound = new Sound();
+    public static final int MENUHEIGHT = 2;
     public static final int WIDTH = 13;
     public static final int HEIGHT = 31;
     public static List<Entity> entities = new ArrayList<>();
     public static List<Bomb> bomb = new ArrayList<>();
     public static List<List<Bomb>> flame = new ArrayList<>();
-    private Bomber bomber;
+    private static Bomber bomber;
 
     public Picture pictures = new Picture();
     public static Map map = new Map();
     private boolean keyPressed = false;
     private KeyEvent event;
     public static int gameState = 0; // 0: gameplay, 1: pause screen, 2: end game
-    private final Menu menu = new Menu();
+    private final Menu menu = new PauseScreen();
+    private final GameOver gameOverScreen = new GameOver();
+    private PauseButton pauseButton;
 
     public static void main(String[] args) {
         launch();
@@ -45,7 +50,7 @@ public class HelloApplication extends Application {
 
     @Override
     public void start(Stage stage) {
-        canvas = new Canvas(Sprite.SCALED_SIZE * HEIGHT, Sprite.SCALED_SIZE * WIDTH);
+        canvas = new Canvas(Sprite.SCALED_SIZE * HEIGHT, Sprite.SCALED_SIZE * (WIDTH + MENUHEIGHT));
         gc = canvas.getGraphicsContext2D();
 
         // Tạo root container
@@ -56,11 +61,13 @@ public class HelloApplication extends Application {
         // Thêm scene vào stage
         stage.setScene(scene);
         stage.show();
+//        isRestart = false;
+        playMusic(0);
 
         AnimationTimer timer = new AnimationTimer() {
             @Override
             public void handle(long l) {
-                if (gameState == 0) {
+                if (gameState == 0 || gameState == 3) {
                     stage.setScene(scene);
                 } else if (gameState == 1) {
                     stage.setScene(menu.scene);
@@ -74,28 +81,65 @@ public class HelloApplication extends Application {
                         if (event.getCode() == KeyCode.P) { // p: pause screen
                             gameState = 1;
                         }
+                        if (keyEvent.getCode() == KeyCode.ESCAPE) {
+                            this.stop();
+                            stage.close();
+                        }
                     });
                     scene.setOnKeyReleased(keyEvent -> {
                         bomber.setBomb(event);
                         keyPressed = false;
+                    });
+                    scene.setOnMouseReleased(mouseEvent -> {
+                        if (Menu.inRect(pauseButton.getBoundary(), mouseEvent)) {
+                            gameState = 1;
+                        }
                     });
                 } else if (gameState == 1) {
                     menu.handleEvent();
                 } else if (gameState == 2) { // end game
                     this.stop();
                     stage.close();
+                } else if (gameState == 3) { // game over
+                    gameOverScreen.handleEvent(scene);
+                    scene.setOnKeyPressed(keyEvent -> {
+                        if (keyEvent.getCode() == KeyCode.ESCAPE) {
+                            this.stop();
+                            stage.close();
+                        }
+                    });
                 }
+//                test();
             }
         };
         timer.start();
 
         createMap();
+        createStateBar();
     }
 
-    public void createMap() {
+//    private void test() {
+//        Entity testSubject = new FlameItem(1,
+//                (float) -1.5, Picture.powerup[1].getFxImage());
+//        testSubject.render(gc);
+//    }
+
+    private void createStateBar() {
+        pauseButton = new PauseButton(HEIGHT - 2, -1.5, Picture.pauseIcon.getFxImage());
+    }
+
+    private void renderStateBar() {
+        pauseButton.render(gc);
+    }
+
+    public static void createMap() {
         File maptxt = new File("inp.txt");
         try {
             Scanner reader = new Scanner(maptxt);
+            map = new Map();
+            entities.clear();
+            flame.clear();
+            bomb.clear();
             for (int y = 0; y < WIDTH; y++) {
                 String data = reader.nextLine();
                 map.updateCol(data, y);
@@ -118,12 +162,10 @@ public class HelloApplication extends Application {
                     }
                 }
             }
-
         } catch (FileNotFoundException e) {
             System.out.println("File not found");
         }
-
-        playMusic(0);
+//        playMusic(0);
     }
 
     public void normalUpdate() {
@@ -143,46 +185,62 @@ public class HelloApplication extends Application {
                 }
             }
         }
+        for (Entity entity : entities) {
+            if (entity instanceof Balloom ||
+                    entity instanceof Oneal) {
+                if (entity.check_collision(bomber)) {
+                    gameState = 3;
+                    return;
+                }
+            }
+        }
         entities.forEach(Entity::update);
         bomber.update();
     }
 
-
-    public void render() {
-        gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
-        if (gameState == 0) {
-            for (int i = 0; i < HEIGHT; i++) {
-                for (int j = 0; j < WIDTH; j++) {
-                    if (map.sprite[i][j] instanceof Brick) {
-                        if (!((Brick) map.sprite[i][j]).isDestroyed()) {
-                            map.sprite[i][j].render(gc);
-                        } else {
-                            if(map.tool[i][j] instanceof SpeedItem && Bomber.getSpeedItem) {
-                                map.tool[i][j] = new Grass(i, j, Picture.grass.getFxImage());
-                            }
-                            map.tool[i][j].render(gc);
+    private void gameplayRender() {
+        for (int i = 0; i < HEIGHT; i++) {
+            for (int j = 0; j < WIDTH; j++) {
+                if (map.sprite[i][j] instanceof Brick) {
+                    if (!((Brick) map.sprite[i][j]).isDestroyed()) {
+                        map.sprite[i][j].render(gc);
+                    } else {
+                        if (map.tool[i][j] instanceof BombItem && bomber.getBomb_item) {
+                            map.tool[i][j] = new Grass(i, j, Picture.grass.getFxImage());
+                        } else if (map.tool[i][j] instanceof FlameItem && bomber.getFlame_item) {
+                            map.tool[i][j] = new Grass(i, j, Picture.grass.getFxImage());
+                        } else if (map.tool[i][j] instanceof SpeedItem && bomber.getSpeed_item) {
+                            map.tool[i][j] = new Grass(i, j, Picture.grass.getFxImage());
                         }
-                    } else map.sprite[i][j].render(gc);
-                }
+                        map.tool[i][j].render(gc);
+                    }
+                } else map.sprite[i][j].render(gc);
             }
-            entities.forEach(g -> g.render(gc));
-            bomber.render(gc);
-        } else if (gameState == 1) {
-            menu.render();
         }
-
         entities.forEach(g -> g.render(gc));
         bomb.forEach(g -> g.render(gc));
         for (List<Bomb> e : flame) {
             e.forEach(g -> g.render(gc));
         }
+        renderStateBar();
         bomber.render(gc);
     }
 
-    public void playMusic(int i) {
+    public void render() {
+        gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
+        if (gameState == 0) {
+            gameplayRender();
+        } else if (gameState == 1) {
+            menu.render();
+        } else if (gameState == 3) {
+            gameplayRender();
+            gameOverScreen.render(gc);
+        }
+    }
+
+    public static void playMusic(int i) {
         sound.setFile(i);
         sound.play();
         sound.loop();
-
     }
 }
