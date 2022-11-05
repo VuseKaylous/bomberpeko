@@ -20,15 +20,11 @@ import java.util.ArrayList;
 import static com.example.project2.HelloApplication.*;
 
 public abstract class Menu {
-//    private final int size = 2;
-//    private final int CONTINUE = 0;
-//    private final int EXIT = 1;
-//    private final String[] options = new String[]{"Continue", "Exit"};
     protected ArrayList<String> options = new ArrayList<String>(); // rect - height: 20;
-//    private final Rectangle[] decorationRect = new Rectangle[size];
     protected ArrayList<Rectangle> decorationRect = new ArrayList<Rectangle>();
     private final GraphicsContext gc;
     protected final Canvas canvas;
+    protected Group root;
     public Scene scene;
     public static MouseEvent mouseEvent;
     protected boolean darkMode = true;
@@ -36,7 +32,7 @@ public abstract class Menu {
     public Menu() {
         canvas = new Canvas(Sprite.SCALED_SIZE * HEIGHT, Sprite.SCALED_SIZE * (WIDTH + MENUHEIGHT));
         gc = canvas.getGraphicsContext2D();
-        Group root = new Group();
+        root = new Group();
         root.getChildren().add(canvas);
         scene = new Scene(root);
         darkMode = true;
@@ -127,6 +123,14 @@ public abstract class Menu {
             }
         }
         graphicsContext.setStroke(Paint.valueOf(String.valueOf(fillColor)));
+        graphicsContext.strokeRect(rect.getX(), rect.getY(), rect.getWidth(), rect.getHeight());
+    }
+
+    public static void paintRect(Rectangle rect, GraphicsContext graphicsContext, Color color) {
+        if (rect == null) {
+            return;
+        }
+        graphicsContext.setStroke(Paint.valueOf(String.valueOf(color)));
         graphicsContext.strokeRect(rect.getX(), rect.getY(), rect.getWidth(), rect.getHeight());
     }
 

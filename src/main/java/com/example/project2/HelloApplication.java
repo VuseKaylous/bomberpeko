@@ -33,6 +33,8 @@ public class HelloApplication extends Application {
     public static final int MENUHEIGHT = 2;
     public static final int WIDTH = 13;
     public static final int HEIGHT = 31;
+    public static int SCREENWIDTH = HEIGHT * Sprite.SCALED_SIZE;
+    public static int SCREENHEIGHT = (WIDTH + MENUHEIGHT) * Sprite.SCALED_SIZE;
     public static List<Entity> entities = new ArrayList<>();
     public static List<Bomb> bomb = new ArrayList<>();
     public static List<List<Bomb>> flame = new ArrayList<>();
@@ -73,11 +75,6 @@ public class HelloApplication extends Application {
         AnimationTimer timer = new AnimationTimer() {
             @Override
             public void handle(long l) {
-//                if (gameState == 0 || gameState == 3) {
-//                    stage.setScene(scene);
-//                } else if (gameState == 1) {
-//                    stage.setScene(pauseScreen.scene);
-//                }
                 render();
                 if (gameState == 0) {
                     stage.setScene(scene);
@@ -92,6 +89,7 @@ public class HelloApplication extends Application {
                             this.stop();
                             stage.close();
                         }
+//                        System.out.println(event.getCode()); // test
                     });
                     scene.setOnKeyReleased(keyEvent -> {
                         bomber.setBomb(event);
@@ -144,7 +142,7 @@ public class HelloApplication extends Application {
     }
 
     public static void createMap() {
-        File maptxt = new File("inp.txt");
+        File maptxt = new File("inp1.txt");
         try {
             Scanner reader = new Scanner(maptxt);
             map = new Map();

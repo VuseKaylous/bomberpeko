@@ -15,7 +15,7 @@ public class Score {
     private final int x;
     private final int y;
     public Score() {
-        scale = 6;
+        scale = 10;
         value = 1000 * scale;
         x = Sprite.SCALED_SIZE * HelloApplication.HEIGHT / 2;
         y = Sprite.SCALED_SIZE;
