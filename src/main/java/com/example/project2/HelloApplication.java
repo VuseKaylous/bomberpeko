@@ -109,7 +109,7 @@ public class HelloApplication extends Application {
                         }
                     });
                 }
-
+//                test();
             }
         };
         timer.start();
@@ -118,8 +118,14 @@ public class HelloApplication extends Application {
         createStateBar();
     }
 
+//    private void test() {
+//        Entity testSubject = new FlameItem(1,
+//                (float) -1.5, Picture.powerup[1].getFxImage());
+//        testSubject.render(gc);
+//    }
+
     private void createStateBar() {
-        pauseButton = new PauseButton(HEIGHT - 2, (float) -1.5, Picture.pauseIcon.getFxImage());
+        pauseButton = new PauseButton(HEIGHT - 2, -1.5, Picture.pauseIcon.getFxImage());
     }
 
     private void renderStateBar() {
@@ -210,8 +216,8 @@ public class HelloApplication extends Application {
         for (List<Bomb> e : flame) {
             e.forEach(g -> g.render(gc));
         }
-        bomber.render(gc);
         renderStateBar();
+        bomber.render(gc);
     }
 
     public void render() {
