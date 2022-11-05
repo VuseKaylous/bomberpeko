@@ -74,25 +74,32 @@ public abstract class Menu {
     }
 
     public void render(GraphicsContext graphicsContext) {
+        render(graphicsContext, 1);
+    }
+
+    public void render(GraphicsContext graphicsContext, double scaleY) {
         int size = options.size();
         graphicsContext.setFont(new Font("Comic Sans MS", 20));
         graphicsContext.setTextAlign(TextAlignment.CENTER);
         graphicsContext.setTextBaseline(VPos.CENTER);
+
+        int rectHeight = 30;
+        int rectY = (int) canvas.getHeight() / 2 - rectHeight / 2 - ((size / 2) * (rectHeight * 2));
+        if (size % 2 == 0) {
+            rectY = (int) canvas.getHeight() / 2 + rectHeight / 2 - (size / 2) * (rectHeight * 2);
+        }
+        rectY = (int) (canvas.getHeight() - (canvas.getHeight() - rectY) * scaleY);
+
         for (int i = 0; i < size; i++) {
-            int rectHeight = 30;
-            int rectY = (int) canvas.getHeight() / 2 - rectHeight / 2 - ((size / 2 - i) * (rectHeight * 2));
-            if (size % 2 == 0) {
-                rectY = (int) canvas.getHeight() / 2 + rectHeight / 2 - (size / 2 - i) * (rectHeight * 2);
-            }
             if (darkMode) {
                 graphicsContext.setFill(Color.BLACK);
             } else {
                 graphicsContext.setFill(Color.WHITE);
             }
-            graphicsContext.fillText(options.get(i), canvas.getWidth() / 2, rectY);
+            graphicsContext.fillText(options.get(i), canvas.getWidth() / 2, rectY + i * rectHeight * 2);
             int rectWidth = 120;
             Rectangle thisRect = new Rectangle(canvas.getWidth() / 2 - rectWidth / 2.0,
-                    rectY - rectHeight / 2.0,
+                    rectY + i * rectHeight * 2 - rectHeight / 2.0,
                     rectWidth,
                     rectHeight);
             decorationRect.set(i, thisRect);

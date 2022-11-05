@@ -1,6 +1,7 @@
 package com.example.project2.menu;
 
 import com.example.project2.HelloApplication;
+import com.example.project2.graphics.Sprite;
 import javafx.geometry.VPos;
 import javafx.scene.Scene;
 import javafx.scene.canvas.GraphicsContext;
@@ -21,7 +22,19 @@ public class GameOver extends Menu {
     @Override
     public void render(GraphicsContext graphicsContext) {
         super.shadow(graphicsContext);
-        super.render(graphicsContext);
+        Sprite.renderText(graphicsContext,
+                "GAME OVER",
+                Color.WHITE,
+                HelloApplication.HEIGHT * Sprite.SCALED_SIZE / 2,
+                (HelloApplication.WIDTH + HelloApplication.MENUHEIGHT) * Sprite.SCALED_SIZE * 3 / 10,
+                30);
+        Sprite.renderText(graphicsContext,
+                "Your score: " + HelloApplication.score.getValue(),
+                Color.WHITE,
+                HelloApplication.HEIGHT * Sprite.SCALED_SIZE / 2,
+                (HelloApplication.WIDTH + HelloApplication.MENUHEIGHT) * Sprite.SCALED_SIZE * 9 / 20,
+                20);
+        super.render(graphicsContext, 0.75);
     }
 
     @Override

@@ -48,7 +48,7 @@ public class HelloApplication extends Application {
     private final Menu gameOverScreen = new GameOver();
     private final Menu startScreen = new StartScreen();
     private PauseButton pauseButton;
-    private Score score;
+    public static Score score;
 
     public static void main(String[] args) {
         launch();

@@ -36,4 +36,6 @@ public class Score {
         gc.setFill(Color.BLACK);
         gc.fillText("Score: " + value / scale, x, y);
     }
+
+    public int getValue() { return value / scale; }
 }
