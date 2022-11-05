@@ -149,6 +149,10 @@ public class Bomber extends Entity {
                                     ((Balloom) e).is_dead = true;
                                 } else if (e instanceof Oneal && (e.check_collision(Flame) || e.check_collision(current))) {
                                     ((Oneal) e).is_dead = true;
+                                } else if (e instanceof Doll && (e.check_collision(Flame) || e.check_collision(current))) {
+                                    ((Doll) e).is_dead = true;
+                                } else if (e instanceof Minvo && (e.check_collision(Flame) || e.check_collision(current))) {
+                                    ((Minvo) e).is_dead = true;
                                 }
                             }
                             HelloApplication.flame.get(i).add(Flame);
