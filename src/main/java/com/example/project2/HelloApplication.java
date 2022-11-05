@@ -1,11 +1,14 @@
 package com.example.project2;
 
 import com.example.project2.entities.*;
+import com.example.project2.function.PauseButton;
+import com.example.project2.function.Score;
 import com.example.project2.graphics.Sound;
 import com.example.project2.graphics.Sprite;
 import com.example.project2.menu.GameOver;
 import com.example.project2.menu.Menu;
 import com.example.project2.menu.PauseScreen;
+import com.example.project2.menu.StartScreen;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.scene.Group;
@@ -39,10 +42,13 @@ public class HelloApplication extends Application {
     public static Map map = new Map();
     private boolean keyPressed = false;
     private KeyEvent event;
-    public static int gameState = 0; // 0: gameplay, 1: pause screen, 2: end game
-    private final Menu menu = new PauseScreen();
-    private final GameOver gameOverScreen = new GameOver();
+    public static int gameState = 4;
+    // 0: gameplay, 1: pause screen, 2: end game immediately, 3: game over, 4: start game
+    private final Menu pauseScreen = new PauseScreen();
+    private final Menu gameOverScreen = new GameOver();
+    private final Menu startScreen = new StartScreen();
     private PauseButton pauseButton;
+    private Score score;
 
     public static void main(String[] args) {
         launch();
@@ -67,13 +73,14 @@ public class HelloApplication extends Application {
         AnimationTimer timer = new AnimationTimer() {
             @Override
             public void handle(long l) {
-                if (gameState == 0 || gameState == 3) {
-                    stage.setScene(scene);
-                } else if (gameState == 1) {
-                    stage.setScene(menu.scene);
-                }
+//                if (gameState == 0 || gameState == 3) {
+//                    stage.setScene(scene);
+//                } else if (gameState == 1) {
+//                    stage.setScene(pauseScreen.scene);
+//                }
                 render();
                 if (gameState == 0) {
+                    stage.setScene(scene);
                     normalUpdate();
                     scene.setOnKeyPressed(keyEvent -> {
                         keyPressed = true;
@@ -96,7 +103,7 @@ public class HelloApplication extends Application {
                         }
                     });
                 } else if (gameState == 1) {
-                    menu.handleEvent();
+                    pauseScreen.handleEvent(scene);
                 } else if (gameState == 2) { // end game
                     this.stop();
                     stage.close();
@@ -108,6 +115,9 @@ public class HelloApplication extends Application {
                             stage.close();
                         }
                     });
+                } else if (gameState == 4) {
+                    stage.setScene(startScreen.scene);
+                    startScreen.handleEvent();
                 }
 //                test();
             }
@@ -126,6 +136,7 @@ public class HelloApplication extends Application {
 
     private void createStateBar() {
         pauseButton = new PauseButton(HEIGHT - 2, -1.5, Picture.pauseIcon.getFxImage());
+        score = new Score();
     }
 
     private void renderStateBar() {
@@ -190,6 +201,7 @@ public class HelloApplication extends Application {
         }
         entities.forEach(Entity::update);
         bomber.update();
+        score.update(false);
     }
 
     private void gameplayRender() {
@@ -218,6 +230,7 @@ public class HelloApplication extends Application {
         }
         renderStateBar();
         bomber.render(gc);
+        score.render(gc);
     }
 
     public void render() {
@@ -225,10 +238,13 @@ public class HelloApplication extends Application {
         if (gameState == 0) {
             gameplayRender();
         } else if (gameState == 1) {
-            menu.render();
+            gameplayRender();
+            pauseScreen.render(gc);
         } else if (gameState == 3) {
             gameplayRender();
             gameOverScreen.render(gc);
+        } else if (gameState == 4) {
+            startScreen.render();
         }
     }
 

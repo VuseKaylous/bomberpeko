@@ -1,5 +1,6 @@
-package com.example.project2.entities;
+package com.example.project2.function;
 
+import com.example.project2.entities.Entity;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyEvent;
 

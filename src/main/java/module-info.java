@@ -17,4 +17,6 @@ module com.example.project2 {
     exports com.example.project2;
     exports com.example.project2.entities;
     opens com.example.project2.entities to javafx.fxml;
+    exports com.example.project2.function;
+    opens com.example.project2.function to javafx.fxml;
 }

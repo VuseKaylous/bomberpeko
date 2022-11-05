@@ -58,18 +58,19 @@ public abstract class Menu {
     }
 
     public static boolean inRect(Rectangle rect) {
-        if (mouseEvent == null) {
-            return false;
-        }
-        double x = mouseEvent.getX();
-        double y = mouseEvent.getY();
-        return (rect.getX() <= x && x <= rect.getX() + rect.getWidth() &&
-                rect.getY() <= y && y <= rect.getY() + rect.getHeight());
+        return inRect(rect, mouseEvent);
     }
 
     public void render() {
+        gc.setFill(Color.WHITE);
         gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
         render(gc);
+    }
+
+    public void shadow(GraphicsContext graphicsContext) {
+        graphicsContext.setFill(Paint.valueOf(String.valueOf(Color.color(0, 0, 0, 0.5))));
+        graphicsContext.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
+        graphicsContext.setFill(Paint.valueOf(String.valueOf(Color.WHITE)));
     }
 
     public void render(GraphicsContext graphicsContext) {
@@ -83,8 +84,13 @@ public abstract class Menu {
             if (size % 2 == 0) {
                 rectY = (int) canvas.getHeight() / 2 + rectHeight / 2 - (size / 2 - i) * (rectHeight * 2);
             }
+            if (darkMode) {
+                graphicsContext.setFill(Color.BLACK);
+            } else {
+                graphicsContext.setFill(Color.WHITE);
+            }
             graphicsContext.fillText(options.get(i), canvas.getWidth() / 2, rectY);
-            int rectWidth = 100;
+            int rectWidth = 120;
             Rectangle thisRect = new Rectangle(canvas.getWidth() / 2 - rectWidth / 2.0,
                     rectY - rectHeight / 2.0,
                     rectWidth,
@@ -117,6 +123,10 @@ public abstract class Menu {
         graphicsContext.strokeRect(rect.getX(), rect.getY(), rect.getWidth(), rect.getHeight());
     }
 
-    public abstract void handleEvent();
+    public void handleEvent() {
+        handleEvent(scene);
+    }
+
+    public abstract void handleEvent(Scene scene1);
 
 }
