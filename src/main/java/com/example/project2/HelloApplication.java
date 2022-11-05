@@ -18,7 +18,6 @@ import javafx.stage.Stage;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.security.Key;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -42,9 +41,8 @@ public class HelloApplication extends Application {
     private KeyEvent event;
     public static int gameState = 0; // 0: gameplay, 1: pause screen, 2: end game
     private final Menu menu = new PauseScreen();
-    private GameOver gameOverScreen = new GameOver();
+    private final GameOver gameOverScreen = new GameOver();
     private PauseButton pauseButton;
-//    public static boolean isRestart = false;
 
     public static void main(String[] args) {
         launch();
@@ -132,13 +130,10 @@ public class HelloApplication extends Application {
         File maptxt = new File("inp.txt");
         try {
             Scanner reader = new Scanner(maptxt);
-//            System.out.println("create map");
             map = new Map();
             entities.clear();
             flame.clear();
             bomb.clear();
-//            gc.clearRect();
-//            gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
             for (int y = 0; y < WIDTH; y++) {
                 String data = reader.nextLine();
                 map.updateCol(data, y);
@@ -151,6 +146,9 @@ public class HelloApplication extends Application {
                         entities.add(object);
                     } else if (data.charAt(x) == '2') {
                         object = new Oneal(x, y, Picture.oneal[0][0].getFxImage());
+                        entities.add(object);
+                    } else if (data.charAt(x) == '3') {
+                        object = new Ghost(x, y, Picture.ghost[0][0].getFxImage());
                         entities.add(object);
                     }
                 }
@@ -176,13 +174,17 @@ public class HelloApplication extends Application {
                     entities.remove(i);
                     i--;
                 }
+            } else if (entities.get(i) instanceof Ghost ghost) {
+                if (ghost.is_dead && ghost.cnt > 32) {
+                    entities.remove(i);
+                    i--;
+                }
             }
         }
         for (Entity entity : entities) {
-            if (entity instanceof Balloom ||
-                    entity instanceof Oneal) {
-                if (entity.check_collision(bomber)) {
-                    gameState = 3;
+            if (entity.check_collision(bomber)) {
+                gameState = 3;
+                if (bomber.cnt > 30) {
                     return;
                 }
             }
@@ -198,6 +200,13 @@ public class HelloApplication extends Application {
                     if (!((Brick) map.sprite[i][j]).isDestroyed()) {
                         map.sprite[i][j].render(gc);
                     } else {
+                        if (map.tool[i][j] instanceof BombItem && bomber.getBomb_item) {
+                            map.tool[i][j] = new Grass(i, j, Picture.grass.getFxImage());
+                        } else if (map.tool[i][j] instanceof FlameItem && bomber.getFlame_item) {
+                            map.tool[i][j] = new Grass(i, j, Picture.grass.getFxImage());
+                        } else if (map.tool[i][j] instanceof SpeedItem && bomber.getSpeed_item) {
+                            map.tool[i][j] = new Grass(i, j, Picture.grass.getFxImage());
+                        }
                         map.tool[i][j].render(gc);
                     }
                 } else map.sprite[i][j].render(gc);
@@ -219,28 +228,19 @@ public class HelloApplication extends Application {
         } else if (gameState == 1) {
             menu.render();
         } else if (gameState == 3) {
-            /*
-            if (isRestart) {
-                isRestart = false;
-                createMap();
+            if (bomber.cnt <= 30) {
+                normalUpdate();
+                gameplayRender();
+            } else {
+                gameplayRender();
+                gameOverScreen.render(gc);
             }
-             */
-            gameplayRender();
-            gameOverScreen.render(gc);
         }
-
-//        entities.forEach(g -> g.render(gc));
-//        bomb.forEach(g -> g.render(gc));
-//        for (List<Bomb> e : flame) {
-//            e.forEach(g -> g.render(gc));
-//        }
-//        bomber.render(gc);
     }
 
     public static void playMusic(int i) {
         sound.setFile(i);
         sound.play();
         sound.loop();
-
     }
 }

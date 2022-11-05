@@ -34,8 +34,6 @@ public class GameOver extends Menu {
             mouseEvent = mEvent;
             for (int i = 0; i < decorationRect.size(); i++)
                 if (inRect(decorationRect.get(0))) {
-//                    System.out.println("is Restart");
-//                    HelloApplication.isRestart = true;
                     HelloApplication.gameState = 0;
                 } else if (inRect(decorationRect.get(1))) {
                     HelloApplication.gameState = 2;
@@ -49,8 +47,6 @@ public class GameOver extends Menu {
             mouseEvent = mEvent;
             for (int i = 0; i < decorationRect.size(); i++)
                 if (inRect(decorationRect.get(0))) {
-//                    System.out.println("is Restart");
-//                    HelloApplication.isRestart = true;
                     HelloApplication.createMap();
                     HelloApplication.gameState = 0;
                 } else if (inRect(decorationRect.get(1))) {

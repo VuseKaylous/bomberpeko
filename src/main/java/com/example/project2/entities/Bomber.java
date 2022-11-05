@@ -16,38 +16,44 @@ public class Bomber extends Entity {
     private final int[] change_x = {-1, 0, 1, 0, 0};
     private final int[] change_y = {0, -1, 0, 1, 0};
     Sound soundtmp = new Sound();
-    public String dir = "";
-    public static boolean getSpeedItem = false;
-    public static boolean getBomb_item;
-    public static boolean getFlame_item;
+    public boolean getSpeed_item;
+    public boolean getBomb_item;
+    public boolean getFlame_item;
     int count_move = 0;
+    public int cnt = 0;
     int speed;
-    Image left = Picture.player[3][2].getFxImage();
-    Image left1 = Picture.player[3][1].getFxImage();
-    Image left2 = Picture.player[3][0].getFxImage();
-    Image right = Picture.player[1][2].getFxImage();
-    Image right1 = Picture.player[1][1].getFxImage();
-    Image right2 = Picture.player[1][0].getFxImage();
-    Image up = Picture.player[0][2].getFxImage();
-    Image up1 = Picture.player[0][1].getFxImage();
-    Image up2 = Picture.player[0][0].getFxImage();
-    Image down = Picture.player[2][2].getFxImage();
-    Image down1 = Picture.player[2][1].getFxImage();
-    Image down2 = Picture.player[2][0].getFxImage();
-    
+
     public Bomber(int x, int y, Image img) {
         super(x, y, img);
         count_move = 0;
         count.clear();
         getBomb_item = false;
         getFlame_item = false;
+        getSpeed_item = false;
+    }
+
+    public void setImg(Image img) {
+        this.img = img;
+    }
+
+    public void dead() {
+        if (cnt <= 10) {
+            img = Picture.player[4][0].getFxImage();
+        } else if (cnt <= 20) {
+            img = Picture.player[4][1].getFxImage();
+        } else if (cnt <= 30) {
+            img = Picture.player[4][2].getFxImage();
+        }
     }
 
     @Override
     public void update() {
-        //biến count để đếm thời gian đổi ảnh
         count.replaceAll(integer -> integer + 1);
         updateImage();
+        if (HelloApplication.gameState == 3) {
+            cnt++;
+            dead();
+        }
     }
 
     private boolean validSquare(int fakeX, int fakeY) {
@@ -76,7 +82,6 @@ public class Bomber extends Entity {
                 HelloApplication.bomb.get(i).setImg(Picture.bomb[2].getFxImage());
             }
             if (80 + i < num && num < 86 + i) {
-//                playMusic(1);
                 int id = 0;
                 if (80 + i < num && num <= 82 + i) id = 0;
                 else if (82 + i <= num && num < 84 + i) id = 1;
@@ -88,17 +93,23 @@ public class Bomber extends Entity {
                     int newY = current.getSmallY() + change_y[j];
                     int newX2 = newX + change_x[j];
                     int newY2 = newY + change_y[j];
-
-                    //bug ở đây
-
                     if (validSquare(newX, newY)) {
                         playMusic(1);
                         if (getFlame_item && validSquare(newX2, newY2)) {
-                            //có item
                             if (HelloApplication.map.sprite[newX][newY] instanceof Brick br && !br.isDestroyed()) {
                                 br.setImg(Picture.brick[id + 1].getFxImage());
+                                for (Entity e : HelloApplication.entities) {
+                                    if (e instanceof Ghost g && e.check_collision(br)) {
+                                        g.is_dead = true;
+                                    }
+                                }
                             } else {
                                 if (HelloApplication.map.sprite[newX2][newY2] instanceof Brick br && !br.isDestroyed()) {
+                                    for (Entity e : HelloApplication.entities) {
+                                        if (e instanceof Ghost g && e.check_collision(br)) {
+                                            g.is_dead = true;
+                                        }
+                                    }
                                     br.setImg(Picture.brick[id + 1].getFxImage());
                                 } else {
                                     Bomb Flame;
@@ -107,21 +118,41 @@ public class Bomber extends Entity {
                                     } else {
                                         Flame = new Bomb(newX2, newY2, Picture.explosion[1][id][j].getFxImage());
                                     }
+                                    HelloApplication.flame.get(i).add(Flame);
                                     for (Entity e : HelloApplication.entities) {
-                                        if (e instanceof Balloom && (e.check_collision(Flame) || e.check_collision(current))) {
-                                            ((Balloom) e).is_dead = true;
-                                        } else if (e instanceof Oneal && (e.check_collision(Flame) || e.check_collision(current))) {
-                                            ((Oneal) e).is_dead = true;
+                                        if (e instanceof Balloom b && (e.check_collision(Flame) || e.check_collision(current))) {
+                                            b.is_dead = true;
+                                        } else if (e instanceof Oneal o && (e.check_collision(Flame) || e.check_collision(current))) {
+                                            o.is_dead = true;
+                                        } else if (e instanceof Ghost g && (e.check_collision(Flame) || e.check_collision(current))) {
+                                            g.is_dead = true;
                                         }
                                     }
                                     if (Flame.check_collision(this) || current.check_collision(this)) {
                                         HelloApplication.gameState = 3;
                                     }
-                                    HelloApplication.flame.get(i).add(Flame);
+                                }
+                                Bomb Flame2;
+                                if (j % 2 == 1) {
+                                    Flame2 = new Bomb(newX, newY, Picture.explosion[0][id][1].getFxImage());
+                                } else {
+                                    Flame2 = new Bomb(newX, newY, Picture.explosion[1][id][1].getFxImage());
+                                }
+                                HelloApplication.flame.get(i).add(Flame2);
+                                for (Entity e : HelloApplication.entities) {
+                                    if (e instanceof Balloom b && (e.check_collision(Flame2) || e.check_collision(current))) {
+                                        b.is_dead = true;
+                                    } else if (e instanceof Oneal o && (e.check_collision(Flame2) || e.check_collision(current))) {
+                                        o.is_dead = true;
+                                    } else if (e instanceof Ghost g && (e.check_collision(Flame2) || e.check_collision(current))) {
+                                        g.is_dead = true;
+                                    }
+                                }
+                                if (current.check_collision(this) || Flame2.check_collision(this)) {
+                                    HelloApplication.gameState = 3;
                                 }
                             }
                         } else {
-                            //không có item
                             if (HelloApplication.map.sprite[newX][newY] instanceof Brick br && !br.isDestroyed()) {
                                 br.setImg(Picture.brick[id + 1].getFxImage());
                             } else {
@@ -175,6 +206,7 @@ public class Bomber extends Entity {
                 i--;
             }
         }
+
     }
 
     public Rectangle2D getBoundary2D() {
@@ -236,32 +268,36 @@ public class Bomber extends Entity {
 
     @Override
     public void update(KeyEvent event) {
-        if (HelloApplication.map.tool[getSmallX()][getSmallY()] instanceof SpeedItem) {
-            if(HelloApplication.map.sprite[getSmallX()][getSmallY()] instanceof Brick brick) {
-                if(brick.isDestroyed()) {
-                    getSpeedItem = true;
-                    System.out.println("true");// đéo chạy
+        for (int i = 0; i < HelloApplication.HEIGHT * Sprite.SCALED_SIZE; i++) {
+            for (int j = 0; j < HelloApplication.WIDTH * Sprite.SCALED_SIZE; j++) {
+                int newX = i / Sprite.SCALED_SIZE;
+                int newY = j / Sprite.SCALED_SIZE;
+                if (HelloApplication.map.tool[newX][newY] instanceof SpeedItem si) {
+                    if (this.check_collision(si) && HelloApplication.map.sprite[newX][newY] instanceof Brick brick) {
+                        if (brick.isDestroyed()) {
+                            getSpeed_item = true;
+                        }
+                    }
+                }
+                if (HelloApplication.map.tool[newX][newY] instanceof BombItem bi) {
+                    if (this.check_collision(bi) && HelloApplication.map.sprite[newX][newY] instanceof Brick brick) {
+                        if (brick.isDestroyed()) {
+                            getBomb_item = true;
+                        }
+                    }
+                }
+                if (HelloApplication.map.tool[newX][newY] instanceof FlameItem fi) {
+                    if (this.check_collision(fi) && HelloApplication.map.sprite[newX][newY] instanceof Brick brick) {
+                        if (brick.isDestroyed()) {
+                            getFlame_item = true;
+                        }
+                    }
                 }
             }
         }
-        if(getSpeedItem) { //chạy ngon
+        speed = 2;
+        if (getSpeed_item) {
             speed = 5;
-        }else {
-            speed = 2;
-        }
-        if (HelloApplication.map.tool[getSmallX()][getSmallY()] instanceof BombItem) {
-            if (HelloApplication.map.sprite[getSmallX()][getSmallY()] instanceof Brick brick) {
-                if (brick.isDestroyed()) {
-                    getBomb_item = true;
-                }
-            }
-        }
-        if (HelloApplication.map.tool[getSmallX()][getSmallY()] instanceof FlameItem) {
-            if (HelloApplication.map.sprite[getSmallX()][getSmallY()] instanceof Brick brick) {
-                if (brick.isDestroyed()) {
-                    getFlame_item = true;
-                }
-            }
         }
         int direction = 4; // ko co event thi dung yen
         KeyCode key = event.getCode();
