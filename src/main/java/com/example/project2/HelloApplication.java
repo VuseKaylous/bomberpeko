@@ -33,7 +33,7 @@ public class HelloApplication extends Application {
     public static List<Entity> entities = new ArrayList<>();
     public static List<Bomb> bomb = new ArrayList<>();
     public static List<List<Bomb>> flame = new ArrayList<>();
-    private static Bomber bomber;
+    public static Bomber bomber;
 
     public Picture pictures = new Picture();
     public static Map map = new Map();
@@ -150,6 +150,9 @@ public class HelloApplication extends Application {
                     } else if (data.charAt(x) == '3') {
                         object = new Ghost(x, y, Picture.ghost[0][0].getFxImage());
                         entities.add(object);
+                    } else if (data.charAt(x) == '4') {
+                        object = new Kondoria(x, y, Picture.kondoria[0][0].getFxImage());
+                        entities.add(object);
                     }
                 }
             }
@@ -160,7 +163,7 @@ public class HelloApplication extends Application {
     }
 
     public void normalUpdate() {
-        if (keyPressed) {
+        if (gameState != 3 && keyPressed) {
             bomber.update(event);
         }
         for (int i = 0; i < entities.size(); i++) {
@@ -184,12 +187,9 @@ public class HelloApplication extends Application {
         for (Entity entity : entities) {
             if (entity.check_collision(bomber)) {
                 gameState = 3;
-                if (bomber.cnt > 30) {
-                    return;
-                }
             }
         }
-        entities.forEach(Entity::update);
+        if (gameState != 3) entities.forEach(Entity::update);
         bomber.update();
     }
 

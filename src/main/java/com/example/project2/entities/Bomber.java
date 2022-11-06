@@ -126,6 +126,8 @@ public class Bomber extends Entity {
                                             o.is_dead = true;
                                         } else if (e instanceof Ghost g && (e.check_collision(Flame) || e.check_collision(current))) {
                                             g.is_dead = true;
+                                        } else if (e instanceof Kondoria k && (e.check_collision(Flame) || e.check_collision(current))) {
+                                            k.is_dead = true;
                                         }
                                     }
                                     if (Flame.check_collision(this) || current.check_collision(this)) {
@@ -146,6 +148,8 @@ public class Bomber extends Entity {
                                         o.is_dead = true;
                                     } else if (e instanceof Ghost g && (e.check_collision(Flame2) || e.check_collision(current))) {
                                         g.is_dead = true;
+                                    } else if (e instanceof Kondoria k && (e.check_collision(Flame2) || e.check_collision(current))) {
+                                        k.is_dead = true;
                                     }
                                 }
                                 if (current.check_collision(this) || Flame2.check_collision(this)) {
@@ -167,6 +171,10 @@ public class Bomber extends Entity {
                                         ((Balloom) e).is_dead = true;
                                     } else if (e instanceof Oneal && (e.check_collision(Flame) || e.check_collision(current))) {
                                         ((Oneal) e).is_dead = true;
+                                    } else if (e instanceof Ghost g && (e.check_collision(Flame) || e.check_collision(current))) {
+                                        g.is_dead = true;
+                                    } else if (e instanceof Kondoria k && (e.check_collision(Flame) || e.check_collision(current))) {
+                                        k.is_dead = true;
                                     }
                                 }
                                 if (Flame.check_collision(this) || current.check_collision(this)) {
@@ -297,7 +305,7 @@ public class Bomber extends Entity {
         }
         speed = 2;
         if (getSpeed_item) {
-            speed = 5;
+            speed = 4;
         }
         int direction = 4; // ko co event thi dung yen
         KeyCode key = event.getCode();
