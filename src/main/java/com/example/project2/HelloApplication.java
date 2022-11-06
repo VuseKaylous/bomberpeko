@@ -6,6 +6,7 @@ import com.example.project2.function.Score;
 import com.example.project2.graphics.KeyConfig;
 import com.example.project2.graphics.Sound;
 import com.example.project2.graphics.Sprite;
+import com.example.project2.graphics.UsefulFuncs;
 import com.example.project2.menu.*;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
@@ -45,12 +46,13 @@ public class HelloApplication extends Application {
     private KeyEvent event;
     public static KeyConfig keyConfig = new KeyConfig();
     public static int gameState = 4;
-    // 0: gameplay, 1: pause screen, 2: end game immediately, 3: game over, 4: start game, 5: victory
+    // 0: gameplay, 1: pause screen, 2: end game immediately, 3: game over, 4: start game, 5: victory, 6: setting
     public static int gameLevel = 1;
     private final PauseScreen pauseScreen = new PauseScreen();
     private final GameOver gameOverScreen = new GameOver();
     private final StartScreen startScreen = new StartScreen();
     private static VictoryScreen victoryScreen = new VictoryScreen();
+    private static final SettingScreen settingScreen = new SettingScreen();
     private PauseButton pauseButton;
     public static Score score;
 
@@ -85,21 +87,22 @@ public class HelloApplication extends Application {
                     scene.setOnKeyPressed(keyEvent -> {
                         keyPressed = true;
                         event = keyEvent;
-                        if (event.getCode() == keyConfig.pause) { // p: pause screen
+                        if (event.getCode() == keyConfig.getPause()) { // p: pause screen
                             gameState = 1;
                         }
-                        if (keyEvent.getCode() == keyConfig.exit) {
+                        if (keyEvent.getCode() == keyConfig.getExit()) {
                             this.stop();
                             stage.close();
                         }
 //                        System.out.println(event.getCode()); // test
                     });
                     scene.setOnKeyReleased(keyEvent -> {
+                        event = keyEvent;
                         bomber.setBomb(event);
                         keyPressed = false;
                     });
                     scene.setOnMouseReleased(mouseEvent -> {
-                        if (Menu.inRect(pauseButton.getBoundary(), mouseEvent)) {
+                        if (UsefulFuncs.inRect(pauseButton.getBoundary(), mouseEvent)) {
                             gameState = 1;
                         }
                     });
@@ -111,7 +114,7 @@ public class HelloApplication extends Application {
                 } else if (gameState == 3) { // game over
                     gameOverScreen.handleEvent(scene);
                     scene.setOnKeyPressed(keyEvent -> {
-                        if (keyEvent.getCode() == keyConfig.exit) {
+                        if (keyEvent.getCode() == keyConfig.getExit()) {
                             this.stop();
                             stage.close();
                         }
@@ -121,6 +124,9 @@ public class HelloApplication extends Application {
                     startScreen.handleEvent();
                 } else if (gameState == 5) {
                     victoryScreen.handleEvent(scene);
+                } else if (gameState == 6) {
+                    stage.setScene(settingScreen.scene);
+                    settingScreen.handleEvent();
                 }
 //                test();
             }
@@ -150,6 +156,7 @@ public class HelloApplication extends Application {
         File maptxt = new File("inp" + gameLevel + ".txt");
         try {
             Scanner reader = new Scanner(maptxt);
+            map = null;
             map = new Map();
             entities.clear();
             flame.clear();
@@ -183,8 +190,8 @@ public class HelloApplication extends Application {
     }
 
     public static void restartGame() {
-        createMap();
         gameLevel = 1;
+        createMap();
         score.resetScore(gameLevel);
         victoryScreen.resetGame();
     }
@@ -272,9 +279,11 @@ public class HelloApplication extends Application {
             }
         } else if (gameState == 4) {
             startScreen.render();
-        } else  if (gameState == 5) {
+        } else if (gameState == 5) {
             gameplayRender();
             victoryScreen.render(gc);
+        } else if (gameState == 6) {
+            settingScreen.render();
         }
     }
 

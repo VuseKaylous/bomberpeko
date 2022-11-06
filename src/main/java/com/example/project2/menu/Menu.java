@@ -2,6 +2,7 @@ package com.example.project2.menu;
 
 import com.example.project2.HelloApplication;
 import com.example.project2.graphics.Sprite;
+import com.example.project2.graphics.UsefulFuncs;
 import javafx.geometry.VPos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -43,18 +44,8 @@ public abstract class Menu {
         this.decorationRect.add(new Rectangle());
     }
 
-    public static boolean inRect(Rectangle rect, MouseEvent mEvent) {
-        if (mEvent == null) {
-            return false;
-        }
-        double x = mEvent.getX();
-        double y = mEvent.getY();
-        return (rect.getX() <= x && x <= rect.getX() + rect.getWidth() &&
-                rect.getY() <= y && y <= rect.getY() + rect.getHeight());
-    }
-
     public static boolean inRect(Rectangle rect) {
-        return inRect(rect, mouseEvent);
+        return UsefulFuncs.inRect(rect, mouseEvent);
     }
 
     public void render() {

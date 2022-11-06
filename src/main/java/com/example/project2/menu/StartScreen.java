@@ -2,6 +2,7 @@ package com.example.project2.menu;
 
 import com.example.project2.HelloApplication;
 import com.example.project2.graphics.Sprite;
+import com.example.project2.graphics.UsefulFuncs;
 import javafx.animation.TranslateTransition;
 import javafx.scene.Scene;
 import javafx.scene.SubScene;
@@ -21,6 +22,7 @@ public class StartScreen extends Menu {
         super();
         super.addOption("Start game");
         super.addOption("Help");
+        super.addOption("Setting");
         super.addOption("Exit");
 
         helpIn = false;
@@ -71,10 +73,12 @@ public class StartScreen extends Menu {
                         helpIn = true;
                         move(true);
                     } else if (inRect(decorationRect.get(2))) {
+                        HelloApplication.gameState = 6;
+                    } else if (inRect(decorationRect.get(3))) {
                         HelloApplication.gameState = 2;
                     }
             } else {
-                if (!Menu.inRect(helpRect, mEvent)) {
+                if (!UsefulFuncs.inRect(helpRect, mEvent)) {
                     helpIn = false;
                     move(false);
                 }

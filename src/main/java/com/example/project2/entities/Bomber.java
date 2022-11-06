@@ -250,9 +250,10 @@ public class Bomber extends Entity {
     }
 
     public void setBomb(KeyEvent event) {
+        if (event == null) return;
         boolean check = false;
         KeyCode key = event.getCode();
-        if (key == HelloApplication.keyConfig.setBomb) {
+        if (key == HelloApplication.keyConfig.getSetBomb()) {
 //            playMusic(2);
             if (!getBomb_item && HelloApplication.bomb.size() > 0) {
                 check = true;
@@ -332,13 +333,13 @@ public class Bomber extends Entity {
         int direction = 4; // ko co event thi dung yen
         KeyCode key = event.getCode();
         int[] directionToPicture = new int[]{3, 0, 1, 2};
-        if (key == HelloApplication.keyConfig.left) {
+        if (key == HelloApplication.keyConfig.getLeft()) {
             direction = 0;
-        } else if (key == HelloApplication.keyConfig.up) {
+        } else if (key == HelloApplication.keyConfig.getUp()) {
             direction = 1;
-        } else if (key == HelloApplication.keyConfig.right) {
+        } else if (key == HelloApplication.keyConfig.getRight()) {
             direction = 2;
-        } else if (key == HelloApplication.keyConfig.down) {
+        } else if (key == HelloApplication.keyConfig.getDown()) {
             direction = 3;
         }
 //        switch (key) {
