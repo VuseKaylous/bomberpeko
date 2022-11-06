@@ -3,7 +3,9 @@ package com.example.project2.entities;
 import com.example.project2.HelloApplication;
 import com.example.project2.graphics.Sound;
 import com.example.project2.graphics.Sprite;
+import com.example.project2.graphics.SpriteSheet;
 import javafx.geometry.Rectangle2D;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -19,6 +21,7 @@ public class Bomber extends Entity {
     public boolean getSpeed_item;
     public boolean getBomb_item;
     public boolean getFlame_item;
+    private ArrayList<Entity> itemsGot = new ArrayList<Entity>();
     int count_move = 0;
     public int cnt = 0;
     int speed;
@@ -112,11 +115,13 @@ public class Bomber extends Entity {
                                     }
                                     br.setImg(Picture.brick[id + 1].getFxImage());
                                 } else {
-                                    Bomb Flame;
+                                    Bomb Flame, Flame2;
                                     if (j % 2 == 1) {
                                         Flame = new Bomb(newX2, newY2, Picture.explosion[0][id][j - 1].getFxImage());
+                                        Flame2 = new Bomb(newX, newY, Picture.explosion[0][id][1].getFxImage());
                                     } else {
                                         Flame = new Bomb(newX2, newY2, Picture.explosion[1][id][j].getFxImage());
+                                        Flame2 = new Bomb(newX, newY, Picture.explosion[1][id][1].getFxImage());
                                     }
                                     HelloApplication.flame.get(i).add(Flame);
                                     for (Entity e : HelloApplication.entities) {
@@ -128,9 +133,10 @@ public class Bomber extends Entity {
                                             g.is_dead = true;
                                         } else if (e instanceof Kondoria k && (e.check_collision(Flame) || e.check_collision(current))) {
                                             k.is_dead = true;
+//                                    HelloApplication.flame.get(i).add(Flame2);
                                         }
                                     }
-                                    if (Flame.check_collision(this) || current.check_collision(this)) {
+                                    if (Flame.check_collision(this) || current.check_collision(this) || Flame2.check_collision(this)) {
                                         HelloApplication.gameState = 3;
                                     }
                                 }
@@ -283,21 +289,36 @@ public class Bomber extends Entity {
                 if (HelloApplication.map.tool[newX][newY] instanceof SpeedItem si) {
                     if (this.check_collision(si) && HelloApplication.map.sprite[newX][newY] instanceof Brick brick) {
                         if (brick.isDestroyed()) {
-                            getSpeed_item = true;
+                            if (!getSpeed_item) {
+                                getSpeed_item = true;
+                                int id = itemsGot.size();
+                                itemsGot.add(new SpeedItem(1.5 * id + 1,
+                                        0.5 - HelloApplication.MENUHEIGHT));
+                            }
                         }
                     }
                 }
                 if (HelloApplication.map.tool[newX][newY] instanceof BombItem bi) {
                     if (this.check_collision(bi) && HelloApplication.map.sprite[newX][newY] instanceof Brick brick) {
                         if (brick.isDestroyed()) {
-                            getBomb_item = true;
+                            if (!getBomb_item) {
+                                getBomb_item = true;
+                                int id = itemsGot.size();
+                                itemsGot.add(new BombItem(1.5 * id + 1,
+                                        0.5 - HelloApplication.MENUHEIGHT));
+                            }
                         }
                     }
                 }
                 if (HelloApplication.map.tool[newX][newY] instanceof FlameItem fi) {
                     if (this.check_collision(fi) && HelloApplication.map.sprite[newX][newY] instanceof Brick brick) {
                         if (brick.isDestroyed()) {
-                            getFlame_item = true;
+                            if (!getFlame_item) {
+                                getFlame_item = true;
+                                int id = itemsGot.size();
+                                itemsGot.add(new FlameItem(1.5 * id + 1,
+                                        0.5 - HelloApplication.MENUHEIGHT));
+                            }
                         }
                     }
                 }
@@ -309,61 +330,30 @@ public class Bomber extends Entity {
         }
         int direction = 4; // ko co event thi dung yen
         KeyCode key = event.getCode();
+        int[] directionToPicture = new int[]{3, 0, 1, 2};
         switch (key) {
             case LEFT -> {
-                count_move++;
                 direction = 0;
-                if (count_move == 0) {
-                    img = Picture.player[3][2].getFxImage();
-                } else if (count_move == 10) {
-                    img = Picture.player[3][1].getFxImage();
-                } else if (count_move == 20) {
-                    img = Picture.player[3][0].getFxImage();
-                    count_move = 0;
-                }
             }
             case UP -> {
-                count_move++;
                 direction = 1;
-                if (count_move == 0) {
-                    img = Picture.player[0][2].getFxImage();
-                } else if (count_move == 10) {
-                    img = Picture.player[0][1].getFxImage();
-                } else if (count_move == 20) {
-                    img = Picture.player[0][0].getFxImage();
-                    count_move = 0;
-                }
             }
             case RIGHT -> {
-                count_move++;
                 direction = 2;
-                if (count_move == 0) {
-                    img = Picture.player[1][2].getFxImage();
-                } else if (count_move == 10) {
-                    img = Picture.player[1][1].getFxImage();
-                } else if (count_move == 20) {
-                    img = Picture.player[1][0].getFxImage();
-                    count_move = 0;
-                }
             }
             case DOWN -> {
-                count_move++;
                 direction = 3;
-                if (count_move == 0) {
-                    img = Picture.player[2][2].getFxImage();
-                } else if (count_move == 10) {
-                    img = Picture.player[2][1].getFxImage();
-                } else if (count_move == 20) {
-                    img = Picture.player[2][0].getFxImage();
-                    count_move = 0;
-                }
             }
+        }
+        count_move = (count_move + 1) % 30;
+        if (count_move % 10 == 0 && direction < 4) {
+            img = Picture.player[directionToPicture[direction]][2 - (count_move / 10)].getFxImage(); // thay anh
         }
         //System.out.println(speed);
         x = x + change_x[direction] * speed;
         y = y + change_y[direction] * speed;
 
-        int snapSize = 5;
+        int snapSize = 6;
         for (int snap = 0; snap <= snapSize; snap++) {
             if (direction % 2 == 0 && direction < 4) { // di theo chieu y
                 y += snap;
@@ -398,6 +388,16 @@ public class Bomber extends Entity {
         }
         x = x - change_x[direction] * speed;
         y = y - change_y[direction] * speed;
+    }
+
+    @Override
+    public void render(GraphicsContext gc) {
+        super.render(gc);
+//        System.out.println(itemsGot.size());
+        for (Entity entity : itemsGot) {
+//            System.out.println("fuck");
+            entity.render(gc);
+        }
     }
 
     public void playMusic(int i) {

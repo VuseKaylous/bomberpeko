@@ -1,11 +1,11 @@
 package com.example.project2;
 
 import com.example.project2.entities.*;
+import com.example.project2.function.PauseButton;
+import com.example.project2.function.Score;
 import com.example.project2.graphics.Sound;
 import com.example.project2.graphics.Sprite;
-import com.example.project2.menu.GameOver;
-import com.example.project2.menu.Menu;
-import com.example.project2.menu.PauseScreen;
+import com.example.project2.menu.*;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.scene.Group;
@@ -18,6 +18,7 @@ import javafx.stage.Stage;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.lang.invoke.VolatileCallSite;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -30,6 +31,8 @@ public class HelloApplication extends Application {
     public static final int MENUHEIGHT = 2;
     public static final int WIDTH = 13;
     public static final int HEIGHT = 31;
+    public static int SCREENWIDTH = HEIGHT * Sprite.SCALED_SIZE;
+    public static int SCREENHEIGHT = (WIDTH + MENUHEIGHT) * Sprite.SCALED_SIZE;
     public static List<Entity> entities = new ArrayList<>();
     public static List<Bomb> bomb = new ArrayList<>();
     public static List<List<Bomb>> flame = new ArrayList<>();
@@ -39,10 +42,15 @@ public class HelloApplication extends Application {
     public static Map map = new Map();
     private boolean keyPressed = false;
     private KeyEvent event;
-    public static int gameState = 0; // 0: gameplay, 1: pause screen, 2: end game
-    private final Menu menu = new PauseScreen();
+    public static int gameState = 4;
+    // 0: gameplay, 1: pause screen, 2: end game immediately, 3: game over, 4: start game, 5: victory
+    public static int gameLevel = 1;
+    private final PauseScreen pauseScreen = new PauseScreen();
     private final GameOver gameOverScreen = new GameOver();
+    private final StartScreen startScreen = new StartScreen();
+    private static VictoryScreen victoryScreen = new VictoryScreen();
     private PauseButton pauseButton;
+    public static Score score;
 
     public static void main(String[] args) {
         launch();
@@ -67,13 +75,9 @@ public class HelloApplication extends Application {
         AnimationTimer timer = new AnimationTimer() {
             @Override
             public void handle(long l) {
-                if (gameState == 0 || gameState == 3) {
-                    stage.setScene(scene);
-                } else if (gameState == 1) {
-                    stage.setScene(menu.scene);
-                }
                 render();
                 if (gameState == 0) {
+                    stage.setScene(scene);
                     normalUpdate();
                     scene.setOnKeyPressed(keyEvent -> {
                         keyPressed = true;
@@ -85,6 +89,7 @@ public class HelloApplication extends Application {
                             this.stop();
                             stage.close();
                         }
+//                        System.out.println(event.getCode()); // test
                     });
                     scene.setOnKeyReleased(keyEvent -> {
                         bomber.setBomb(event);
@@ -96,7 +101,7 @@ public class HelloApplication extends Application {
                         }
                     });
                 } else if (gameState == 1) {
-                    menu.handleEvent();
+                    pauseScreen.handleEvent(scene);
                 } else if (gameState == 2) { // end game
                     this.stop();
                     stage.close();
@@ -108,8 +113,13 @@ public class HelloApplication extends Application {
                             stage.close();
                         }
                     });
+                } else if (gameState == 4) {
+                    stage.setScene(startScreen.scene);
+                    startScreen.handleEvent();
+                } else if (gameState == 5) {
+                    victoryScreen.handleEvent(scene);
                 }
-
+//                test();
             }
         };
         timer.start();
@@ -118,8 +128,15 @@ public class HelloApplication extends Application {
         createStateBar();
     }
 
+//    private void test() {
+//        Entity testSubject = new FlameItem(1,
+//                (float) -1.5, Picture.powerup[1].getFxImage());
+//        testSubject.render(gc);
+//    }
+
     private void createStateBar() {
-        pauseButton = new PauseButton(HEIGHT - 2, (float) -1.5, Picture.pauseIcon.getFxImage());
+        pauseButton = new PauseButton(HEIGHT - 2, -1.5, Picture.pauseIcon.getFxImage());
+        score = new Score();
     }
 
     private void renderStateBar() {
@@ -127,7 +144,7 @@ public class HelloApplication extends Application {
     }
 
     public static void createMap() {
-        File maptxt = new File("inp.txt");
+        File maptxt = new File("inp" + gameLevel + ".txt");
         try {
             Scanner reader = new Scanner(maptxt);
             map = new Map();
@@ -157,14 +174,21 @@ public class HelloApplication extends Application {
                 }
             }
         } catch (FileNotFoundException e) {
-            System.out.println("File not found");
+            System.out.println("File not found " + gameLevel);
         }
 //        playMusic(0);
     }
 
+    public static void restartGame() {
+        createMap();
+        gameLevel = 1;
+        score.resetScore(gameLevel);
+        victoryScreen.resetGame();
+    }
+
     public void normalUpdate() {
         if (gameState != 3 && keyPressed) {
-            bomber.update(event);
+            if (event != null) bomber.update(event);
         }
         for (int i = 0; i < entities.size(); i++) {
             if (entities.get(i) instanceof Balloom balloom) {
@@ -194,8 +218,14 @@ public class HelloApplication extends Application {
                 gameState = 3;
             }
         }
+        if (entities.size() == 0) {
+            if (bomber.check_collision(map.getPortal())) {
+                gameState = 5;
+            }
+        }
         if (gameState != 3) entities.forEach(Entity::update);
         bomber.update();
+        score.update(false);
     }
 
     private void gameplayRender() {
@@ -222,8 +252,9 @@ public class HelloApplication extends Application {
         for (List<Bomb> e : flame) {
             e.forEach(g -> g.render(gc));
         }
-        bomber.render(gc);
         renderStateBar();
+        bomber.render(gc);
+        score.render(gc);
     }
 
     public void render() {
@@ -231,7 +262,8 @@ public class HelloApplication extends Application {
         if (gameState == 0) {
             gameplayRender();
         } else if (gameState == 1) {
-            menu.render();
+            gameplayRender();
+            pauseScreen.render(gc);
         } else if (gameState == 3) {
             if (bomber.cnt <= 30) {
                 normalUpdate();
@@ -240,6 +272,11 @@ public class HelloApplication extends Application {
                 gameplayRender();
                 gameOverScreen.render(gc);
             }
+        } else if (gameState == 4) {
+            startScreen.render();
+        } else  if (gameState == 5) {
+            gameplayRender();
+            victoryScreen.render(gc);
         }
     }
 
