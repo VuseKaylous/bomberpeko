@@ -3,6 +3,7 @@ package com.example.project2;
 import com.example.project2.entities.*;
 import com.example.project2.function.PauseButton;
 import com.example.project2.function.Score;
+import com.example.project2.graphics.KeyConfig;
 import com.example.project2.graphics.Sound;
 import com.example.project2.graphics.Sprite;
 import com.example.project2.menu.*;
@@ -42,6 +43,7 @@ public class HelloApplication extends Application {
     public static Map map = new Map();
     private boolean keyPressed = false;
     private KeyEvent event;
+    public static KeyConfig keyConfig = new KeyConfig();
     public static int gameState = 4;
     // 0: gameplay, 1: pause screen, 2: end game immediately, 3: game over, 4: start game, 5: victory
     public static int gameLevel = 1;
@@ -51,6 +53,7 @@ public class HelloApplication extends Application {
     private static VictoryScreen victoryScreen = new VictoryScreen();
     private PauseButton pauseButton;
     public static Score score;
+
 
     public static void main(String[] args) {
         launch();
@@ -82,10 +85,10 @@ public class HelloApplication extends Application {
                     scene.setOnKeyPressed(keyEvent -> {
                         keyPressed = true;
                         event = keyEvent;
-                        if (event.getCode() == KeyCode.P) { // p: pause screen
+                        if (event.getCode() == keyConfig.pause) { // p: pause screen
                             gameState = 1;
                         }
-                        if (keyEvent.getCode() == KeyCode.ESCAPE) {
+                        if (keyEvent.getCode() == keyConfig.exit) {
                             this.stop();
                             stage.close();
                         }
@@ -108,7 +111,7 @@ public class HelloApplication extends Application {
                 } else if (gameState == 3) { // game over
                     gameOverScreen.handleEvent(scene);
                     scene.setOnKeyPressed(keyEvent -> {
-                        if (keyEvent.getCode() == KeyCode.ESCAPE) {
+                        if (keyEvent.getCode() == keyConfig.exit) {
                             this.stop();
                             stage.close();
                         }
