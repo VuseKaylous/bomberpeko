@@ -65,6 +65,8 @@ public class StartScreen extends Menu {
                 for (int i = 0; i < decorationRect.size(); i++)
                     if (inRect(decorationRect.get(0))) {
                         HelloApplication.gameState = 0;
+//                        HelloApplication.gameLevel = 1;
+                        HelloApplication.restartGame();
                     } else if (inRect(decorationRect.get(1))) {
                         helpIn = true;
                         move(true);

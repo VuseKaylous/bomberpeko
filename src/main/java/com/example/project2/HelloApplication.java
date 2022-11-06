@@ -136,7 +136,7 @@ public class HelloApplication extends Application {
 
     private void createStateBar() {
         pauseButton = new PauseButton(HEIGHT - 2, -1.5, Picture.pauseIcon.getFxImage());
-        score = new Score(gameLevel);
+        score = new Score();
     }
 
     private void renderStateBar() {
@@ -175,12 +175,13 @@ public class HelloApplication extends Application {
 
     public static void restartGame() {
         createMap();
-        score = new Score(gameLevel);
+        gameLevel = 1;
+        score.resetScore(gameLevel);
     }
 
     public void normalUpdate() {
         if (keyPressed) {
-            bomber.update(event);
+            if (event != null) bomber.update(event);
         }
         for (int i = 0; i < entities.size(); i++) {
             if (entities.get(i) instanceof Balloom balloom) {

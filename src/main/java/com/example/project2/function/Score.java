@@ -22,9 +22,9 @@ public class Score {
         initialScore = 0;
     }
 
-    public Score(int level) {
+    public void resetScore(int level) {
         if (level == 1) initialScore = 0;
-        System.out.println(level + " " + initialScore);
+//        System.out.println(level + " " + initialScore);
         value = initialScore + levelScore[level - 1] * scale;
     }
 
@@ -42,6 +42,7 @@ public class Score {
 
     public void newLevel() {
         initialScore = value;
+//        System.out.println("! " + initialScore);
         value += 1500 * scale;
         HelloApplication.gameLevel++;
     }

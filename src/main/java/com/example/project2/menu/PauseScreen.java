@@ -25,14 +25,15 @@ public class PauseScreen extends Menu {
         scene1.setOnMouseMoved(mEvent -> mouseEvent = mEvent);
         scene1.setOnMouseReleased(mEvent -> {
             mouseEvent = mEvent;
-            for (int i = 0; i < decorationRect.size(); i++)
-            if (inRect(decorationRect.get(0))) {
-                HelloApplication.gameState = 0;
-            } else if (inRect(decorationRect.get(1))) {
-                HelloApplication.gameState = 0;
-                HelloApplication.restartGame();
-            } else if (inRect(decorationRect.get(2))) {
-                HelloApplication.gameState = 4;
+            for (int i = 0; i < decorationRect.size(); i++) {
+                if (inRect(decorationRect.get(0))) {
+                    HelloApplication.gameState = 0;
+                } else if (inRect(decorationRect.get(1))) {
+                    HelloApplication.gameState = 0;
+                    HelloApplication.restartGame();
+                } else if (inRect(decorationRect.get(2))) {
+                    HelloApplication.gameState = 4;
+                }
             }
         });
     }
