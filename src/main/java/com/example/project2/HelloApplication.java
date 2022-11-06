@@ -182,6 +182,11 @@ public class HelloApplication extends Application {
                     entities.remove(i);
                     i--;
                 }
+            } else if (entities.get(i) instanceof Kondoria kondoria) {
+                if (kondoria.is_dead && kondoria.cnt > 32) {
+                    entities.remove(i);
+                    i--;
+                }
             }
         }
         for (Entity entity : entities) {
