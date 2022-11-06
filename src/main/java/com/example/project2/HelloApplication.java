@@ -5,10 +5,7 @@ import com.example.project2.function.PauseButton;
 import com.example.project2.function.Score;
 import com.example.project2.graphics.Sound;
 import com.example.project2.graphics.Sprite;
-import com.example.project2.menu.GameOver;
-import com.example.project2.menu.Menu;
-import com.example.project2.menu.PauseScreen;
-import com.example.project2.menu.StartScreen;
+import com.example.project2.menu.*;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.scene.Group;
@@ -21,6 +18,7 @@ import javafx.stage.Stage;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.lang.invoke.VolatileCallSite;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -45,10 +43,12 @@ public class HelloApplication extends Application {
     private boolean keyPressed = false;
     private KeyEvent event;
     public static int gameState = 4;
-    // 0: gameplay, 1: pause screen, 2: end game immediately, 3: game over, 4: start game
+    // 0: gameplay, 1: pause screen, 2: end game immediately, 3: game over, 4: start game, 5: victory
+    public static int gameLevel = 1;
     private final Menu pauseScreen = new PauseScreen();
     private final Menu gameOverScreen = new GameOver();
     private final Menu startScreen = new StartScreen();
+    private final Menu victoryScreen = new VictoryScreen();
     private PauseButton pauseButton;
     public static Score score;
 
@@ -116,6 +116,8 @@ public class HelloApplication extends Application {
                 } else if (gameState == 4) {
                     stage.setScene(startScreen.scene);
                     startScreen.handleEvent();
+                } else if (gameState == 5) {
+                    victoryScreen.handleEvent(scene);
                 }
 //                test();
             }
@@ -134,7 +136,7 @@ public class HelloApplication extends Application {
 
     private void createStateBar() {
         pauseButton = new PauseButton(HEIGHT - 2, -1.5, Picture.pauseIcon.getFxImage());
-        score = new Score();
+        score = new Score(gameLevel);
     }
 
     private void renderStateBar() {
@@ -142,7 +144,7 @@ public class HelloApplication extends Application {
     }
 
     public static void createMap() {
-        File maptxt = new File("inp1.txt");
+        File maptxt = new File("inp" + gameLevel + ".txt");
         try {
             Scanner reader = new Scanner(maptxt);
             map = new Map();
@@ -166,9 +168,14 @@ public class HelloApplication extends Application {
                 }
             }
         } catch (FileNotFoundException e) {
-            System.out.println("File not found");
+            System.out.println("File not found " + gameLevel);
         }
 //        playMusic(0);
+    }
+
+    public static void restartGame() {
+        createMap();
+        score = new Score(gameLevel);
     }
 
     public void normalUpdate() {
@@ -195,6 +202,11 @@ public class HelloApplication extends Application {
                     gameState = 3;
                     return;
                 }
+            }
+        }
+        if (entities.size() == 0) {
+            if (bomber.check_collision(map.getPortal())) {
+                gameState = 5;
             }
         }
         entities.forEach(Entity::update);
@@ -243,6 +255,9 @@ public class HelloApplication extends Application {
             gameOverScreen.render(gc);
         } else if (gameState == 4) {
             startScreen.render();
+        } else  if (gameState == 5) {
+            gameplayRender();
+            victoryScreen.render(gc);
         }
     }
 

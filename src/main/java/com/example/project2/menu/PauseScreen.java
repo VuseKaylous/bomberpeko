@@ -30,7 +30,7 @@ public class PauseScreen extends Menu {
                 HelloApplication.gameState = 0;
             } else if (inRect(decorationRect.get(1))) {
                 HelloApplication.gameState = 0;
-                HelloApplication.createMap();
+                HelloApplication.restartGame();
             } else if (inRect(decorationRect.get(2))) {
                 HelloApplication.gameState = 4;
             }

@@ -126,14 +126,6 @@ public abstract class Menu {
         graphicsContext.strokeRect(rect.getX(), rect.getY(), rect.getWidth(), rect.getHeight());
     }
 
-    public static void paintRect(Rectangle rect, GraphicsContext graphicsContext, Color color) {
-        if (rect == null) {
-            return;
-        }
-        graphicsContext.setStroke(Paint.valueOf(String.valueOf(color)));
-        graphicsContext.strokeRect(rect.getX(), rect.getY(), rect.getWidth(), rect.getHeight());
-    }
-
     public void handleEvent() {
         handleEvent(scene);
     }

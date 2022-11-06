@@ -3,6 +3,7 @@ package com.example.project2.menu;
 import com.example.project2.HelloApplication;
 import com.example.project2.entities.Entity;
 import com.example.project2.graphics.Sprite;
+import com.example.project2.graphics.UsefulFuncs;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.SubScene;
@@ -36,8 +37,8 @@ public class SubSceneWithText extends SubScene {
 //        rectangle.setFill(Paint.valueOf(String.valueOf(Color.WHITE)));
         gc.setFill(Paint.valueOf(String.valueOf(Color.WHITE)));
         gc.fillRect(rectangle.getX(), rectangle.getY(), rectangle.getWidth(), rectangle.getHeight());
-        Menu.paintRect(rectangle, gc, Color.BLACK);
+        UsefulFuncs.paintRect(rectangle, gc, Color.BLACK);
 
-        Sprite.renderText(gc, str, Color.BLACK, (int) (canvas.getWidth() / 2), (int) (canvas.getHeight() / 2), 20);
+        UsefulFuncs.renderText(gc, str, Color.BLACK, (int) (canvas.getWidth() / 2), (int) (canvas.getHeight() / 2), 20);
     }
 }

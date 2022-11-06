@@ -1,7 +1,9 @@
 package com.example.project2.menu;
 
 import com.example.project2.HelloApplication;
+import com.example.project2.function.Score;
 import com.example.project2.graphics.Sprite;
+import com.example.project2.graphics.UsefulFuncs;
 import javafx.geometry.VPos;
 import javafx.scene.Scene;
 import javafx.scene.canvas.GraphicsContext;
@@ -22,13 +24,13 @@ public class GameOver extends Menu {
     @Override
     public void render(GraphicsContext graphicsContext) {
         super.shadow(graphicsContext);
-        Sprite.renderText(graphicsContext,
+        UsefulFuncs.renderText(graphicsContext,
                 "GAME OVER",
                 Color.WHITE,
                 HelloApplication.HEIGHT * Sprite.SCALED_SIZE / 2,
                 (HelloApplication.WIDTH + HelloApplication.MENUHEIGHT) * Sprite.SCALED_SIZE * 3 / 10,
                 30);
-        Sprite.renderText(graphicsContext,
+        UsefulFuncs.renderText(graphicsContext,
                 "Your score: " + HelloApplication.score.getValue(),
                 Color.WHITE,
                 HelloApplication.HEIGHT * Sprite.SCALED_SIZE / 2,
@@ -44,9 +46,7 @@ public class GameOver extends Menu {
             mouseEvent = mEvent;
             for (int i = 0; i < decorationRect.size(); i++)
                 if (inRect(decorationRect.get(0))) {
-//                    System.out.println("is Restart");
-//                    HelloApplication.isRestart = true;
-                    HelloApplication.createMap();
+                    HelloApplication.restartGame();
                     HelloApplication.gameState = 0;
                 } else if (inRect(decorationRect.get(1))) {
                     HelloApplication.gameState = 4;

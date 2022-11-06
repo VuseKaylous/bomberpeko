@@ -11,22 +11,39 @@ import javafx.scene.text.TextAlignment;
 
 public class Score {
     private int value;
-    private final int scale;
-    private final int x;
-    private final int y;
+    private final int scale = 10;
+    public int initialScore;
+    private final int x  = Sprite.SCALED_SIZE * HelloApplication.HEIGHT / 2;
+    private final int y = Sprite.SCALED_SIZE;
+    private final int[] levelScore = new int[]{1000, 1500};
+
     public Score() {
-        scale = 10;
         value = 1000 * scale;
-        x = Sprite.SCALED_SIZE * HelloApplication.HEIGHT / 2;
-        y = Sprite.SCALED_SIZE;
+        initialScore = 0;
+    }
+
+    public Score(int level) {
+        if (level == 1) initialScore = 0;
+        System.out.println(level + " " + initialScore);
+        value = initialScore + levelScore[level - 1] * scale;
     }
 
     public void update(boolean ate) {
+        if (getValue() == 0) return;
         if (ate) {
             value += 100 * scale;
         } else {
-            value --;
+            value--;
         }
+        if (getValue() == 950) {
+            HelloApplication.gameState = 5; // test
+        }
+    }
+
+    public void newLevel() {
+        initialScore = value;
+        value += 1500 * scale;
+        HelloApplication.gameLevel++;
     }
 
     public void render(GraphicsContext gc) {
@@ -37,5 +54,7 @@ public class Score {
         gc.fillText("Score: " + value / scale, x, y);
     }
 
-    public int getValue() { return value / scale; }
+    public int getValue() {
+        return value / scale;
+    }
 }

@@ -129,11 +129,4 @@ public class Sprite {
         return output;
     }
 
-    public static void renderText(GraphicsContext graphicsContext, String str, Color color, int xi, int yi, int fontSize) {
-        graphicsContext.setFont(new Font("Comic Sans MS", fontSize));
-        graphicsContext.setTextAlign(TextAlignment.CENTER);
-        graphicsContext.setTextBaseline(VPos.CENTER);
-        graphicsContext.setFill(color);
-        graphicsContext.fillText(str, xi, yi);
-    }
 }
