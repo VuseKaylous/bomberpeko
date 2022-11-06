@@ -45,10 +45,10 @@ public class HelloApplication extends Application {
     public static int gameState = 4;
     // 0: gameplay, 1: pause screen, 2: end game immediately, 3: game over, 4: start game, 5: victory
     public static int gameLevel = 1;
-    private final Menu pauseScreen = new PauseScreen();
-    private final Menu gameOverScreen = new GameOver();
-    private final Menu startScreen = new StartScreen();
-    private final Menu victoryScreen = new VictoryScreen();
+    private final PauseScreen pauseScreen = new PauseScreen();
+    private final GameOver gameOverScreen = new GameOver();
+    private final StartScreen startScreen = new StartScreen();
+    private static VictoryScreen victoryScreen = new VictoryScreen();
     private PauseButton pauseButton;
     public static Score score;
 
@@ -183,6 +183,7 @@ public class HelloApplication extends Application {
         createMap();
         gameLevel = 1;
         score.resetScore(gameLevel);
+        victoryScreen.resetGame();
     }
 
     public void normalUpdate() {
