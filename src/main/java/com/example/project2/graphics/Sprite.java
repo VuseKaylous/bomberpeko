@@ -1,6 +1,11 @@
 package com.example.project2.graphics;
 
+import javafx.geometry.VPos;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.*;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.TextAlignment;
 
 import java.util.Arrays;
 
@@ -123,4 +128,5 @@ public class Sprite {
 
         return output;
     }
+
 }
