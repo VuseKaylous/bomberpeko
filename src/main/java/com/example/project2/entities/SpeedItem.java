@@ -7,8 +7,13 @@ import javafx.scene.input.KeyEvent;
 public class SpeedItem extends Entity {
     public boolean eaten = false;
     private boolean updated = false;
-    public SpeedItem(int x, int y, Image img) {
+    public SpeedItem(double x, double y, Image img) {
         super(x, y, img);
+    }
+
+    public SpeedItem(double x, double y) {
+        super(x, y);
+        this.img = Picture.powerup[2].getFxImage();
     }
 
     @Override

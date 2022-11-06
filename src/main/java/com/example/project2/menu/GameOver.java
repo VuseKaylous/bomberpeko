@@ -1,6 +1,9 @@
 package com.example.project2.menu;
 
 import com.example.project2.HelloApplication;
+import com.example.project2.function.Score;
+import com.example.project2.graphics.Sprite;
+import com.example.project2.graphics.UsefulFuncs;
 import javafx.geometry.VPos;
 import javafx.scene.Scene;
 import javafx.scene.canvas.GraphicsContext;
@@ -14,17 +17,26 @@ public class GameOver extends Menu {
     public GameOver() {
         super();
         super.addOption("Restart");
-        super.addOption("Exit");
+        super.addOption("Back");
         darkMode = false;
     }
 
     @Override
     public void render(GraphicsContext graphicsContext) {
-//        paintRect(new Rectangle(0, 0, canvas.getWidth(), canvas.getHeight()), graphicsContext, Color.color(0, 0, 0, 1));
-        graphicsContext.setFill(Paint.valueOf(String.valueOf(Color.color(0, 0, 0, 0.5))));
-        graphicsContext.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
-        graphicsContext.setFill(Paint.valueOf(String.valueOf(Color.WHITE)));
-        super.render(graphicsContext);
+        super.shadow(graphicsContext);
+        UsefulFuncs.renderText(graphicsContext,
+                "GAME OVER",
+                Color.WHITE,
+                HelloApplication.HEIGHT * Sprite.SCALED_SIZE / 2,
+                (HelloApplication.WIDTH + HelloApplication.MENUHEIGHT) * Sprite.SCALED_SIZE * 3 / 10,
+                30);
+        UsefulFuncs.renderText(graphicsContext,
+                "Your score: " + HelloApplication.score.getValue(),
+                Color.WHITE,
+                HelloApplication.HEIGHT * Sprite.SCALED_SIZE / 2,
+                (HelloApplication.WIDTH + HelloApplication.MENUHEIGHT) * Sprite.SCALED_SIZE * 9 / 20,
+                20);
+        super.render(graphicsContext, 0.75);
     }
 
     @Override
@@ -47,10 +59,10 @@ public class GameOver extends Menu {
             mouseEvent = mEvent;
             for (int i = 0; i < decorationRect.size(); i++)
                 if (inRect(decorationRect.get(0))) {
-                    HelloApplication.createMap();
+                    HelloApplication.restartGame();
                     HelloApplication.gameState = 0;
                 } else if (inRect(decorationRect.get(1))) {
-                    HelloApplication.gameState = 2;
+                    HelloApplication.gameState = 4;
                 }
         });
     }

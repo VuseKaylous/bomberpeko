@@ -22,10 +22,15 @@ public abstract class Entity {
     protected Image img;
 
     //Khởi tạo đối tượng, chuyển từ tọa độ đơn vị sang tọa độ trong canvas
-    public Entity(float xUnit, float yUnit, Image img) {
+    public Entity(double xUnit, double yUnit, Image img) {
         this.x = (int) (xUnit * Sprite.SCALED_SIZE);
         this.y = (int) ((yUnit + HelloApplication.MENUHEIGHT) * Sprite.SCALED_SIZE);
         this.img = img;
+    }
+
+    public Entity(double xUnit, double yUnit) {
+        this.x = (int) (xUnit * Sprite.SCALED_SIZE);
+        this.y = (int) ((yUnit + HelloApplication.MENUHEIGHT) * Sprite.SCALED_SIZE);
     }
 
     public int getSmallX() {
