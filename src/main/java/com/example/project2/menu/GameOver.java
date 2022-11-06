@@ -40,6 +40,19 @@ public class GameOver extends Menu {
     }
 
     @Override
+    public void handleEvent() {
+        scene.setOnMouseMoved(mEvent -> mouseEvent = mEvent);
+        scene.setOnMouseReleased(mEvent -> {
+            mouseEvent = mEvent;
+            for (int i = 0; i < decorationRect.size(); i++)
+                if (inRect(decorationRect.get(0))) {
+                    HelloApplication.gameState = 0;
+                } else if (inRect(decorationRect.get(1))) {
+                    HelloApplication.gameState = 2;
+                }
+        });
+    }
+
     public void handleEvent(Scene scene1) {
         scene1.setOnMouseMoved(mEvent -> mouseEvent = mEvent);
         scene1.setOnMouseReleased(mEvent -> {

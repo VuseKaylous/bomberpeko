@@ -36,7 +36,7 @@ public class HelloApplication extends Application {
     public static List<Entity> entities = new ArrayList<>();
     public static List<Bomb> bomb = new ArrayList<>();
     public static List<List<Bomb>> flame = new ArrayList<>();
-    private static Bomber bomber;
+    public static Bomber bomber;
 
     public Picture pictures = new Picture();
     public static Map map = new Map();
@@ -164,6 +164,12 @@ public class HelloApplication extends Application {
                     } else if (data.charAt(x) == '2') {
                         object = new Oneal(x, y, Picture.oneal[0][0].getFxImage());
                         entities.add(object);
+                    } else if (data.charAt(x) == '3') {
+                        object = new Ghost(x, y, Picture.ghost[0][0].getFxImage());
+                        entities.add(object);
+                    } else if (data.charAt(x) == '4') {
+                        object = new Kondoria(x, y, Picture.kondoria[0][0].getFxImage());
+                        entities.add(object);
                     }
                 }
             }
@@ -180,7 +186,7 @@ public class HelloApplication extends Application {
     }
 
     public void normalUpdate() {
-        if (keyPressed) {
+        if (gameState != 3 && keyPressed) {
             if (event != null) bomber.update(event);
         }
         for (int i = 0; i < entities.size(); i++) {
@@ -194,15 +200,16 @@ public class HelloApplication extends Application {
                     entities.remove(i);
                     i--;
                 }
+            } else if (entities.get(i) instanceof Ghost ghost) {
+                if (ghost.is_dead && ghost.cnt > 32) {
+                    entities.remove(i);
+                    i--;
+                }
             }
         }
         for (Entity entity : entities) {
-            if (entity instanceof Balloom ||
-                    entity instanceof Oneal) {
-                if (entity.check_collision(bomber)) {
-                    gameState = 3;
-                    return;
-                }
+            if (entity.check_collision(bomber)) {
+                gameState = 3;
             }
         }
         if (entities.size() == 0) {
@@ -210,7 +217,7 @@ public class HelloApplication extends Application {
                 gameState = 5;
             }
         }
-        entities.forEach(Entity::update);
+        if (gameState != 3) entities.forEach(Entity::update);
         bomber.update();
         score.update(false);
     }
@@ -252,8 +259,13 @@ public class HelloApplication extends Application {
             gameplayRender();
             pauseScreen.render(gc);
         } else if (gameState == 3) {
-            gameplayRender();
-            gameOverScreen.render(gc);
+            if (bomber.cnt <= 30) {
+                normalUpdate();
+                gameplayRender();
+            } else {
+                gameplayRender();
+                gameOverScreen.render(gc);
+            }
         } else if (gameState == 4) {
             startScreen.render();
         } else  if (gameState == 5) {
