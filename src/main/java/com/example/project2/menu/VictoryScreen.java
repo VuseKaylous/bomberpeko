@@ -15,6 +15,8 @@ public class VictoryScreen extends Menu {
 //        super.addOption("Press any key to continue");
     }
 
+    public void resetGame() { keyIsPressed = false; }
+
     @Override
     public void render(GraphicsContext graphicsContext) {
         super.shadow(graphicsContext);

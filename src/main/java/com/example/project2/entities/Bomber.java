@@ -289,30 +289,36 @@ public class Bomber extends Entity {
                 if (HelloApplication.map.tool[newX][newY] instanceof SpeedItem si) {
                     if (this.check_collision(si) && HelloApplication.map.sprite[newX][newY] instanceof Brick brick) {
                         if (brick.isDestroyed()) {
-                            getSpeed_item = true;
-                            int id = itemsGot.size();
-                            itemsGot.add(new SpeedItem(1.5 * id + 1,
-                                    0.5 - HelloApplication.MENUHEIGHT));
+                            if (!getSpeed_item) {
+                                getSpeed_item = true;
+                                int id = itemsGot.size();
+                                itemsGot.add(new SpeedItem(1.5 * id + 1,
+                                        0.5 - HelloApplication.MENUHEIGHT));
+                            }
                         }
                     }
                 }
                 if (HelloApplication.map.tool[newX][newY] instanceof BombItem bi) {
                     if (this.check_collision(bi) && HelloApplication.map.sprite[newX][newY] instanceof Brick brick) {
                         if (brick.isDestroyed()) {
-                            getBomb_item = true;
-                            int id = itemsGot.size();
-                            itemsGot.add(new BombItem(1.5 * id + 1,
-                                    0.5 - HelloApplication.MENUHEIGHT));
+                            if (!getBomb_item) {
+                                getBomb_item = true;
+                                int id = itemsGot.size();
+                                itemsGot.add(new BombItem(1.5 * id + 1,
+                                        0.5 - HelloApplication.MENUHEIGHT));
+                            }
                         }
                     }
                 }
                 if (HelloApplication.map.tool[newX][newY] instanceof FlameItem fi) {
                     if (this.check_collision(fi) && HelloApplication.map.sprite[newX][newY] instanceof Brick brick) {
                         if (brick.isDestroyed()) {
-                            getFlame_item = true;
-                            int id = itemsGot.size();
-                            itemsGot.add(new FlameItem(1.5 * id + 1,
-                                    0.5 - HelloApplication.MENUHEIGHT));
+                            if (!getFlame_item) {
+                                getFlame_item = true;
+                                int id = itemsGot.size();
+                                itemsGot.add(new FlameItem(1.5 * id + 1,
+                                        0.5 - HelloApplication.MENUHEIGHT));
+                            }
                         }
                     }
                 }
