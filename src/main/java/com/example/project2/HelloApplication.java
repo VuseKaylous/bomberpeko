@@ -274,7 +274,7 @@ public class HelloApplication extends Application {
             }
         } else if (gameState == 4) {
             startScreen.render();
-        } else  if (gameState == 5) {
+        } else if (gameState == 5) {
             gameplayRender();
             victoryScreen.render(gc);
         }
