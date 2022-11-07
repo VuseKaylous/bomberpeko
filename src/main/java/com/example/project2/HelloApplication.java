@@ -26,8 +26,10 @@ import java.util.List;
 import java.util.Scanner;
 
 public class HelloApplication extends Application {
-    private Canvas canvas;
-    private GraphicsContext gc;
+    private static Canvas canvas;
+    private static GraphicsContext gc;
+    private static Group root;
+    private static Scene scene;
 
     static Sound sound = new Sound();
     public static final int MENUHEIGHT = 2;
@@ -67,10 +69,10 @@ public class HelloApplication extends Application {
         gc = canvas.getGraphicsContext2D();
 
         // Tạo root container
-        Group root = new Group();
+        root = new Group();
         root.getChildren().add(canvas);
         // Tạo scene
-        Scene scene = new Scene(root);
+        scene = new Scene(root);
         // Thêm scene vào stage
         stage.setScene(scene);
         stage.show();
@@ -107,18 +109,19 @@ public class HelloApplication extends Application {
                         }
                     });
                 } else if (gameState == 1) {
+                    stage.setScene(scene);
                     pauseScreen.handleEvent(scene);
                 } else if (gameState == 2) { // end game
                     this.stop();
                     stage.close();
                 } else if (gameState == 3) { // game over
                     gameOverScreen.handleEvent(scene);
-                    scene.setOnKeyPressed(keyEvent -> {
-                        if (keyEvent.getCode() == keyConfig.getExit()) {
-                            this.stop();
-                            stage.close();
-                        }
-                    });
+//                    scene.setOnKeyPressed(keyEvent -> {
+//                        if (keyEvent.getCode() == keyConfig.getExit()) {
+//                            this.stop();
+//                            stage.close();
+//                        }
+//                    });
                 } else if (gameState == 4) {
                     stage.setScene(startScreen.scene);
                     startScreen.handleEvent();
@@ -150,6 +153,7 @@ public class HelloApplication extends Application {
 
     private void renderStateBar() {
         pauseButton.render(gc);
+        score.render(gc);
     }
 
     public static void createMap() {
@@ -191,6 +195,9 @@ public class HelloApplication extends Application {
 
     public static void restartGame() {
         gameLevel = 1;
+        gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
+        root = new Group(canvas);
+        scene = new Scene(root);
         createMap();
         score.resetScore(gameLevel);
         victoryScreen.resetGame();
@@ -259,7 +266,6 @@ public class HelloApplication extends Application {
         }
         renderStateBar();
         bomber.render(gc);
-        score.render(gc);
     }
 
     public void render() {
