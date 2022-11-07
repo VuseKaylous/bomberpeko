@@ -211,7 +211,9 @@ public class HelloApplication extends Application {
                             map.tool[i][j] = new Grass(i, j, Picture.grass.getFxImage());
                         } else if (map.tool[i][j] instanceof SpeedItem && bomber.getSpeed_item) {
                             map.tool[i][j] = new Grass(i, j, Picture.grass.getFxImage());
-                        } else if (map.tool[i][j] instanceof RandomItem && bomber.getRandom_item) {
+                        } else if (map.tool[i][j] instanceof BoostItem && bomber.getRandom_item) {
+                            map.tool[i][j] = new Grass(i, j, Picture.grass.getFxImage());
+                        } else if (map.tool[i][j] instanceof BoostItem && bomber.getBoost_item) {
                             map.tool[i][j] = new Grass(i, j, Picture.grass.getFxImage());
                         }
                         map.tool[i][j].render(gc);

@@ -4,15 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="839e0b9d-8749-4e67-8fe2-b00d10678716" name="Changes" comment="rac">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/project2/entities/RandomItem.java" afterDir="false" />
+    <list default="true" id="839e0b9d-8749-4e67-8fe2-b00d10678716" name="Changes" comment="done randitem chi con chua render duoc anh vi bi loi">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/project2/entities/BoostItem.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/inp.txt" beforeDir="false" afterPath="$PROJECT_DIR$/inp.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/inp2.txt" beforeDir="false" afterPath="$PROJECT_DIR$/inp2.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project2.iml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/project2/HelloApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/project2/HelloApplication.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/project2/Map.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/project2/Map.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/project2/entities/Bomb.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/project2/entities/Bomb.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/project2/entities/Bomber.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/project2/entities/Bomber.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -138,7 +135,14 @@
       <option name="project" value="LOCAL" />
       <updated>1667348927383</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="done randitem chi con chua render duoc anh vi bi loi">
+      <created>1667828967636</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1667828967636</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -171,6 +175,7 @@
     <MESSAGE value="done 2 quái version2" />
     <MESSAGE value="done 2 quái version3" />
     <MESSAGE value="nghịch" />
-    <option name="LAST_COMMIT_MESSAGE" value="nghịch" />
+    <MESSAGE value="done randitem chi con chua render duoc anh vi bi loi" />
+    <option name="LAST_COMMIT_MESSAGE" value="done randitem chi con chua render duoc anh vi bi loi" />
   </component>
 </project>

@@ -21,10 +21,12 @@ public class Bomber extends Entity {
     public boolean getBomb_item;
     public boolean getFlame_item;
     public boolean getRandom_item;
+    public boolean getBoost_item;
     private ArrayList<Entity> itemsGot = new ArrayList<Entity>();
     int count_move = 0;
     int count_defense = 0;
     int speed;
+    int rand = (int) (Math.random() * 3) + 1;
 
     public Bomber(int x, int y, Image img) {
         super(x, y, img);
@@ -270,7 +272,7 @@ public class Bomber extends Entity {
             if (HelloApplication.map.sprite[getSmallX()][getSmallY()] instanceof Brick brick) {
                 if (brick.isDestroyed()) {
                     getRandom_item = true;
-                    int a = (int) (Math.random() * 3) + 1;
+                    int a = rand;
                     if(a == 1) {
                         getSpeed_item = true;
                         int id = itemsGot.size();
@@ -278,15 +280,27 @@ public class Bomber extends Entity {
                                 0.5 - HelloApplication.MENUHEIGHT));
                     }else if(a == 2) {
                         getBomb_item = true;
-                        int id = itemsGot.size();
-                        itemsGot.add(new BombItem(1.5 * id + 1,
+                        int id1 = itemsGot.size();
+                        itemsGot.add(new BombItem(1.5 * id1 + 1,
                                 0.5 - HelloApplication.MENUHEIGHT));
                     }else if(a == 3) {
                         getFlame_item = true;
-                        int id = itemsGot.size();
-                        itemsGot.add(new FlameItem(1.5 * id + 1,
+                        int id2 = itemsGot.size();
+                        itemsGot.add(new FlameItem(1.5 * id2 + 1,
                                 0.5 - HelloApplication.MENUHEIGHT));
                     }
+                }
+            }
+        }
+        if (HelloApplication.map.tool[getSmallX()][getSmallY()] instanceof BoostItem) {
+            if (HelloApplication.map.sprite[getSmallX()][getSmallY()] instanceof Brick brick) {
+                if (brick.isDestroyed()) {
+                    getBoost_item = true;
+                    getSpeed_item = true;
+                    getFlame_item = true;
+                    int id = itemsGot.size();
+                    itemsGot.add(new BoostItem(1.5 * id + 1,
+                            0.5 - HelloApplication.MENUHEIGHT));
                 }
             }
         }
