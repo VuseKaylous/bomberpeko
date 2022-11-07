@@ -342,9 +342,11 @@ public class Bomber extends Entity {
                                 int id = itemsGot.size();
                                 int a = rand;
                                 if(a == 1) {
-                                    getSpeed_item = true;
-                                    itemsGot.add(new SpeedItem(1.5 * id + 1,
-                                            0.5 - HelloApplication.MENUHEIGHT));
+                                    if (!getSpeed_item) {
+                                        getSpeed_item = true;
+                                        itemsGot.add(new SpeedItem(1.5 * id + 1,
+                                                0.5 - HelloApplication.MENUHEIGHT));
+                                    }
                                 } else if(a == 2) {
                                     getBomb_item = true;
                                     itemsGot.add(new BombItem(1.5 * id + 1,
