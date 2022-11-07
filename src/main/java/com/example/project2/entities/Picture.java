@@ -7,8 +7,8 @@ public class Picture {
     public static Sprite[][] player = new Sprite[5][3]; // up - right - down - left - dead
     public static Sprite[][] balloom = new Sprite[3][3]; // left - right - dead
     public static Sprite[][] oneal = new Sprite[3][3]; // left - right - dead
-    public Sprite[][] doll = new Sprite[3][3]; // left - right - dead
-    public Sprite[][] minvo = new Sprite[3][3]; // left - right - dead
+    public static Sprite[][] doll = new Sprite[3][3]; // left - right - dead
+    public static Sprite[][] minvo = new Sprite[3][3]; // left - right - dead
     public static Sprite[][] kondoria = new Sprite[3][3]; // (left - right - dead), (time)
     public static Sprite[][] ghost = new Sprite[3][3];
     public static Sprite[][][] explosion = new Sprite[3][3][3]; // (vertical, horizontal, middle) - (small,medium,big), (length)

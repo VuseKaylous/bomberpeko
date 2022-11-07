@@ -1,0 +1,7 @@
+P
+ESC
+Q
+UP
+DOWN
+LEFT
+RIGHT

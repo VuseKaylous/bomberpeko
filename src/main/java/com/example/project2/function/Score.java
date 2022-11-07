@@ -35,9 +35,9 @@ public class Score {
         } else {
             value--;
         }
-        if (getValue() == 950) {
-            HelloApplication.gameState = 5; // test
-        }
+//        if (getValue() == 990 || getValue() == 2480) {
+//            HelloApplication.gameState = HelloApplication.GameState.VICTORY; // test
+//        }
     }
 
     public void newLevel() {

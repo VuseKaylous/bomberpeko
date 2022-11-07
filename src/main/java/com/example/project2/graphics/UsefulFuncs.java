@@ -2,6 +2,7 @@ package com.example.project2.graphics;
 
 import javafx.geometry.VPos;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
@@ -33,5 +34,15 @@ public class UsefulFuncs {
         graphicsContext.setTextBaseline(VPos.CENTER);
         graphicsContext.setFill(color);
         graphicsContext.fillText(str, xi, yi);
+    }
+
+    public static boolean inRect(Rectangle rect, MouseEvent mEvent) {
+        if (mEvent == null) {
+            return false;
+        }
+        double x = mEvent.getX();
+        double y = mEvent.getY();
+        return (rect.getX() <= x && x <= rect.getX() + rect.getWidth() &&
+                rect.getY() <= y && y <= rect.getY() + rect.getHeight());
     }
 }
