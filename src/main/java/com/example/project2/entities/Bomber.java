@@ -1,9 +1,8 @@
 package com.example.project2.entities;
-
+import java.lang.Math;
 import com.example.project2.HelloApplication;
 import com.example.project2.graphics.Sound;
 import com.example.project2.graphics.Sprite;
-import com.example.project2.graphics.SpriteSheet;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
@@ -21,8 +20,10 @@ public class Bomber extends Entity {
     public boolean getSpeed_item;
     public boolean getBomb_item;
     public boolean getFlame_item;
+    public boolean getRandom_item;
     private ArrayList<Entity> itemsGot = new ArrayList<Entity>();
     int count_move = 0;
+    int count_defense = 0;
     int speed;
 
     public Bomber(int x, int y, Image img) {
@@ -39,6 +40,7 @@ public class Bomber extends Entity {
         //biến count để đếm thời gian đổi ảnh
         count.replaceAll(integer -> integer + 1);
         updateImage();
+
     }
 
     private boolean validSquare(int fakeX, int fakeY) {
@@ -131,7 +133,13 @@ public class Bomber extends Entity {
                                     }
                                 }
                                 if (Flame.check_collision(this) || current.check_collision(this)) {
-                                    HelloApplication.gameState = 3;
+                                    count_defense--;
+                                    System.out.println(count_defense);
+                                    if(count_defense >= 0) {
+                                        HelloApplication.gameState = 0;
+                                    }else if(count_defense < 0)  {
+                                        HelloApplication.gameState = 3;
+                                    }
                                 }
                                 HelloApplication.flame.get(i).add(Flame);
                             }
@@ -258,9 +266,33 @@ public class Bomber extends Entity {
                 }
             }
         }
+        if (HelloApplication.map.tool[getSmallX()][getSmallY()] instanceof RandomItem) {
+            if (HelloApplication.map.sprite[getSmallX()][getSmallY()] instanceof Brick brick) {
+                if (brick.isDestroyed()) {
+                    getRandom_item = true;
+                    int a = (int) (Math.random() * 3) + 1;
+                    if(a == 1) {
+                        getSpeed_item = true;
+                        int id = itemsGot.size();
+                        itemsGot.add(new SpeedItem(1.5 * id + 1,
+                                0.5 - HelloApplication.MENUHEIGHT));
+                    }else if(a == 2) {
+                        getBomb_item = true;
+                        int id = itemsGot.size();
+                        itemsGot.add(new BombItem(1.5 * id + 1,
+                                0.5 - HelloApplication.MENUHEIGHT));
+                    }else if(a == 3) {
+                        getFlame_item = true;
+                        int id = itemsGot.size();
+                        itemsGot.add(new FlameItem(1.5 * id + 1,
+                                0.5 - HelloApplication.MENUHEIGHT));
+                    }
+                }
+            }
+        }
         speed = 2;
         if (getSpeed_item) {
-            speed = 5;
+            speed = 3;
         }
         int direction = 4; // ko co event thi dung yen
         KeyCode key = event.getCode();

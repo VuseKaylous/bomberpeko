@@ -133,7 +133,7 @@ public class HelloApplication extends Application {
     }
 
     public static void createMap() {
-        File maptxt = new File("inp.txt");
+        File maptxt = new File("inp2.txt");
         try {
             Scanner reader = new Scanner(maptxt);
             map = new Map();
@@ -210,6 +210,8 @@ public class HelloApplication extends Application {
                         } else if (map.tool[i][j] instanceof FlameItem && bomber.getFlame_item) {
                             map.tool[i][j] = new Grass(i, j, Picture.grass.getFxImage());
                         } else if (map.tool[i][j] instanceof SpeedItem && bomber.getSpeed_item) {
+                            map.tool[i][j] = new Grass(i, j, Picture.grass.getFxImage());
+                        } else if (map.tool[i][j] instanceof RandomItem && bomber.getRandom_item) {
                             map.tool[i][j] = new Grass(i, j, Picture.grass.getFxImage());
                         }
                         map.tool[i][j].render(gc);
