@@ -1,6 +1,5 @@
 package com.example.project2.menu;
 
-import com.example.project2.HelloApplication;
 import com.example.project2.graphics.Sprite;
 import javafx.geometry.VPos;
 import javafx.scene.Group;
@@ -12,7 +11,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
-import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 
 import java.util.ArrayList;
@@ -20,8 +18,8 @@ import java.util.ArrayList;
 import static com.example.project2.HelloApplication.*;
 
 public abstract class Menu {
-    protected ArrayList<String> options = new ArrayList<String>(); // rect - height: 20;
-    protected ArrayList<Rectangle> decorationRect = new ArrayList<Rectangle>();
+    protected ArrayList<String> options = new ArrayList<>(); // rect - height: 20;
+    protected ArrayList<Rectangle> decorationRect = new ArrayList<>();
     private final GraphicsContext gc;
     protected final Canvas canvas;
     protected Group root;
@@ -95,9 +93,7 @@ public abstract class Menu {
             graphicsContext.fillText(options.get(i), canvas.getWidth() / 2, rectY + i * rectHeight * 2);
             int rectWidth = 120;
             Rectangle thisRect = new Rectangle(canvas.getWidth() / 2 - rectWidth / 2.0,
-                    rectY + i * rectHeight * 2 - rectHeight / 2.0,
-                    rectWidth,
-                    rectHeight);
+                    rectY + i * rectHeight * 2 - rectHeight / 2.0, rectWidth, rectHeight);
             decorationRect.set(i, thisRect);
             paintRect(thisRect, graphicsContext);
         }
@@ -119,7 +115,7 @@ public abstract class Menu {
             if (darkMode) {
                 fillColor = Color.color(36 / 255.0, 117 / 255.0, 189 / 255.0);
             } else {
-                fillColor = Color.color(55 / 255.0,174 / 255.0,208 / 255.0);
+                fillColor = Color.color(55 / 255.0, 174 / 255.0, 208 / 255.0);
             }
         }
         graphicsContext.setStroke(Paint.valueOf(String.valueOf(fillColor)));

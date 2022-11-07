@@ -128,12 +128,6 @@ public class HelloApplication extends Application {
         createStateBar();
     }
 
-//    private void test() {
-//        Entity testSubject = new FlameItem(1,
-//                (float) -1.5, Picture.powerup[1].getFxImage());
-//        testSubject.render(gc);
-//    }
-
     private void createStateBar() {
         pauseButton = new PauseButton(HEIGHT - 2, -1.5, Picture.pauseIcon.getFxImage());
         score = new Score();
