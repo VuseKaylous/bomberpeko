@@ -83,6 +83,7 @@ public class SettingScreen extends Menu {
             scene1.setOnKeyPressed(keyEvent -> {
                 HelloApplication.keyConfig.keyCodes[chosenButton] = keyEvent.getCode();
                 isChoosing = false;
+                HelloApplication.keyConfig.updateTxt();
             });
         }
     }

@@ -2,6 +2,9 @@ package com.example.project2.graphics;
 
 import javafx.scene.input.KeyCode;
 
+import java.io.*;
+import java.util.Scanner;
+
 public class KeyConfig {
 //    public KeyCode pause;
 //    public KeyCode exit;
@@ -21,24 +24,56 @@ public class KeyConfig {
     public final int RIGHT = 6;
 
     public KeyConfig() {
-        keyCodes[0] = KeyCode.P;
-        keyCodes[1] = KeyCode.ESCAPE;
-        keyCodes[2] = KeyCode.Q;
+//        keyCodes[0] = KeyCode.P;
+//        keyCodes[1] = KeyCode.ESCAPE;
+//        keyCodes[2] = KeyCode.Q;
+//
+//        keyCodes[3] = KeyCode.UP;
+//        keyCodes[4] = KeyCode.DOWN;
+//        keyCodes[5] = KeyCode.LEFT;
+//        keyCodes[6] = KeyCode.RIGHT;
 
-        keyCodes[3] = KeyCode.UP;
-        keyCodes[4] = KeyCode.DOWN;
-        keyCodes[5] = KeyCode.LEFT;
-        keyCodes[6] = KeyCode.RIGHT;
-        /*
         File keymap = new File("keymap.txt");
         try {
             Scanner reader = new Scanner(keymap);
 
-            String data = reader.nextLine();
-            pause = (KeyCode) data;
-
+//            String data = reader.nextLine();
+            for (int i = 0; i < 7; i++) {
+                String data = reader.nextLine();
+                if (data.equals("ESC")) {
+                    data = "ESCAPE";
+                }
+                keyCodes[i] = KeyCode.valueOf(data);
+                if (keyCodes[i] == null) {
+                    System.out.println("Can't save key code " + data);
+                    break;
+                }
+            }
+        } catch (FileNotFoundException e) {
+            System.out.println("Can't find keymap.txt");
         }
-         */
+    }
+
+    public String toString() {
+        String ans = "";
+        for (int i = 0; i < 7; i++) {
+            ans = ans + keyCodes[i].getName().toUpperCase();
+            if (i != 6) {
+                ans = ans + "\n";
+            }
+        }
+        return ans;
+    }
+
+    public void updateTxt() {
+        try {
+            PrintWriter fw = new PrintWriter("keymap.txt");
+            BufferedWriter bw = new BufferedWriter(fw);
+            bw.write(this.toString());
+            bw.close();
+        } catch (IOException e) {
+            System.out.println("Can't write in keymap.txt");
+        }
     }
 
     public String getKeyName(int key) { return nameKeys[key]; }

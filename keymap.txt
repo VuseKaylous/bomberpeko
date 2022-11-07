@@ -1,5 +1,5 @@
-P
-ESCAPE
+Q
+ESC
 UP
 DOWN
 LEFT
