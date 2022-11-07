@@ -193,6 +193,11 @@ public class HelloApplication extends Application {
                     } else if (data.charAt(x) == '2') {
                         object = new Oneal(x, y, Picture.oneal[0][0].getFxImage());
                         entities.add(object);
+//                    }else if (data.charAt(x) == '3') {
+//                        object = new Doll(x, y, Picture.doll[0][0].getFxImage());
+//                        entities.add(object);
+//                    }else if (data.charAt(x) == '4') {
+//                        object = new Minvo(x, y, Picture.minvo[0][0].getFxImage());
                     } else if (data.charAt(x) == '3') {
                         object = new Ghost(x, y, Picture.ghost[0][0].getFxImage());
                         entities.add(object);
@@ -267,6 +272,10 @@ public class HelloApplication extends Application {
                         } else if (map.tool[i][j] instanceof FlameItem && bomber.getFlame_item) {
                             map.tool[i][j] = new Grass(i, j, Picture.grass.getFxImage());
                         } else if (map.tool[i][j] instanceof SpeedItem && bomber.getSpeed_item) {
+                            map.tool[i][j] = new Grass(i, j, Picture.grass.getFxImage());
+                        } else if (map.tool[i][j] instanceof RandomItem && bomber.getRandom_item) {
+                            map.tool[i][j] = new Grass(i, j, Picture.grass.getFxImage());
+                        } else if (map.tool[i][j] instanceof BoostItem && bomber.getBoost_item) {
                             map.tool[i][j] = new Grass(i, j, Picture.grass.getFxImage());
                         }
                         map.tool[i][j].render(gc);

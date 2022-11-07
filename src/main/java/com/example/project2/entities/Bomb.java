@@ -8,6 +8,8 @@ public class Bomb extends Entity {
         super(x, y, img);
     }
 
+    public static boolean is_effective = true;
+
     public void setImg(Image img) {
         this.img = img;
     }
