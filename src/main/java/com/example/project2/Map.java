@@ -8,7 +8,7 @@ public class Map {
 
     //tool lưu portal, các item
     public Entity[][] tool = new Entity[HelloApplication.HEIGHT][HelloApplication.WIDTH];
-
+    public int portalX, portalY;
     public Map() {
         for (int i = 0; i < HelloApplication.HEIGHT; i++) {
             for (int j = 0; j < HelloApplication.WIDTH; j++) {
@@ -27,6 +27,8 @@ public class Map {
             } else if (col.charAt(i) == 'x') {
                 tool[i][col_num] = new Portal(i, col_num, Picture.portal.getFxImage());
                 sprite[i][col_num] = new Brick(i, col_num, Picture.brick[0].getFxImage());
+                portalX = i;
+                portalY = col_num;
             } else if (col.charAt(i) == 'b') {
                 tool[i][col_num] = new BombItem(i, col_num, Picture.powerup[0].getFxImage());
                 sprite[i][col_num] = new Brick(i, col_num, Picture.brick[0].getFxImage());
@@ -44,5 +46,9 @@ public class Map {
                 sprite[i][col_num] = new Brick(i, col_num, Picture.brick[0].getFxImage());
             }
         }
+    }
+
+    public Entity getPortal() {
+        return tool[portalX][portalY];
     }
 }

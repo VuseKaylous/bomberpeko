@@ -4,13 +4,17 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="839e0b9d-8749-4e67-8fe2-b00d10678716" name="Changes" comment="done randitem chi con chua render duoc anh vi bi loi">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/project2/entities/BoostItem.java" afterDir="false" />
+    <list default="true" id="839e0b9d-8749-4e67-8fe2-b00d10678716" name="Changes" comment="thêm 1 quái + player chết">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/project2/entities/Kondoria.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/project2/entities/Pair.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/inp2.txt" beforeDir="false" afterPath="$PROJECT_DIR$/inp2.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/project2/HelloApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/project2/HelloApplication.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/project2/Map.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/project2/Map.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/project2/entities/Bomber.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/project2/entities/Bomber.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/project2/entities/Oneal.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/project2/entities/Oneal.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/project2/entities/Picture.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/project2/entities/Picture.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/textures/classic.png" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/textures/classic.png" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -26,6 +30,9 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/src/main/java/com/example/project2/HelloApplication.java" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
@@ -54,7 +61,7 @@
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;last_opened_file_path&quot;: &quot;F:/OOP/bomberpeko/target/classes/sound&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;SDKs&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
     &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
     &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;
   }
@@ -135,13 +142,6 @@
       <option name="project" value="LOCAL" />
       <updated>1667348927383</updated>
     </task>
-    <task id="LOCAL-00007" summary="done randitem chi con chua render duoc anh vi bi loi">
-      <created>1667828967636</created>
-      <option name="number" value="00007" />
-      <option name="presentableId" value="LOCAL-00007" />
-      <option name="project" value="LOCAL" />
-      <updated>1667828967636</updated>
-    </task>
     <option name="localTasksCounter" value="8" />
     <servers />
   </component>
@@ -176,6 +176,7 @@
     <MESSAGE value="done 2 quái version3" />
     <MESSAGE value="nghịch" />
     <MESSAGE value="done randitem chi con chua render duoc anh vi bi loi" />
-    <option name="LAST_COMMIT_MESSAGE" value="done randitem chi con chua render duoc anh vi bi loi" />
+    <MESSAGE value="thêm 1 quái + player chết" />
+    <option name="LAST_COMMIT_MESSAGE" value="thêm 1 quái + player chết" />
   </component>
 </project>

@@ -1,6 +1,7 @@
 package com.example.project2.entities;
 import java.lang.Math;
 import com.example.project2.HelloApplication;
+import com.example.project2.graphics.KeyConfig;
 import com.example.project2.graphics.Sound;
 import com.example.project2.graphics.Sprite;
 import javafx.geometry.Rectangle2D;
@@ -25,6 +26,7 @@ public class Bomber extends Entity {
     private ArrayList<Entity> itemsGot = new ArrayList<Entity>();
     int count_move = 0;
     int count_defense = 0;
+    public int cnt = 0;
     int speed;
     int rand = (int) (Math.random() * 3) + 1;
 
@@ -35,14 +37,32 @@ public class Bomber extends Entity {
         getBomb_item = false;
         getFlame_item = false;
         getSpeed_item = false;
+        getRandom_item = false;
+        getBoost_item = false;
+    }
+
+    public void setImg(Image img) {
+        this.img = img;
+    }
+
+    public void dead() {
+        if (cnt <= 10) {
+            img = Picture.player[4][0].getFxImage();
+        } else if (cnt <= 20) {
+            img = Picture.player[4][1].getFxImage();
+        } else if (cnt <= 30) {
+            img = Picture.player[4][2].getFxImage();
+        }
     }
 
     @Override
     public void update() {
-        //biến count để đếm thời gian đổi ảnh
         count.replaceAll(integer -> integer + 1);
         updateImage();
-
+        if (HelloApplication.gameState == HelloApplication.GameState.GAMEOVER) {
+            cnt++;
+            dead();
+        }
     }
 
     private boolean validSquare(int fakeX, int fakeY) {
@@ -71,7 +91,6 @@ public class Bomber extends Entity {
                 HelloApplication.bomb.get(i).setImg(Picture.bomb[2].getFxImage());
             }
             if (80 + i < num && num < 86 + i) {
-//                playMusic(1);
                 int id = 0;
                 if (80 + i < num && num <= 82 + i) id = 0;
                 else if (82 + i <= num && num < 84 + i) id = 1;
@@ -86,11 +105,20 @@ public class Bomber extends Entity {
                     if (validSquare(newX, newY)) {
                         playMusic(1);
                         if (getFlame_item && validSquare(newX2, newY2)) {
-                            //có item
                             if (HelloApplication.map.sprite[newX][newY] instanceof Brick br && !br.isDestroyed()) {
                                 br.setImg(Picture.brick[id + 1].getFxImage());
+                                for (Entity e : HelloApplication.entities) {
+                                    if (e instanceof Ghost g && e.check_collision(br)) {
+                                        g.is_dead = true;
+                                    }
+                                }
                             } else {
                                 if (HelloApplication.map.sprite[newX2][newY2] instanceof Brick br && !br.isDestroyed()) {
+                                    for (Entity e : HelloApplication.entities) {
+                                        if (e instanceof Ghost g && e.check_collision(br)) {
+                                            g.is_dead = true;
+                                        }
+                                    }
                                     br.setImg(Picture.brick[id + 1].getFxImage());
                                 } else {
                                     Bomb Flame, Flame2;
@@ -102,22 +130,45 @@ public class Bomber extends Entity {
                                         Flame2 = new Bomb(newX, newY, Picture.explosion[1][id][1].getFxImage());
                                     }
                                     HelloApplication.flame.get(i).add(Flame);
-                                    HelloApplication.flame.get(i).add(Flame2);
-
                                     for (Entity e : HelloApplication.entities) {
-                                        if (e instanceof Balloom b && (e.check_collision(Flame) || e.check_collision(current) || e.check_collision(Flame2))) {
+                                        if (e instanceof Balloom b && (e.check_collision(Flame) || e.check_collision(current))) {
                                             b.is_dead = true;
-                                        } else if (e instanceof Oneal o && (e.check_collision(Flame) || e.check_collision(current) || e.check_collision(Flame2))) {
+                                        } else if (e instanceof Oneal o && (e.check_collision(Flame) || e.check_collision(current))) {
                                             o.is_dead = true;
+                                        } else if (e instanceof Ghost g && (e.check_collision(Flame) || e.check_collision(current))) {
+                                            g.is_dead = true;
+                                        } else if (e instanceof Kondoria k && (e.check_collision(Flame) || e.check_collision(current))) {
+                                            k.is_dead = true;
+//                                    HelloApplication.flame.get(i).add(Flame2);
                                         }
                                     }
                                     if (Flame.check_collision(this) || current.check_collision(this) || Flame2.check_collision(this)) {
-                                        HelloApplication.gameState = 3;
+                                        HelloApplication.gameState = HelloApplication.GameState.GAMEOVER;
                                     }
+                                }
+                                Bomb Flame2;
+                                if (j % 2 == 1) {
+                                    Flame2 = new Bomb(newX, newY, Picture.explosion[0][id][1].getFxImage());
+                                } else {
+                                    Flame2 = new Bomb(newX, newY, Picture.explosion[1][id][1].getFxImage());
+                                }
+                                HelloApplication.flame.get(i).add(Flame2);
+                                for (Entity e : HelloApplication.entities) {
+                                    if (e instanceof Balloom b && (e.check_collision(Flame2) || e.check_collision(current))) {
+                                        b.is_dead = true;
+                                    } else if (e instanceof Oneal o && (e.check_collision(Flame2) || e.check_collision(current))) {
+                                        o.is_dead = true;
+                                    } else if (e instanceof Ghost g && (e.check_collision(Flame2) || e.check_collision(current))) {
+                                        g.is_dead = true;
+                                    } else if (e instanceof Kondoria k && (e.check_collision(Flame2) || e.check_collision(current))) {
+                                        k.is_dead = true;
+                                    }
+                                }
+                                if (current.check_collision(this) || Flame2.check_collision(this)) {
+                                    HelloApplication.gameState = HelloApplication.GameState.GAMEOVER;
                                 }
                             }
                         } else {
-                            //không có item
                             if (HelloApplication.map.sprite[newX][newY] instanceof Brick br && !br.isDestroyed()) {
                                 br.setImg(Picture.brick[id + 1].getFxImage());
                             } else {
@@ -132,15 +183,18 @@ public class Bomber extends Entity {
                                         ((Balloom) e).is_dead = true;
                                     } else if (e instanceof Oneal && (e.check_collision(Flame) || e.check_collision(current))) {
                                         ((Oneal) e).is_dead = true;
+                                    } else if (e instanceof Ghost g && (e.check_collision(Flame) || e.check_collision(current))) {
+                                        g.is_dead = true;
+                                    } else if (e instanceof Kondoria k && (e.check_collision(Flame) || e.check_collision(current))) {
+                                        k.is_dead = true;
                                     }
                                 }
                                 if (Flame.check_collision(this) || current.check_collision(this)) {
                                     count_defense--;
-                                    System.out.println(count_defense);
-                                    if(count_defense >= 0) {
-                                        HelloApplication.gameState = 0;
-                                    }else if(count_defense < 0)  {
-                                        HelloApplication.gameState = 3;
+                                    if (count_defense >= 0) {
+                                        HelloApplication.gameState = HelloApplication.GameState.GAMEPLAY;
+                                    } else {
+                                        HelloApplication.gameState = HelloApplication.GameState.GAMEOVER;
                                     }
                                 }
                                 HelloApplication.flame.get(i).add(Flame);
@@ -177,6 +231,7 @@ public class Bomber extends Entity {
                 i--;
             }
         }
+
     }
 
     public Rectangle2D getBoundary2D() {
@@ -205,9 +260,10 @@ public class Bomber extends Entity {
     }
 
     public void setBomb(KeyEvent event) {
+        if (event == null) return;
         boolean check = false;
         KeyCode key = event.getCode();
-        if (key == KeyCode.Q) {
+        if (key == HelloApplication.keyConfig.getSetBomb()) {
 //            playMusic(2);
             if (!getBomb_item && HelloApplication.bomb.size() > 0) {
                 check = true;
@@ -238,93 +294,154 @@ public class Bomber extends Entity {
 
     @Override
     public void update(KeyEvent event) {
-        if (HelloApplication.map.tool[getSmallX()][getSmallY()] instanceof SpeedItem) {
-            if (HelloApplication.map.sprite[getSmallX()][getSmallY()] instanceof Brick brick) {
-                if (brick.isDestroyed()) {
-                    getSpeed_item = true;
-                    int id = itemsGot.size();
-                    itemsGot.add(new SpeedItem(1.5 * id + 1,
-                            0.5 - HelloApplication.MENUHEIGHT));
+        for (int i = 0; i < HelloApplication.HEIGHT * Sprite.SCALED_SIZE; i++) {
+            for (int j = 0; j < HelloApplication.WIDTH * Sprite.SCALED_SIZE; j++) {
+                int newX = i / Sprite.SCALED_SIZE;
+                int newY = j / Sprite.SCALED_SIZE;
+                if (HelloApplication.map.tool[newX][newY] instanceof SpeedItem si) {
+                    if (this.check_collision(si) && HelloApplication.map.sprite[newX][newY] instanceof Brick brick) {
+                        if (brick.isDestroyed()) {
+                            if (!getSpeed_item) {
+                                getSpeed_item = true;
+                                int id = itemsGot.size();
+                                itemsGot.add(new SpeedItem(1.5 * id + 1,
+                                        0.5 - HelloApplication.MENUHEIGHT));
+                            }
+                        }
+                    }
                 }
-            }
-        }
-        if (HelloApplication.map.tool[getSmallX()][getSmallY()] instanceof BombItem) {
-            if (HelloApplication.map.sprite[getSmallX()][getSmallY()] instanceof Brick brick) {
-                if (brick.isDestroyed()) {
-                    getBomb_item = true;
-                    int id = itemsGot.size();
-                    itemsGot.add(new BombItem(1.5 * id + 1,
-                            0.5 - HelloApplication.MENUHEIGHT));
+                if (HelloApplication.map.tool[newX][newY] instanceof BombItem bi) {
+                    if (this.check_collision(bi) && HelloApplication.map.sprite[newX][newY] instanceof Brick brick) {
+                        if (brick.isDestroyed()) {
+                            if (!getBomb_item) {
+                                getBomb_item = true;
+                                int id = itemsGot.size();
+                                itemsGot.add(new BombItem(1.5 * id + 1,
+                                        0.5 - HelloApplication.MENUHEIGHT));
+                            }
+                        }
+                    }
                 }
-            }
-        }
-        if (HelloApplication.map.tool[getSmallX()][getSmallY()] instanceof FlameItem) {
-            if (HelloApplication.map.sprite[getSmallX()][getSmallY()] instanceof Brick brick) {
-                if (brick.isDestroyed()) {
-                    getFlame_item = true;
-                    int id = itemsGot.size();
-                    itemsGot.add(new FlameItem(1.5 * id + 1,
-                            0.5 - HelloApplication.MENUHEIGHT));
+                if (HelloApplication.map.tool[newX][newY] instanceof FlameItem fi) {
+                    if (this.check_collision(fi) && HelloApplication.map.sprite[newX][newY] instanceof Brick brick) {
+                        if (brick.isDestroyed()) {
+                            if (!getFlame_item) {
+                                getFlame_item = true;
+                                int id = itemsGot.size();
+                                itemsGot.add(new FlameItem(1.5 * id + 1,
+                                        0.5 - HelloApplication.MENUHEIGHT));
+                            }
+                        }
+                    }
                 }
-            }
-        }
-        if (HelloApplication.map.tool[getSmallX()][getSmallY()] instanceof RandomItem) {
-            if (HelloApplication.map.sprite[getSmallX()][getSmallY()] instanceof Brick brick) {
-                if (brick.isDestroyed()) {
-                    getRandom_item = true;
-                    int a = rand;
-                    if(a == 1) {
-                        getSpeed_item = true;
-                        int id = itemsGot.size();
-                        itemsGot.add(new SpeedItem(1.5 * id + 1,
-                                0.5 - HelloApplication.MENUHEIGHT));
-                    }else if(a == 2) {
-                        getBomb_item = true;
-                        int id1 = itemsGot.size();
-                        itemsGot.add(new BombItem(1.5 * id1 + 1,
-                                0.5 - HelloApplication.MENUHEIGHT));
-                    }else if(a == 3) {
-                        getFlame_item = true;
-                        int id2 = itemsGot.size();
-                        itemsGot.add(new FlameItem(1.5 * id2 + 1,
-                                0.5 - HelloApplication.MENUHEIGHT));
+                if (HelloApplication.map.tool[newX][newY] instanceof RandomItem fi) {
+                    if (this.check_collision(fi) && HelloApplication.map.sprite[newX][newY] instanceof Brick brick) {
+                        if (brick.isDestroyed()) {
+                            if (!getRandom_item) {
+                                getRandom_item = true;
+                                int id = itemsGot.size();
+                                int a = rand;
+                                if(a == 1) {
+                                    getSpeed_item = true;
+                                    itemsGot.add(new SpeedItem(1.5 * id + 1,
+                                            0.5 - HelloApplication.MENUHEIGHT));
+                                } else if(a == 2) {
+                                    getBomb_item = true;
+                                    itemsGot.add(new BombItem(1.5 * id + 1,
+                                            0.5 - HelloApplication.MENUHEIGHT));
+                                } else if(a == 3) {
+                                    getFlame_item = true;
+                                    itemsGot.add(new FlameItem(1.5 * id + 1,
+                                            0.5 - HelloApplication.MENUHEIGHT));
+                                }
+//                                itemsGot.add(new FlameItem(1.5 * id + 1,
+//                                        0.5 - HelloApplication.MENUHEIGHT));
+                            }
+                        }
+                    }
+                }
+                if (HelloApplication.map.tool[newX][newY] instanceof BoostItem fi) {
+                    if (this.check_collision(fi) && HelloApplication.map.sprite[newX][newY] instanceof Brick brick) {
+                        if (brick.isDestroyed()) {
+                            if (!getBoost_item) {
+                                getBoost_item = true;
+                                getSpeed_item = true;
+                                getFlame_item = true;
+                                int id = itemsGot.size();
+                                itemsGot.add(new BoostItem(1.5 * id + 1,
+                                        0.5 - HelloApplication.MENUHEIGHT));
+                            }
+                        }
                     }
                 }
             }
         }
-        if (HelloApplication.map.tool[getSmallX()][getSmallY()] instanceof BoostItem) {
-            if (HelloApplication.map.sprite[getSmallX()][getSmallY()] instanceof Brick brick) {
-                if (brick.isDestroyed()) {
-                    getBoost_item = true;
-                    getSpeed_item = true;
-                    getFlame_item = true;
-                    int id = itemsGot.size();
-                    itemsGot.add(new BoostItem(1.5 * id + 1,
-                            0.5 - HelloApplication.MENUHEIGHT));
-                }
-            }
-        }
+//        if (HelloApplication.map.tool[getSmallX()][getSmallY()] instanceof RandomItem) {
+//            if (HelloApplication.map.sprite[getSmallX()][getSmallY()] instanceof Brick brick) {
+//                if (brick.isDestroyed()) {
+//                    getRandom_item = true;
+//                    int a = rand;
+//                    if(a == 1) {
+//                        getSpeed_item = true;
+//                        int id = itemsGot.size();
+//                        itemsGot.add(new SpeedItem(1.5 * id + 1,
+//                                0.5 - HelloApplication.MENUHEIGHT));
+//                    }else if(a == 2) {
+//                        getBomb_item = true;
+//                        int id1 = itemsGot.size();
+//                        itemsGot.add(new BombItem(1.5 * id1 + 1,
+//                                0.5 - HelloApplication.MENUHEIGHT));
+//                    }else if(a == 3) {
+//                        getFlame_item = true;
+//                        int id2 = itemsGot.size();
+//                        itemsGot.add(new FlameItem(1.5 * id2 + 1,
+//                                0.5 - HelloApplication.MENUHEIGHT));
+//                    }
+//                }
+//            }
+//        }
+//        if (HelloApplication.map.tool[getSmallX()][getSmallY()] instanceof BoostItem) {
+//            if (HelloApplication.map.sprite[getSmallX()][getSmallY()] instanceof Brick brick) {
+//                if (brick.isDestroyed()) {
+//                    getBoost_item = true;
+//                    getSpeed_item = true;
+//                    getFlame_item = true;
+//                    int id = itemsGot.size();
+//                    itemsGot.add(new BoostItem(1.5 * id + 1,
+//                            0.5 - HelloApplication.MENUHEIGHT));
+//                }
+//            }
+//        }
         speed = 2;
         if (getSpeed_item) {
-            speed = 3;
+            speed = 4;
         }
         int direction = 4; // ko co event thi dung yen
         KeyCode key = event.getCode();
         int[] directionToPicture = new int[]{3, 0, 1, 2};
-        switch (key) {
-            case LEFT -> {
-                direction = 0;
-            }
-            case UP -> {
-                direction = 1;
-            }
-            case RIGHT -> {
-                direction = 2;
-            }
-            case DOWN -> {
-                direction = 3;
-            }
+        if (key == HelloApplication.keyConfig.getLeft()) {
+            direction = 0;
+        } else if (key == HelloApplication.keyConfig.getUp()) {
+            direction = 1;
+        } else if (key == HelloApplication.keyConfig.getRight()) {
+            direction = 2;
+        } else if (key == HelloApplication.keyConfig.getDown()) {
+            direction = 3;
         }
+//        switch (key) {
+//            case LEFT -> {
+//                direction = 0;
+//            }
+//            case UP -> {
+//                direction = 1;
+//            }
+//            case RIGHT -> {
+//                direction = 2;
+//            }
+//            case DOWN -> {
+//                direction = 3;
+//            }
+//        }
         count_move = (count_move + 1) % 30;
         if (count_move % 10 == 0 && direction < 4) {
             img = Picture.player[directionToPicture[direction]][2 - (count_move / 10)].getFxImage(); // thay anh
