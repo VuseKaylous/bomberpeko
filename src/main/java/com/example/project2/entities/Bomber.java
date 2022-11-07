@@ -1,6 +1,7 @@
 package com.example.project2.entities;
 
 import com.example.project2.HelloApplication;
+import com.example.project2.graphics.KeyConfig;
 import com.example.project2.graphics.Sound;
 import com.example.project2.graphics.Sprite;
 import com.example.project2.graphics.SpriteSheet;
@@ -53,7 +54,7 @@ public class Bomber extends Entity {
     public void update() {
         count.replaceAll(integer -> integer + 1);
         updateImage();
-        if (HelloApplication.gameState == 3) {
+        if (HelloApplication.gameState == HelloApplication.GameState.GAMEOVER) {
             cnt++;
             dead();
         }
@@ -137,7 +138,7 @@ public class Bomber extends Entity {
                                         }
                                     }
                                     if (Flame.check_collision(this) || current.check_collision(this) || Flame2.check_collision(this)) {
-                                        HelloApplication.gameState = 3;
+                                        HelloApplication.gameState = HelloApplication.GameState.GAMEOVER;
                                     }
                                 }
                                 Bomb Flame2;
@@ -159,7 +160,7 @@ public class Bomber extends Entity {
                                     }
                                 }
                                 if (current.check_collision(this) || Flame2.check_collision(this)) {
-                                    HelloApplication.gameState = 3;
+                                    HelloApplication.gameState = HelloApplication.GameState.GAMEOVER;
                                 }
                             }
                         } else {
@@ -184,7 +185,7 @@ public class Bomber extends Entity {
                                     }
                                 }
                                 if (Flame.check_collision(this) || current.check_collision(this)) {
-                                    HelloApplication.gameState = 3;
+                                    HelloApplication.gameState = HelloApplication.GameState.GAMEOVER;
                                 }
                                 HelloApplication.flame.get(i).add(Flame);
                             }
@@ -249,9 +250,10 @@ public class Bomber extends Entity {
     }
 
     public void setBomb(KeyEvent event) {
+        if (event == null) return;
         boolean check = false;
         KeyCode key = event.getCode();
-        if (key == KeyCode.Q) {
+        if (key == HelloApplication.keyConfig.getSetBomb()) {
 //            playMusic(2);
             if (!getBomb_item && HelloApplication.bomb.size() > 0) {
                 check = true;
@@ -331,20 +333,29 @@ public class Bomber extends Entity {
         int direction = 4; // ko co event thi dung yen
         KeyCode key = event.getCode();
         int[] directionToPicture = new int[]{3, 0, 1, 2};
-        switch (key) {
-            case LEFT -> {
-                direction = 0;
-            }
-            case UP -> {
-                direction = 1;
-            }
-            case RIGHT -> {
-                direction = 2;
-            }
-            case DOWN -> {
-                direction = 3;
-            }
+        if (key == HelloApplication.keyConfig.getLeft()) {
+            direction = 0;
+        } else if (key == HelloApplication.keyConfig.getUp()) {
+            direction = 1;
+        } else if (key == HelloApplication.keyConfig.getRight()) {
+            direction = 2;
+        } else if (key == HelloApplication.keyConfig.getDown()) {
+            direction = 3;
         }
+//        switch (key) {
+//            case LEFT -> {
+//                direction = 0;
+//            }
+//            case UP -> {
+//                direction = 1;
+//            }
+//            case RIGHT -> {
+//                direction = 2;
+//            }
+//            case DOWN -> {
+//                direction = 3;
+//            }
+//        }
         count_move = (count_move + 1) % 30;
         if (count_move % 10 == 0 && direction < 4) {
             img = Picture.player[directionToPicture[direction]][2 - (count_move / 10)].getFxImage(); // thay anh

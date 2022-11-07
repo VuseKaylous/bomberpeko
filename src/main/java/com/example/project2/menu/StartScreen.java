@@ -2,6 +2,7 @@ package com.example.project2.menu;
 
 import com.example.project2.HelloApplication;
 import com.example.project2.graphics.Sprite;
+import com.example.project2.graphics.UsefulFuncs;
 import javafx.animation.TranslateTransition;
 import javafx.scene.Scene;
 import javafx.scene.SubScene;
@@ -20,7 +21,9 @@ public class StartScreen extends Menu {
     public StartScreen() {
         super();
         super.addOption("Start game");
+        super.addOption("High score");
         super.addOption("Help");
+        super.addOption("Setting");
         super.addOption("Exit");
 
         helpIn = false;
@@ -64,17 +67,21 @@ public class StartScreen extends Menu {
             if (!helpIn) {
                 for (int i = 0; i < decorationRect.size(); i++)
                     if (inRect(decorationRect.get(0))) {
-                        HelloApplication.gameState = 0;
+                        HelloApplication.gameState = HelloApplication.GameState.GAMEPLAY;
 //                        HelloApplication.gameLevel = 1;
                         HelloApplication.restartGame();
                     } else if (inRect(decorationRect.get(1))) {
+                        HelloApplication.gameState = HelloApplication.GameState.HIGHSCORE;
+                    } else if (inRect(decorationRect.get(2))) {
                         helpIn = true;
                         move(true);
-                    } else if (inRect(decorationRect.get(2))) {
-                        HelloApplication.gameState = 2;
+                    } else if (inRect(decorationRect.get(3))) {
+                        HelloApplication.gameState = HelloApplication.GameState.SETTING;
+                    } else if (inRect(decorationRect.get(4))) {
+                        HelloApplication.gameState = HelloApplication.GameState.RETURN;
                     }
             } else {
-                if (!Menu.inRect(helpRect, mEvent)) {
+                if (!UsefulFuncs.inRect(helpRect, mEvent)) {
                     helpIn = false;
                     move(false);
                 }
