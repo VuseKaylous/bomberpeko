@@ -155,12 +155,6 @@ public class HelloApplication extends Application {
         createStateBar();
     }
 
-//    private void test() {
-//        Entity testSubject = new FlameItem(1,
-//                (float) -1.5, Picture.powerup[1].getFxImage());
-//        testSubject.render(gc);
-//    }
-
     private void createStateBar() {
         pauseButton = new PauseButton(HEIGHT - 2, -1.5, Picture.pauseIcon.getFxImage());
         score = new Score();
@@ -240,6 +234,11 @@ public class HelloApplication extends Application {
                 }
             } else if (entities.get(i) instanceof Ghost ghost) {
                 if (ghost.is_dead && ghost.cnt > 32) {
+                    entities.remove(i);
+                    i--;
+                }
+            } else if (entities.get(i) instanceof Kondoria kondoria) {
+                if (kondoria.is_dead && kondoria.cnt > 32) {
                     entities.remove(i);
                     i--;
                 }

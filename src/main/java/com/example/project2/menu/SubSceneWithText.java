@@ -20,6 +20,9 @@ public class SubSceneWithText extends SubScene {
     protected double width;
     protected double height;
     public Rectangle rectangle;
+    public SubSceneWithText() {
+        super(new Group(), 300, 300);
+    }
     public SubSceneWithText(String str, double width, double height) {
         super(new Group(), width, height);
         root = (Group) this.getRoot();
