@@ -10,10 +10,10 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
 public class SettingScreen extends Menu {
-    private ConfigButton[] configButtons = new ConfigButton[7];
+    private final ConfigButton[] configButtons = new ConfigButton[7];
     private int chosenButton;
     private boolean isChoosing;
-    private Rectangle backButton;
+    private final Rectangle backButton;
     public SettingScreen() {
         super();
         int x1 = 120;
@@ -75,7 +75,7 @@ public class SettingScreen extends Menu {
                 }
                 if (!isChoosing) {
                     if (UsefulFuncs.inRect(backButton, mouseEvent1)) {
-                        HelloApplication.gameState = 4;
+                        HelloApplication.gameState = HelloApplication.GameState.START;
                     }
                 }
             });

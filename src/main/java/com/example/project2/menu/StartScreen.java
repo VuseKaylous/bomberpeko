@@ -21,6 +21,7 @@ public class StartScreen extends Menu {
     public StartScreen() {
         super();
         super.addOption("Start game");
+        super.addOption("High score");
         super.addOption("Help");
         super.addOption("Setting");
         super.addOption("Exit");
@@ -66,16 +67,18 @@ public class StartScreen extends Menu {
             if (!helpIn) {
                 for (int i = 0; i < decorationRect.size(); i++)
                     if (inRect(decorationRect.get(0))) {
-                        HelloApplication.gameState = 0;
+                        HelloApplication.gameState = HelloApplication.GameState.GAMEPLAY;
 //                        HelloApplication.gameLevel = 1;
                         HelloApplication.restartGame();
                     } else if (inRect(decorationRect.get(1))) {
+                        HelloApplication.gameState = HelloApplication.GameState.HIGHSCORE;
+                    } else if (inRect(decorationRect.get(2))) {
                         helpIn = true;
                         move(true);
-                    } else if (inRect(decorationRect.get(2))) {
-                        HelloApplication.gameState = 6;
                     } else if (inRect(decorationRect.get(3))) {
-                        HelloApplication.gameState = 2;
+                        HelloApplication.gameState = HelloApplication.GameState.SETTING;
+                    } else if (inRect(decorationRect.get(4))) {
+                        HelloApplication.gameState = HelloApplication.GameState.RETURN;
                     }
             } else {
                 if (!UsefulFuncs.inRect(helpRect, mEvent)) {

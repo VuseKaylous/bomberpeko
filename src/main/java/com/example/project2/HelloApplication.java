@@ -47,14 +47,25 @@ public class HelloApplication extends Application {
     private boolean keyPressed = false;
     private KeyEvent event;
     public static KeyConfig keyConfig = new KeyConfig();
-    public static int gameState = 4;
+    public enum GameState {
+        GAMEPLAY,
+        PAUSE,
+        RETURN,
+        GAMEOVER,
+        START,
+        VICTORY,
+        SETTING,
+        HIGHSCORE
+    }
     // 0: gameplay, 1: pause screen, 2: end game immediately, 3: game over, 4: start game, 5: victory, 6: setting
+    public static GameState gameState = GameState.START;
     public static int gameLevel = 1;
     private final PauseScreen pauseScreen = new PauseScreen();
     private final GameOver gameOverScreen = new GameOver();
     private final StartScreen startScreen = new StartScreen();
     private static VictoryScreen victoryScreen = new VictoryScreen();
     private static final SettingScreen settingScreen = new SettingScreen();
+    private static final HighScoreScreen highScoreScreen  = new HighScoreScreen();
     private PauseButton pauseButton;
     public static Score score;
 
@@ -83,14 +94,14 @@ public class HelloApplication extends Application {
             @Override
             public void handle(long l) {
                 render();
-                if (gameState == 0) {
+                if (gameState == GameState.GAMEPLAY) {
                     stage.setScene(scene);
                     normalUpdate();
                     scene.setOnKeyPressed(keyEvent -> {
                         keyPressed = true;
                         event = keyEvent;
                         if (event.getCode() == keyConfig.getPause()) { // p: pause screen
-                            gameState = 1;
+                            gameState = GameState.PAUSE;
                         }
                         if (keyEvent.getCode() == keyConfig.getExit()) {
                             this.stop();
@@ -105,16 +116,16 @@ public class HelloApplication extends Application {
                     });
                     scene.setOnMouseReleased(mouseEvent -> {
                         if (UsefulFuncs.inRect(pauseButton.getBoundary(), mouseEvent)) {
-                            gameState = 1;
+                            gameState = GameState.PAUSE;
                         }
                     });
-                } else if (gameState == 1) {
+                } else if (gameState == GameState.PAUSE) {
                     stage.setScene(scene);
                     pauseScreen.handleEvent(scene);
-                } else if (gameState == 2) { // end game
+                } else if (gameState == GameState.RETURN) { // end game
                     this.stop();
                     stage.close();
-                } else if (gameState == 3) { // game over
+                } else if (gameState == GameState.GAMEOVER) { // game over
                     gameOverScreen.handleEvent(scene);
 //                    scene.setOnKeyPressed(keyEvent -> {
 //                        if (keyEvent.getCode() == keyConfig.getExit()) {
@@ -122,14 +133,17 @@ public class HelloApplication extends Application {
 //                            stage.close();
 //                        }
 //                    });
-                } else if (gameState == 4) {
+                } else if (gameState == GameState.START) {
                     stage.setScene(startScreen.scene);
                     startScreen.handleEvent();
-                } else if (gameState == 5) {
+                } else if (gameState == GameState.VICTORY) {
                     victoryScreen.handleEvent(scene);
-                } else if (gameState == 6) {
+                } else if (gameState == GameState.SETTING) {
                     stage.setScene(settingScreen.scene);
                     settingScreen.handleEvent();
+                } else if (gameState == GameState.HIGHSCORE) {
+                    stage.setScene(highScoreScreen.scene);
+                    highScoreScreen.handleEvent();
                 }
 //                test();
             }
@@ -204,7 +218,7 @@ public class HelloApplication extends Application {
     }
 
     public void normalUpdate() {
-        if (gameState != 3 && keyPressed) {
+        if (gameState != GameState.GAMEOVER && keyPressed) {
             if (event != null) bomber.update(event);
         }
         for (int i = 0; i < entities.size(); i++) {
@@ -227,15 +241,15 @@ public class HelloApplication extends Application {
         }
         for (Entity entity : entities) {
             if (entity.check_collision(bomber)) {
-                gameState = 3;
+                gameState = GameState.GAMEOVER;
             }
         }
         if (entities.size() == 0) {
             if (bomber.check_collision(map.getPortal())) {
-                gameState = 5;
+                gameState = GameState.VICTORY;
             }
         }
-        if (gameState != 3) entities.forEach(Entity::update);
+        if (gameState != GameState.GAMEOVER) entities.forEach(Entity::update);
         bomber.update();
         score.update(false);
     }
@@ -270,12 +284,12 @@ public class HelloApplication extends Application {
 
     public void render() {
         gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
-        if (gameState == 0) {
+        if (gameState == GameState.GAMEPLAY) {
             gameplayRender();
-        } else if (gameState == 1) {
+        } else if (gameState == GameState.PAUSE) {
             gameplayRender();
             pauseScreen.render(gc);
-        } else if (gameState == 3) {
+        } else if (gameState == GameState.GAMEOVER) {
             if (bomber.cnt <= 30) {
                 normalUpdate();
                 gameplayRender();
@@ -283,13 +297,15 @@ public class HelloApplication extends Application {
                 gameplayRender();
                 gameOverScreen.render(gc);
             }
-        } else if (gameState == 4) {
+        } else if (gameState == GameState.START) {
             startScreen.render();
-        } else if (gameState == 5) {
+        } else if (gameState == GameState.VICTORY) {
             gameplayRender();
             victoryScreen.render(gc);
-        } else if (gameState == 6) {
+        } else if (gameState == GameState.SETTING) {
             settingScreen.render();
+        } else if (gameState == GameState.HIGHSCORE) {
+            highScoreScreen.render();
         }
     }
 

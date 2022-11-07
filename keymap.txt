@@ -1,7 +1,7 @@
-Q
+P
 ESC
+Q
 UP
 DOWN
 LEFT
 RIGHT
-Q

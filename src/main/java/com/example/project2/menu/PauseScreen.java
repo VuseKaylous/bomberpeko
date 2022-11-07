@@ -27,12 +27,12 @@ public class PauseScreen extends Menu {
             mouseEvent = mEvent;
             for (int i = 0; i < decorationRect.size(); i++) {
                 if (inRect(decorationRect.get(0))) {
-                    HelloApplication.gameState = 0;
+                    HelloApplication.gameState = HelloApplication.GameState.GAMEPLAY;
                 } else if (inRect(decorationRect.get(1))) {
-                    HelloApplication.gameState = 0;
+                    HelloApplication.gameState = HelloApplication.GameState.GAMEPLAY;
                     HelloApplication.restartGame();
                 } else if (inRect(decorationRect.get(2))) {
-                    HelloApplication.gameState = 4;
+                    HelloApplication.gameState = HelloApplication.GameState.START;
                 }
             }
         });

@@ -36,7 +36,7 @@ public class Score {
             value--;
         }
         if (getValue() == 950) {
-            HelloApplication.gameState = 5; // test
+            HelloApplication.gameState = HelloApplication.GameState.VICTORY; // test
         }
     }
 

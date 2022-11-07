@@ -48,7 +48,7 @@ public class VictoryScreen extends Menu {
         scene1.setOnKeyPressed(keyEvent -> {
             if (!keyIsPressed) {
                 keyIsPressed = true;
-                HelloApplication.gameState = 0;
+                HelloApplication.gameState = HelloApplication.GameState.GAMEPLAY;
                 HelloApplication.score.newLevel();
                 HelloApplication.createMap();
             }
@@ -56,7 +56,7 @@ public class VictoryScreen extends Menu {
         scene1.setOnMousePressed(mouseEvent1 -> {
             if (!keyIsPressed) {
                 keyIsPressed = true;
-                HelloApplication.gameState = 0;
+                HelloApplication.gameState = HelloApplication.GameState.GAMEPLAY;
                 HelloApplication.score.newLevel();
                 HelloApplication.createMap();
             }
