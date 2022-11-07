@@ -60,12 +60,13 @@ public class HelloApplication extends Application {
     // 0: gameplay, 1: pause screen, 2: end game immediately, 3: game over, 4: start game, 5: victory, 6: setting
     public static GameState gameState = GameState.START;
     public static int gameLevel = 1;
+    public static final int MAXLEVEL = 2;
     private final PauseScreen pauseScreen = new PauseScreen();
     private final GameOver gameOverScreen = new GameOver();
     private final StartScreen startScreen = new StartScreen();
-    private static VictoryScreen victoryScreen = new VictoryScreen();
+    private static final VictoryScreen victoryScreen = new VictoryScreen();
     private static final SettingScreen settingScreen = new SettingScreen();
-    private static final HighScoreScreen highScoreScreen  = new HighScoreScreen();
+    public static final HighScoreScreen highScoreScreen  = new HighScoreScreen();
     private PauseButton pauseButton;
     public static Score score;
 
@@ -301,7 +302,7 @@ public class HelloApplication extends Application {
             startScreen.render();
         } else if (gameState == GameState.VICTORY) {
             gameplayRender();
-            victoryScreen.render(gc);
+            victoryScreen.render(gc, root);
         } else if (gameState == GameState.SETTING) {
             settingScreen.render();
         } else if (gameState == GameState.HIGHSCORE) {

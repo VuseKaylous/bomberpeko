@@ -71,13 +71,21 @@ public class HighScoreScreen extends Menu {
         }
     }
 
-    public void updateHighscore(String _name, int highscore) {
+    public boolean checkHighscore(int highscore) {
         if (name.size() < 5) {
-            insert(_name, highscore);
-            return;
+            return true;
         }
         if (score.get(4) < highscore) {
-            score.remove(4);
+            return true;
+        }
+        return false;
+    }
+
+    public void updateHighscore(String _name, int highscore) {
+        if (checkHighscore(highscore)) {
+            if (score.size() >= 5) {
+                score.remove(4);
+            }
             insert(_name, highscore);
         }
     }
