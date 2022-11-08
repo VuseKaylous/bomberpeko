@@ -22,6 +22,7 @@ public class Sound {
             clip = AudioSystem.getClip();
             clip.open(ais);
         } catch (Exception ignored) {
+            System.out.println("Can't load music file");
         }
     }
 

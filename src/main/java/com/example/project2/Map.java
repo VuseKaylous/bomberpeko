@@ -39,7 +39,7 @@ public class Map {
                 tool[i][col_num] = new SpeedItem(i, col_num, Picture.powerup[2].getFxImage());
                 sprite[i][col_num] = new Brick(i, col_num, Picture.brick[0].getFxImage());
             } else if (col.charAt(i) == 'd') {
-                tool[i][col_num] = new RandomItem(i, col_num, Picture.powerup[6].getFxImage());
+                tool[i][col_num] = new RandomItem(i, col_num, Picture.powerup[7].getFxImage());
                 sprite[i][col_num] = new Brick(i, col_num, Picture.brick[0].getFxImage());
             } else if (col.charAt(i) == 'o') {
                 tool[i][col_num] = new BoostItem(i, col_num, Picture.powerup[6].getFxImage());

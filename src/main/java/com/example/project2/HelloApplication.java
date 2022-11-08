@@ -31,7 +31,7 @@ public class HelloApplication extends Application {
     private static Group root;
     private static Scene scene;
 
-    static Sound sound = new Sound();
+    public static Sound sound = new Sound();
     public static final int MENUHEIGHT = 2;
     public static final int WIDTH = 13;
     public static final int HEIGHT = 31;

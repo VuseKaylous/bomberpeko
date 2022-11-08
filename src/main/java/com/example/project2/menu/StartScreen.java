@@ -92,7 +92,7 @@ public class StartScreen extends Menu {
 //        this.root.getChildren().add(start_quote);
 //        this.root.getChildren().add(instruction_quote);
 //        this.root.getChildren().add(exit_quote);
-        System.out.println(options.size() + " " + decorationRect.size() + " " + quotes.size());
+//        System.out.println(options.size() + " " + decorationRect.size() + " " + quotes.size());
         for (int i = 0; i < options.size(); i++) {
             quotes.set(i, new SubSceneWithText(options.get(i), decorationRect.get(i).getWidth(), decorationRect.get(i).getHeight()));
             quotes.get(i).setLayoutX(decorationRect.get(i).getX());

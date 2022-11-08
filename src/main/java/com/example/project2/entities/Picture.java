@@ -15,7 +15,7 @@ public class Picture {
     public static Sprite[][] mob_dead = new Sprite[3][3]; // (time1, time2, time3) - (normal, blue, ghost)
     public static Sprite[] bomb = new Sprite[3];
     public static Sprite[] brick = new Sprite[4]; // normal, exploded 1-2-3
-    public static Sprite[] powerup = new Sprite[7]; //bomb - flames - speed - wallpass - detonator - bombpass - flamepass
+    public static Sprite[] powerup = new Sprite[8]; //bomb - flames - speed - wallpass - detonator - bombpass - flamepass
     public static Sprite grass = new Sprite(Sprite.DEFAULT_SIZE, 6, 0, SpriteSheet.tiles, 16, 16);
     public static Sprite wall = new Sprite(Sprite.DEFAULT_SIZE, 5, 0, SpriteSheet.tiles, 16, 16);
     public static Sprite portal = new Sprite(Sprite.DEFAULT_SIZE, 4, 0, SpriteSheet.tiles, 16, 16);
@@ -63,7 +63,7 @@ public class Picture {
         for (int i = 0; i < 4; i++) {
             brick[i] = new Sprite(Sprite.DEFAULT_SIZE, 7, i, SpriteSheet.tiles, 16, 16);
         }
-        for (int i = 0; i < 7; i++) {
+        for (int i = 0; i < 8; i++) {
             powerup[i] = new Sprite(Sprite.DEFAULT_SIZE, i, 10, SpriteSheet.tiles, 16, 16);
         }
     }
