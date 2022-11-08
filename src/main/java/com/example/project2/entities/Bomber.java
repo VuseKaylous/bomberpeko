@@ -78,6 +78,9 @@ public class Bomber extends Entity {
         if (HelloApplication.map.sprite[fakeX][fakeY] instanceof Grass) {
             return true;
         }
+        if (HelloApplication.map.sprite[fakeX][fakeY] instanceof Wall) {
+            return false;
+        }
         return HelloApplication.map.sprite[fakeX][fakeY] instanceof Brick;
     }
 
@@ -271,15 +274,15 @@ public class Bomber extends Entity {
                 for (int j = 0; j < 4; j++) {
                     int newX = HelloApplication.bomb.get(i).getSmallX();
                     int newY = HelloApplication.bomb.get(i).getSmallY();
-                    for (int len = 0; len < useFlameItem; len++) {
+                    for (int len = 1; len <= useFlameItem; len++) {
                         newX += change_x[j];
                         newY += change_y[j];
                         if (validSquare(newX, newY)) {
                             if (HelloApplication.map.sprite[newX][newY] instanceof Brick br) {
                                 if (!br.isDestroyed()) {
                                     br.destroyed = true;
+                                    break;
                                 }
-                                break;
                             }
                         } else {
                             break;
@@ -432,25 +435,23 @@ public class Bomber extends Entity {
                                 int id = itemsGot.size();
                                 int a = rand;
                                 if(a == 1) {
-                                    if (!getSpeed_item) {
-                                        getSpeed_item = true;
+//                                    if (!getSpeed_item) {
+//                                        getSpeed_item = true;
                                         useSpeedItem++;
                                         itemsGot.add(new SpeedItem(1.5 * id + 1,
                                                 0.5 - HelloApplication.MENUHEIGHT));
-                                    }
+//                                    }
                                 } else if(a == 2) {
-                                    getBomb_item = true;
+//                                    getBomb_item = true;
                                     useBombItem++;
                                     itemsGot.add(new BombItem(1.5 * id + 1,
                                             0.5 - HelloApplication.MENUHEIGHT));
                                 } else if(a == 3) {
-                                    getFlame_item = true;
+//                                    getFlame_item = true;
                                     useFlameItem++;
                                     itemsGot.add(new FlameItem(1.5 * id + 1,
                                             0.5 - HelloApplication.MENUHEIGHT));
                                 }
-//                                itemsGot.add(new FlameItem(1.5 * id + 1,
-//                                        0.5 - HelloApplication.MENUHEIGHT));
                             }
                         }
                     }
