@@ -250,7 +250,11 @@ public class HelloApplication extends Application {
             }
         }
         if (entities.size() == 0) {
-            if (bomber.check_collision(map.getPortal())) {
+            if (gameLevel != MAXLEVEL) {
+                if (bomber.check_collision(map.getPortal())) {
+                    gameState = GameState.VICTORY;
+                }
+            } else {
                 gameState = GameState.VICTORY;
             }
         }
