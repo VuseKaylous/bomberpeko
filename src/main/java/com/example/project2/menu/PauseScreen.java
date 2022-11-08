@@ -10,6 +10,7 @@ public class PauseScreen extends Menu {
         super();
         super.addOption("Continue");
         super.addOption("Restart");
+        super.addOption("Setting");
         super.addOption("Back");
         this.darkMode = false;
     }
@@ -32,6 +33,9 @@ public class PauseScreen extends Menu {
                     HelloApplication.gameState = HelloApplication.GameState.GAMEPLAY;
                     HelloApplication.restartGame();
                 } else if (inRect(decorationRect.get(2))) {
+                    HelloApplication.settingScreen.previousIsStart = false;
+                    HelloApplication.gameState = HelloApplication.GameState.SETTING;
+                } else if (inRect(decorationRect.get(3))) {
                     HelloApplication.gameState = HelloApplication.GameState.START;
                 }
             }

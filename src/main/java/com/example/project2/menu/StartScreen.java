@@ -186,6 +186,7 @@ public class StartScreen extends Menu {
                         move(true);
                         move2(true);
                     } else if (inRect(decorationRect.get(3))) {
+                        HelloApplication.settingScreen.previousIsStart = true;
                         HelloApplication.gameState = HelloApplication.GameState.SETTING;
                     } else if (inRect(decorationRect.get(4))) {
                         HelloApplication.gameState = HelloApplication.GameState.RETURN;

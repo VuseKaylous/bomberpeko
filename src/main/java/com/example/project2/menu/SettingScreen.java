@@ -21,6 +21,7 @@ public class SettingScreen extends Menu {
     private final Rectangle backButton;
     private boolean soundOn;
     private final ConfigButton soundConfig;
+    public boolean previousIsStart;
     public SettingScreen() {
         super();
         int x1 = 120;
@@ -35,6 +36,7 @@ public class SettingScreen extends Menu {
         }
         isChoosing = false;
         soundOn = true;
+        previousIsStart = true;
 
         backButton = new Rectangle(70, 370, 80, 30);
     }
@@ -120,7 +122,11 @@ public class SettingScreen extends Menu {
                 }
                 if (!isChoosing) {
                     if (UsefulFuncs.inRect(backButton, mouseEvent1)) {
-                        HelloApplication.gameState = HelloApplication.GameState.START;
+                        if (previousIsStart) {
+                            HelloApplication.gameState = HelloApplication.GameState.START;
+                        } else {
+                            HelloApplication.gameState = HelloApplication.GameState.PAUSE;
+                        }
                     }
                 }
             });

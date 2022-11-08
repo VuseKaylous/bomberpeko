@@ -65,7 +65,7 @@ public class HelloApplication extends Application {
     private final GameOver gameOverScreen = new GameOver();
     private final StartScreen startScreen = new StartScreen();
     private static final VictoryScreen victoryScreen = new VictoryScreen();
-    private static final SettingScreen settingScreen = new SettingScreen();
+    public static final SettingScreen settingScreen = new SettingScreen();
     public static final HighScoreScreen highScoreScreen  = new HighScoreScreen();
     private PauseButton pauseButton;
     public static Score score;
